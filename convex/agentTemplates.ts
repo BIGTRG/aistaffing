@@ -1,8 +1,8 @@
-import { query, internalMutation } from "./_generated/server";
+import { query, mutation, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 
 /* ─── Seed all 22 agent templates ─── */
-export const seed = internalMutation({
+export const seed = mutation({
   args: {},
   handler: async (ctx) => {
     const existing = await ctx.db.query("agentTemplates").collect();
