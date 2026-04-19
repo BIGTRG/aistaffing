@@ -17,7 +17,7 @@ import {
 function App() {
   return (
     <ErrorBoundary>
-      <ThemeProvider defaultTheme="dark" switchable>
+      <ThemeProvider defaultTheme="light" switchable={false}>
         <Toaster />
         <Routes>
           <Route element={<PublicLayout />}>
