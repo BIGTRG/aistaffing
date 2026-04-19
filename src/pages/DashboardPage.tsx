@@ -1,178 +1,111 @@
-import { useQuery } from "convex/react";
 import {
-  Activity,
-  ArrowUpRight,
+  Bot,
+  Phone,
+  Mail,
+  DollarSign,
   Clock,
-  Settings,
-  Sparkles,
   TrendingUp,
+  Users,
+  Activity,
 } from "lucide-react";
-import { Link } from "react-router-dom";
-import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
-import { api } from "../../convex/_generated/api";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const stats = [
-  {
-    title: "Stat One",
-    value: "123",
-    change: "+12%",
-    icon: Activity,
-    color: "text-chart-1",
-    bg: "bg-chart-1/10",
-  },
-  {
-    title: "Stat Two",
-    value: "456",
-    change: "+8%",
-    icon: TrendingUp,
-    color: "text-chart-2",
-    bg: "bg-chart-2/10",
-  },
-  {
-    title: "Stat Three",
-    value: "78.9",
-    change: "+24%",
-    icon: Clock,
-    color: "text-chart-3",
-    bg: "bg-chart-3/10",
-  },
-];
-
-const quickActions = [
-  { label: "Account Settings", href: "/settings", icon: Settings },
+  { label: "Active Agents", value: "0", icon: Bot, color: "text-blue-400", bg: "bg-blue-500/10" },
+  { label: "Calls Handled", value: "0", icon: Phone, color: "text-green-400", bg: "bg-green-500/10" },
+  { label: "Emails Processed", value: "0", icon: Mail, color: "text-purple-400", bg: "bg-purple-500/10" },
+  { label: "Revenue Generated", value: "$0", icon: DollarSign, color: "text-orange-400", bg: "bg-orange-500/10" },
 ];
 
 export function DashboardPage() {
-  const user = useQuery(api.auth.currentUser);
-
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       <div>
-        <h1 className="text-2xl md:text-3xl font-bold tracking-tight">
-          Welcome back{user?.name ? `, ${user.name.split(" ")[0]}` : ""}
-        </h1>
-        <p className="text-muted-foreground mt-1">
-          Dashboard subtitle goes here
+        <h1 className="text-2xl font-bold tracking-tight">Dashboard</h1>
+        <p className="text-muted-foreground">
+          Your AI workforce at a glance.
         </p>
       </div>
 
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-        {stats.map(stat => (
-          <Card key={stat.title}>
+      {/* Stats Grid */}
+      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+        {stats.map((stat) => (
+          <Card key={stat.label}>
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-muted-foreground">
-                {stat.title}
+                {stat.label}
               </CardTitle>
-              <div className={`rounded-lg p-2 ${stat.bg}`}>
+              <div className={`inline-flex size-8 items-center justify-center rounded-lg ${stat.bg}`}>
                 <stat.icon className={`size-4 ${stat.color}`} />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-3xl font-bold tracking-tight">
-                {stat.value}
-              </div>
-              <div className="flex items-center gap-1 mt-1">
-                <span className="text-sm font-medium text-success">
-                  {stat.change}
-                </span>
-                <ArrowUpRight className="size-3 text-success" />
-                <span className="text-xs text-muted-foreground">
-                  from last week
-                </span>
-              </div>
+              <div className="text-2xl font-bold">{stat.value}</div>
             </CardContent>
           </Card>
         ))}
       </div>
 
-      <div className="grid gap-6 lg:grid-cols-2">
+      {/* Quick Actions + Activity */}
+      <div className="grid gap-4 lg:grid-cols-2">
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Settings className="size-5 text-muted-foreground" />
-              Quick Actions
+              <Users className="size-5 text-blue-400" />
+              My Agents
             </CardTitle>
-            <CardDescription>Card description goes here</CardDescription>
           </CardHeader>
-          <CardContent className="grid gap-3">
-            {quickActions.map(action => (
-              <Button
-                key={action.label}
-                variant="outline"
-                className="justify-between h-auto py-4 px-4 group"
-                asChild
-              >
-                <Link to={action.href}>
-                  <div className="flex items-center gap-3">
-                    <div className="rounded-lg bg-muted p-2 transition-colors group-hover:bg-primary/10">
-                      <action.icon className="size-4 transition-colors group-hover:text-primary" />
-                    </div>
-                    <span>{action.label}</span>
-                  </div>
-                  <ArrowUpRight className="size-4 text-muted-foreground transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
-                </Link>
-              </Button>
-            ))}
+          <CardContent>
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <Bot className="size-12 text-muted-foreground/30 mb-3" />
+              <p className="text-sm text-muted-foreground">
+                No agents deployed yet.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Your AI staff will appear here once deployed.
+              </p>
+            </div>
           </CardContent>
         </Card>
 
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Sparkles className="size-5 text-chart-3" />
-              Getting Started
+              <Activity className="size-5 text-orange-400" />
+              Recent Activity
             </CardTitle>
-            <CardDescription>Card description goes here</CardDescription>
           </CardHeader>
           <CardContent>
-            <ul className="space-y-4">
-              {[
-                {
-                  title: "First step title",
-                  desc: "Description of what to do",
-                  color: "bg-chart-1",
-                },
-                {
-                  title: "Second step title",
-                  desc: "Description of what to do",
-                  color: "bg-chart-2",
-                },
-                {
-                  title: "Third step title",
-                  desc: "Description of what to do",
-                  color: "bg-chart-3",
-                },
-              ].map((step, i) => (
-                <li key={i} className="flex items-start gap-4">
-                  <div className="relative">
-                    <div
-                      className={`size-8 rounded-full ${step.color} flex items-center justify-center`}
-                    >
-                      <span className="text-xs font-bold text-white">
-                        {i + 1}
-                      </span>
-                    </div>
-                    {i < 2 && (
-                      <div className="absolute top-8 left-1/2 w-px h-6 bg-border -translate-x-1/2" />
-                    )}
-                  </div>
-                  <div className="pt-1">
-                    <p className="font-medium text-sm">{step.title}</p>
-                    <p className="text-muted-foreground text-sm">{step.desc}</p>
-                  </div>
-                </li>
-              ))}
-            </ul>
+            <div className="flex flex-col items-center justify-center py-8 text-center">
+              <Clock className="size-12 text-muted-foreground/30 mb-3" />
+              <p className="text-sm text-muted-foreground">
+                No activity yet.
+              </p>
+              <p className="text-xs text-muted-foreground mt-1">
+                Calls, emails, and sales will appear in real-time.
+              </p>
+            </div>
           </CardContent>
         </Card>
       </div>
+
+      {/* Performance Preview */}
+      <Card>
+        <CardHeader>
+          <CardTitle className="flex items-center gap-2">
+            <TrendingUp className="size-5 text-green-400" />
+            Performance Overview
+          </CardTitle>
+        </CardHeader>
+        <CardContent>
+          <div className="flex flex-col items-center justify-center py-12 text-center">
+            <TrendingUp className="size-16 text-muted-foreground/20 mb-3" />
+            <p className="text-muted-foreground">
+              Performance charts will populate as your agents start working.
+            </p>
+          </div>
+        </CardContent>
+      </Card>
     </div>
   );
 }
