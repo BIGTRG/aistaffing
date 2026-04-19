@@ -1,4 +1,7 @@
 {
+  "buildCommand": "echo 'Prebuilt'",
+  "outputDirectory": "dist",
+  "installCommand": "echo 'Skip install'",
   "rewrites": [
     {
       "source": "/((?!assets/).*)",
