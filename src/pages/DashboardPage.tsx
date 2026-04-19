@@ -1,145 +1,332 @@
+import { useQuery, useMutation } from "convex/react";
+import { api } from "../../convex/_generated/api";
+import { Link, useNavigate } from "react-router-dom";
 import {
-  Activity,
-  Bot,
-  Clock,
-  DollarSign,
-  Mail,
-  Phone,
-  TrendingUp,
-  Users,
+	Activity,
+	Bot,
+	Clock,
+	DollarSign,
+	Mail,
+	Pause,
+	Phone,
+	Play,
+	Plus,
+	TrendingUp,
+	Users,
+	Zap,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-
-const stats = [
-  {
-    label: "Active Agents",
-    value: "0",
-    icon: Bot,
-    color: "text-slate-800",
-    bg: "bg-slate-50",
-  },
-  {
-    label: "Calls Handled",
-    value: "0",
-    icon: Phone,
-    color: "text-emerald-600",
-    bg: "bg-emerald-50",
-  },
-  {
-    label: "Emails Processed",
-    value: "0",
-    icon: Mail,
-    color: "text-purple-600",
-    bg: "bg-purple-50",
-  },
-  {
-    label: "Revenue Generated",
-    value: "$0",
-    icon: DollarSign,
-    color: "text-amber-700",
-    bg: "bg-amber-50",
-  },
-];
+import { Button } from "@/components/ui/button";
 
 export function DashboardPage() {
-  return (
-    <div className="space-y-6">
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
-          Dashboard
-        </h1>
-        <p className="text-gray-500">Your AI workforce at a glance.</p>
-      </div>
+	const navigate = useNavigate();
+	const org = useQuery(api.organizations.getMine);
+	const deployments = useQuery(
+		api.deployments.listByOrg,
+		org ? { orgId: org._id } : "skip"
+	);
+	const activityItems = useQuery(
+		api.activity.listByOrg,
+		org ? { orgId: org._id, limit: 10 } : "skip"
+	);
+	const activityStats = useQuery(
+		api.activity.stats,
+		org ? { orgId: org._id } : "skip"
+	);
+	const spendSummary = useQuery(
+		api.billing.spendSummary,
+		org ? { orgId: org._id } : "skip"
+	);
+	const updateStatus = useMutation(api.deployments.updateStatus);
 
-      {/* Stats Grid */}
-      <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map(stat => (
-          <Card key={stat.label} className="border-gray-200">
-            <CardHeader className="flex flex-row items-center justify-between pb-2">
-              <CardTitle className="text-sm font-medium text-gray-500">
-                {stat.label}
-              </CardTitle>
-              <div
-                className={`inline-flex size-9 items-center justify-center rounded-lg ${stat.bg}`}
-              >
-                <stat.icon className={`size-4 ${stat.color}`} />
-              </div>
-            </CardHeader>
-            <CardContent>
-              <div className="text-2xl font-bold text-gray-900">
-                {stat.value}
-              </div>
-            </CardContent>
-          </Card>
-        ))}
-      </div>
+	// If no org yet, redirect to onboarding
+	if (org === null) {
+		navigate("/onboarding");
+		return null;
+	}
 
-      {/* Quick Actions + Activity */}
-      <div className="grid gap-4 lg:grid-cols-2">
-        <Card className="border-gray-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Users className="size-5 text-slate-800" />
-              My Agents
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="size-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
-                <Bot className="size-7 text-gray-400" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">
-                No agents deployed yet
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Your AI staff will appear here once deployed.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
+	const activeAgents = deployments?.filter((d) => d.status === "active") ?? [];
 
-        <Card className="border-gray-200">
-          <CardHeader>
-            <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Activity className="size-5 text-amber-700" />
-              Recent Activity
-            </CardTitle>
-          </CardHeader>
-          <CardContent>
-            <div className="flex flex-col items-center justify-center py-8 text-center">
-              <div className="size-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
-                <Clock className="size-7 text-gray-400" />
-              </div>
-              <p className="text-sm font-medium text-gray-700">
-                No activity yet
-              </p>
-              <p className="text-xs text-gray-500 mt-1">
-                Calls, emails, and sales will appear in real-time.
-              </p>
-            </div>
-          </CardContent>
-        </Card>
-      </div>
+	const stats = [
+		{
+			label: "Active Agents",
+			value: activeAgents.length.toString(),
+			icon: Bot,
+			color: "text-slate-800",
+			bg: "bg-slate-50",
+		},
+		{
+			label: "Calls Handled",
+			value: (activityStats?.callsHandled ?? 0).toString(),
+			icon: Phone,
+			color: "text-emerald-600",
+			bg: "bg-emerald-50",
+		},
+		{
+			label: "Emails Processed",
+			value: (activityStats?.emailsProcessed ?? 0).toString(),
+			icon: Mail,
+			color: "text-purple-600",
+			bg: "bg-purple-50",
+		},
+		{
+			label: "Monthly Spend",
+			value: spendSummary?.formattedTotal ?? "$0",
+			icon: DollarSign,
+			color: "text-amber-700",
+			bg: "bg-amber-50",
+		},
+	];
 
-      {/* Performance Preview */}
-      <Card className="border-gray-200">
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2 text-gray-900">
-            <TrendingUp className="size-5 text-emerald-600" />
-            Performance Overview
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col items-center justify-center py-12 text-center">
-            <div className="size-16 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
-              <TrendingUp className="size-8 text-gray-400" />
-            </div>
-            <p className="text-gray-600">
-              Performance charts will populate as your agents start working.
-            </p>
-          </div>
-        </CardContent>
-      </Card>
-    </div>
-  );
+	const handleToggle = async (
+		deploymentId: string,
+		currentStatus: string
+	) => {
+		const newStatus = currentStatus === "active" ? "paused" : "active";
+		await updateStatus({
+			deploymentId: deploymentId as any,
+			status: newStatus,
+		});
+	};
+
+	return (
+		<div className="space-y-6">
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-2xl font-bold tracking-tight text-gray-900">
+						Dashboard
+					</h1>
+					<p className="text-gray-500">
+						{org?.name
+							? `${org.name} — Your AI workforce at a glance.`
+							: "Your AI workforce at a glance."}
+					</p>
+				</div>
+				<Link to="/agents">
+					<Button className="bg-slate-800 hover:bg-slate-900 text-white">
+						<Plus className="size-4 mr-2" />
+						Add Agent
+					</Button>
+				</Link>
+			</div>
+
+			{/* Stats Grid */}
+			<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+				{stats.map((stat) => (
+					<Card key={stat.label} className="border-gray-200">
+						<CardHeader className="flex flex-row items-center justify-between pb-2">
+							<CardTitle className="text-sm font-medium text-gray-500">
+								{stat.label}
+							</CardTitle>
+							<div
+								className={`inline-flex size-9 items-center justify-center rounded-lg ${stat.bg}`}
+							>
+								<stat.icon className={`size-4 ${stat.color}`} />
+							</div>
+						</CardHeader>
+						<CardContent>
+							<div className="text-2xl font-bold text-gray-900">
+								{stat.value}
+							</div>
+						</CardContent>
+					</Card>
+				))}
+			</div>
+
+			{/* My Agents + Activity */}
+			<div className="grid gap-4 lg:grid-cols-2">
+				{/* Agent List */}
+				<Card className="border-gray-200">
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2 text-gray-900">
+							<Users className="size-5 text-slate-800" />
+							My Agents
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{deployments && deployments.length > 0 ? (
+							<div className="divide-y divide-gray-100">
+								{deployments.map((d) => (
+									<div
+										key={d._id}
+										className="flex items-center justify-between py-3"
+									>
+										<div className="flex items-center gap-3">
+											<div
+												className={`size-9 rounded-lg flex items-center justify-center ${
+													d.status === "active"
+														? "bg-emerald-50"
+														: d.status === "paused"
+															? "bg-amber-50"
+															: "bg-gray-100"
+												}`}
+											>
+												<Bot
+													className={`size-4 ${
+														d.status === "active"
+															? "text-emerald-600"
+															: d.status === "paused"
+																? "text-amber-600"
+																: "text-gray-400"
+													}`}
+												/>
+											</div>
+											<div>
+												<p className="font-medium text-sm text-gray-900">
+													{d.displayName}
+												</p>
+												<p className="text-xs text-gray-500">
+													{d.template?.department ?? "Agent"}
+												</p>
+											</div>
+										</div>
+										<div className="flex items-center gap-2">
+											<span
+												className={`text-xs font-medium px-2 py-0.5 rounded-full ${
+													d.status === "active"
+														? "bg-emerald-50 text-emerald-700"
+														: d.status === "paused"
+															? "bg-amber-50 text-amber-700"
+															: "bg-gray-100 text-gray-500"
+												}`}
+											>
+												{d.status}
+											</span>
+											{d.status !== "terminated" && (
+												<button
+													onClick={() =>
+														handleToggle(d._id, d.status)
+													}
+													className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
+													title={
+														d.status === "active"
+															? "Pause"
+															: "Resume"
+													}
+												>
+													{d.status === "active" ? (
+														<Pause className="size-3.5 text-gray-500" />
+													) : (
+														<Play className="size-3.5 text-emerald-600" />
+													)}
+												</button>
+											)}
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<div className="flex flex-col items-center justify-center py-8 text-center">
+								<div className="size-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
+									<Bot className="size-7 text-gray-400" />
+								</div>
+								<p className="text-sm font-medium text-gray-700">
+									No agents deployed yet
+								</p>
+								<p className="text-xs text-gray-500 mt-1 mb-4">
+									Your AI staff will appear here once deployed.
+								</p>
+								<Link to="/agents">
+									<Button
+										size="sm"
+										className="bg-slate-800 hover:bg-slate-900 text-white"
+									>
+										<Plus className="size-3.5 mr-1.5" />
+										Deploy Your First Agent
+									</Button>
+								</Link>
+							</div>
+						)}
+					</CardContent>
+				</Card>
+
+				{/* Activity Feed */}
+				<Card className="border-gray-200">
+					<CardHeader>
+						<CardTitle className="flex items-center gap-2 text-gray-900">
+							<Activity className="size-5 text-amber-700" />
+							Recent Activity
+						</CardTitle>
+					</CardHeader>
+					<CardContent>
+						{activityItems && activityItems.length > 0 ? (
+							<div className="space-y-3">
+								{activityItems.map((item) => (
+									<div
+										key={item._id}
+										className="flex items-start gap-3"
+									>
+										<div className="size-8 rounded-lg bg-slate-50 flex items-center justify-center flex-shrink-0 mt-0.5">
+											<Zap className="size-3.5 text-slate-600" />
+										</div>
+										<div>
+											<p className="text-sm text-gray-900">
+												{item.title}
+											</p>
+											<p className="text-xs text-gray-400">
+												{new Date(
+													item._creationTime
+												).toLocaleString()}
+											</p>
+										</div>
+									</div>
+								))}
+							</div>
+						) : (
+							<div className="flex flex-col items-center justify-center py-8 text-center">
+								<div className="size-14 rounded-2xl bg-gray-100 flex items-center justify-center mb-3">
+									<Clock className="size-7 text-gray-400" />
+								</div>
+								<p className="text-sm font-medium text-gray-700">
+									No activity yet
+								</p>
+								<p className="text-xs text-gray-500 mt-1">
+									Calls, emails, and sales will appear in
+									real-time.
+								</p>
+							</div>
+						)}
+					</CardContent>
+				</Card>
+			</div>
+
+			{/* Performance Preview */}
+			<Card className="border-gray-200">
+				<CardHeader>
+					<CardTitle className="flex items-center gap-2 text-gray-900">
+						<TrendingUp className="size-5 text-emerald-600" />
+						Performance Overview
+					</CardTitle>
+				</CardHeader>
+				<CardContent>
+					<div className="grid grid-cols-3 gap-6">
+						<div className="text-center py-6">
+							<div className="text-3xl font-bold text-gray-900">
+								{activityStats?.totalConversations ?? 0}
+							</div>
+							<p className="text-sm text-gray-500 mt-1">
+								Total Conversations
+							</p>
+						</div>
+						<div className="text-center py-6">
+							<div className="text-3xl font-bold text-gray-900">
+								{activeAgents.length}
+							</div>
+							<p className="text-sm text-gray-500 mt-1">
+								Agents Working
+							</p>
+						</div>
+						<div className="text-center py-6">
+							<div className="text-3xl font-bold text-gray-900">
+								{spendSummary?.formattedTotal ?? "$0"}
+							</div>
+							<p className="text-sm text-gray-500 mt-1">
+								Monthly Investment
+							</p>
+						</div>
+					</div>
+				</CardContent>
+			</Card>
+		</div>
+	);
 }

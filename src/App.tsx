@@ -7,43 +7,49 @@ import { PublicOnlyRoute } from "./components/PublicOnlyRoute";
 import { Toaster } from "./components/ui/sonner";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import {
-  AgentsPage,
-  DashboardPage,
-  LandingPage,
-  LoginPage,
-  PartnersPage,
-  SettingsPage,
-  SignupPage,
+	AgentsPage,
+	AdminPage,
+	BillingPage,
+	DashboardPage,
+	LandingPage,
+	LoginPage,
+	OnboardingPage,
+	PartnersPage,
+	SettingsPage,
+	SignupPage,
 } from "./pages";
 
 function App() {
-  return (
-    <ErrorBoundary>
-      <ThemeProvider defaultTheme="light" switchable={false}>
-        <Toaster />
-        <Routes>
-          <Route element={<PublicLayout />}>
-            <Route path="/" element={<LandingPage />} />
-            <Route element={<PublicOnlyRoute />}>
-              <Route path="/login" element={<LoginPage />} />
-              <Route path="/signup" element={<SignupPage />} />
-            </Route>
-          </Route>
+	return (
+		<ErrorBoundary>
+			<ThemeProvider defaultTheme="light" switchable={false}>
+				<Toaster />
+				<Routes>
+					<Route element={<PublicLayout />}>
+						<Route path="/" element={<LandingPage />} />
+						<Route element={<PublicOnlyRoute />}>
+							<Route path="/login" element={<LoginPage />} />
+							<Route path="/signup" element={<SignupPage />} />
+						</Route>
+					</Route>
 
-          <Route element={<ProtectedRoute />}>
-            <Route element={<AppLayout />}>
-              <Route path="/dashboard" element={<DashboardPage />} />
-              <Route path="/agents" element={<AgentsPage />} />
-              <Route path="/partners" element={<PartnersPage />} />
-              <Route path="/settings" element={<SettingsPage />} />
-            </Route>
-          </Route>
+					<Route element={<ProtectedRoute />}>
+						<Route path="/onboarding" element={<OnboardingPage />} />
+						<Route element={<AppLayout />}>
+							<Route path="/dashboard" element={<DashboardPage />} />
+							<Route path="/agents" element={<AgentsPage />} />
+							<Route path="/partners" element={<PartnersPage />} />
+							<Route path="/billing" element={<BillingPage />} />
+							<Route path="/admin" element={<AdminPage />} />
+							<Route path="/settings" element={<SettingsPage />} />
+						</Route>
+					</Route>
 
-          <Route path="*" element={<Navigate to="/" replace />} />
-        </Routes>
-      </ThemeProvider>
-    </ErrorBoundary>
-  );
+					<Route path="*" element={<Navigate to="/" replace />} />
+				</Routes>
+			</ThemeProvider>
+		</ErrorBoundary>
+	);
 }
 
 export default App;
