@@ -25,8 +25,10 @@ function App() {
 			<ThemeProvider defaultTheme="light" switchable={false}>
 				<Toaster />
 				<Routes>
+					{/* Landing page has its own nav — no PublicLayout wrapper */}
+					<Route path="/" element={<LandingPage />} />
+
 					<Route element={<PublicLayout />}>
-						<Route path="/" element={<LandingPage />} />
 						<Route element={<PublicOnlyRoute />}>
 							<Route path="/login" element={<LoginPage />} />
 							<Route path="/signup" element={<SignupPage />} />
