@@ -1,8 +1,8 @@
 # Dependencies
 node_modules/
 
-# Build output (included for Vercel prebuilt deploy)
-# dist/
+# Build output
+dist/
 
 # Environment variables
 .env
