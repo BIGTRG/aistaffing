@@ -244,23 +244,23 @@ export function LandingPage() {
 	return (
 		<div className="flex-1 flex flex-col overflow-hidden">
 			{/* ─── NAV ─── */}
-			<nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-lg">
-				<div className="container flex h-16 items-center justify-between">
+			<nav className="sticky top-0 z-50 bg-slate-900">
+				<div className="container flex h-20 items-center justify-between">
 					<div className="flex items-center gap-3">
-						<img src="/logo.png" alt="AI Staffing Agency" className="h-10 w-10" />
-						<span className="font-bold text-lg text-gray-900 tracking-tight">AI Staffing Agency</span>
+						<img src="/logo.png" alt="AI Staffing Agency" className="h-12 w-12" />
+						<span className="font-bold text-xl text-white tracking-tight">AI Staffing Agency</span>
 					</div>
-					<div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
-						<a href="#agents" className="hover:text-slate-800 transition-colors">Agents</a>
-						<a href="#pricing" className="hover:text-slate-800 transition-colors">Pricing</a>
-						<a href="#industries" className="hover:text-slate-800 transition-colors">Industries</a>
+					<div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
+						<a href="#agents" className="hover:text-white transition-colors">Agents</a>
+						<a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
+						<a href="#industries" className="hover:text-white transition-colors">Industries</a>
 						{isAuthenticated ? (
 							<Link to="/dashboard">
-								<Button size="sm" className="bg-slate-800 hover:bg-slate-900 text-white">Dashboard</Button>
+								<Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold">Dashboard</Button>
 							</Link>
 						) : (
 							<Link to="/signup">
-								<Button size="sm" className="bg-slate-800 hover:bg-slate-900 text-white">Get Started</Button>
+								<Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold">Get Started</Button>
 							</Link>
 						)}
 					</div>
