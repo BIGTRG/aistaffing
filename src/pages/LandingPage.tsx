@@ -797,13 +797,13 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── CTA ─── */}
-			<section className="py-16 md:py-24 bg-gradient-to-br from-slate-800 to-blue-700">
+			<section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 to-slate-800">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center space-y-6">
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
 							Ready to Staff Up?
 						</h2>
-						<p className="text-lg text-blue-100">
+						<p className="text-lg text-slate-300">
 							Book a free consultation. Tell us what your business
 							needs. We'll recommend the right agents, build your
 							setup if needed, and have you live in under 24

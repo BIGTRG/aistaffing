@@ -1,5 +1,5 @@
 export const TEST_USER = {
-  email: "agent@test.local",
-  password: "TestAgent123!",
+  email: "agent-58b75145@test.local",
+  password: "ygFZ5siXKTnlTStDZs_sRMm11n2-Glca",
   name: "Test Agent",
 } as const;

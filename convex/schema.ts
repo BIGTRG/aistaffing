@@ -84,12 +84,20 @@ const schema = defineSchema({
     .index("by_org_channel", ["orgId", "channel"]),
 
   messages: defineTable({
-    conversationId: v.id("conversations"),
-    role: v.string(), // agent | customer | system
+    conversationId: v.optional(v.id("conversations")),
+    deploymentId: v.optional(v.string()),
+    sessionId: v.optional(v.string()),
+    role: v.string(), // agent | customer | system | user | assistant
     content: v.string(),
+    visitorName: v.optional(v.string()),
+    visitorEmail: v.optional(v.string()),
     tokensUsed: v.optional(v.number()),
-    sentAt: v.number(),
-  }).index("by_conversation", ["conversationId"]),
+    sentAt: v.optional(v.number()),
+    timestamp: v.optional(v.number()),
+  })
+    .index("by_conversation", ["conversationId"])
+    .index("by_session", ["deploymentId", "sessionId"])
+    .index("by_deployment", ["deploymentId"]),
 
   // ── Billing ──
   contracts: defineTable({
