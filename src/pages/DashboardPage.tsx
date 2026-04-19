@@ -1,46 +1,74 @@
 import {
+  Activity,
   Bot,
-  Phone,
-  Mail,
-  DollarSign,
   Clock,
+  DollarSign,
+  Mail,
+  Phone,
   TrendingUp,
   Users,
-  Activity,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 const stats = [
-  { label: "Active Agents", value: "0", icon: Bot, color: "text-blue-600", bg: "bg-blue-50" },
-  { label: "Calls Handled", value: "0", icon: Phone, color: "text-emerald-600", bg: "bg-emerald-50" },
-  { label: "Emails Processed", value: "0", icon: Mail, color: "text-purple-600", bg: "bg-purple-50" },
-  { label: "Revenue Generated", value: "$0", icon: DollarSign, color: "text-orange-500", bg: "bg-orange-50" },
+  {
+    label: "Active Agents",
+    value: "0",
+    icon: Bot,
+    color: "text-blue-600",
+    bg: "bg-blue-50",
+  },
+  {
+    label: "Calls Handled",
+    value: "0",
+    icon: Phone,
+    color: "text-emerald-600",
+    bg: "bg-emerald-50",
+  },
+  {
+    label: "Emails Processed",
+    value: "0",
+    icon: Mail,
+    color: "text-purple-600",
+    bg: "bg-purple-50",
+  },
+  {
+    label: "Revenue Generated",
+    value: "$0",
+    icon: DollarSign,
+    color: "text-orange-500",
+    bg: "bg-orange-50",
+  },
 ];
 
 export function DashboardPage() {
   return (
     <div className="space-y-6">
       <div>
-        <h1 className="text-2xl font-bold tracking-tight text-gray-900">Dashboard</h1>
-        <p className="text-gray-500">
-          Your AI workforce at a glance.
-        </p>
+        <h1 className="text-2xl font-bold tracking-tight text-gray-900">
+          Dashboard
+        </h1>
+        <p className="text-gray-500">Your AI workforce at a glance.</p>
       </div>
 
       {/* Stats Grid */}
       <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-        {stats.map((stat) => (
+        {stats.map(stat => (
           <Card key={stat.label} className="border-gray-200">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
               <CardTitle className="text-sm font-medium text-gray-500">
                 {stat.label}
               </CardTitle>
-              <div className={`inline-flex size-9 items-center justify-center rounded-lg ${stat.bg}`}>
+              <div
+                className={`inline-flex size-9 items-center justify-center rounded-lg ${stat.bg}`}
+              >
                 <stat.icon className={`size-4 ${stat.color}`} />
               </div>
             </CardHeader>
             <CardContent>
-              <div className="text-2xl font-bold text-gray-900">{stat.value}</div>
+              <div className="text-2xl font-bold text-gray-900">
+                {stat.value}
+              </div>
             </CardContent>
           </Card>
         ))}

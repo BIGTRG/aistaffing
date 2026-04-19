@@ -27,7 +27,11 @@ export function Header() {
 
           <nav className="flex items-center gap-2">
             {isLoading ? null : isAuthenticated ? (
-              <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+              <Button
+                size="sm"
+                className="bg-blue-600 hover:bg-blue-700 text-white"
+                asChild
+              >
                 <Link to="/dashboard">
                   Open Dashboard
                   <ArrowRight className="size-4" />
@@ -36,10 +40,19 @@ export function Header() {
             ) : (
               !isAuthPage && (
                 <>
-                  <Button variant="ghost" size="sm" className="text-gray-600 hover:text-gray-900" asChild>
+                  <Button
+                    variant="ghost"
+                    size="sm"
+                    className="text-gray-600 hover:text-gray-900"
+                    asChild
+                  >
                     <Link to="/login">Sign In</Link>
                   </Button>
-                  <Button size="sm" className="bg-blue-600 hover:bg-blue-700 text-white" asChild>
+                  <Button
+                    size="sm"
+                    className="bg-blue-600 hover:bg-blue-700 text-white"
+                    asChild
+                  >
                     <Link to="/signup">Get Started</Link>
                   </Button>
                 </>
