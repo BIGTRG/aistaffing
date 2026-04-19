@@ -37,8 +37,8 @@ const departments = [
 	{
 		name: "Executive Suite",
 		icon: Briefcase,
-		color: "text-orange-500",
-		bg: "bg-orange-50",
+		color: "text-amber-700",
+		bg: "bg-amber-50",
 		agents: [
 			"CEO Advisor",
 			"CFO Advisor",
@@ -49,8 +49,8 @@ const departments = [
 	{
 		name: "Management",
 		icon: Users,
-		color: "text-blue-600",
-		bg: "bg-blue-50",
+		color: "text-slate-800",
+		bg: "bg-slate-50",
 		agents: ["Project Manager", "Account Manager", "HR Manager"],
 	},
 	{
@@ -243,14 +243,38 @@ export function LandingPage() {
 
 	return (
 		<div className="flex-1 flex flex-col overflow-hidden">
+			{/* ─── NAV ─── */}
+			<nav className="sticky top-0 z-50 border-b border-gray-100 bg-white/80 backdrop-blur-lg">
+				<div className="container flex h-16 items-center justify-between">
+					<div className="flex items-center gap-3">
+						<img src="/logo.png" alt="AI Staffing Agency" className="h-10 w-10" />
+						<span className="font-bold text-lg text-gray-900 tracking-tight">AI Staffing Agency</span>
+					</div>
+					<div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-600">
+						<a href="#agents" className="hover:text-slate-800 transition-colors">Agents</a>
+						<a href="#pricing" className="hover:text-slate-800 transition-colors">Pricing</a>
+						<a href="#industries" className="hover:text-slate-800 transition-colors">Industries</a>
+						{isAuthenticated ? (
+							<Link to="/dashboard">
+								<Button size="sm" className="bg-slate-800 hover:bg-slate-900 text-white">Dashboard</Button>
+							</Link>
+						) : (
+							<Link to="/signup">
+								<Button size="sm" className="bg-slate-800 hover:bg-slate-900 text-white">Get Started</Button>
+							</Link>
+						)}
+					</div>
+				</div>
+			</nav>
+
 			{/* ─── HERO ─── */}
-			<section className="relative flex flex-col items-center justify-center px-4 py-20 md:py-28 bg-gradient-to-b from-blue-50 to-white">
+			<section className="relative flex flex-col items-center justify-center px-4 py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white">
 				<div className="absolute inset-0 -z-10 overflow-hidden">
 					<div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(220_14%_90%)_1px,transparent_1px),linear-gradient(to_bottom,hsl(220_14%_90%)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-50" />
 				</div>
 
 				<div className="max-w-4xl mx-auto text-center space-y-6">
-					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-blue-200 bg-blue-50 text-xs font-semibold text-blue-700 tracking-wide uppercase">
+					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 tracking-wide uppercase">
 						<Bot className="size-3.5" />
 						The Future of Staffing
 					</div>
@@ -258,7 +282,7 @@ export function LandingPage() {
 					<h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-gray-900">
 						Your Staff Never
 						<br />
-						<span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-blue-500">
+						<span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-700">
 							Sleeps.
 						</span>
 					</h1>
@@ -278,7 +302,7 @@ export function LandingPage() {
 						<div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
 							<Button
 								size="lg"
-								className="text-base h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25"
+								className="text-base h-12 px-8 bg-slate-800 hover:bg-slate-900 text-white shadow-lg shadow-slate-800/25"
 								asChild
 							>
 								<Link to="/signup">
@@ -303,7 +327,7 @@ export function LandingPage() {
 						<div className="pt-4">
 							<Button
 								size="lg"
-								className="text-base h-12 px-8 bg-blue-600 hover:bg-blue-700 text-white shadow-lg shadow-blue-600/25"
+								className="text-base h-12 px-8 bg-slate-800 hover:bg-slate-900 text-white shadow-lg shadow-slate-800/25"
 								asChild
 							>
 								<Link to="/dashboard">
@@ -316,15 +340,15 @@ export function LandingPage() {
 
 					<div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-sm text-gray-500">
 						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-blue-600" />
+							<Check className="size-4 text-slate-800" />
 							<span>Free consultation</span>
 						</div>
 						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-blue-600" />
+							<Check className="size-4 text-slate-800" />
 							<span>Deploy in 24 hours</span>
 						</div>
 						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-blue-600" />
+							<Check className="size-4 text-slate-800" />
 							<span>Setup from $500</span>
 						</div>
 					</div>
@@ -337,7 +361,7 @@ export function LandingPage() {
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
 						{stats.map((s) => (
 							<div key={s.label} className="text-center">
-								<div className="text-2xl md:text-3xl font-bold text-blue-600">
+								<div className="text-2xl md:text-3xl font-bold text-slate-800">
 									{s.value}
 								</div>
 								<div className="text-sm text-gray-500 mt-1">
@@ -353,7 +377,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-24 bg-white">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center mb-16">
-						<p className="text-sm font-semibold text-orange-500 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
 							Why AI Staffing
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -368,9 +392,9 @@ export function LandingPage() {
 					</div>
 
 					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-blue-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-blue-50 mb-4">
-								<Shield className="size-6 text-blue-600" />
+						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-slate-200">
+							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-slate-50 mb-4">
+								<Shield className="size-6 text-slate-800" />
 							</div>
 							<h3 className="font-semibold text-lg mb-2 text-gray-900">
 								Zero Liability
@@ -382,9 +406,9 @@ export function LandingPage() {
 							</p>
 						</div>
 
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-orange-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-orange-50 mb-4">
-								<Clock className="size-6 text-orange-500" />
+						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-amber-200">
+							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-amber-50 mb-4">
+								<Clock className="size-6 text-amber-700" />
 							</div>
 							<h3 className="font-semibold text-lg mb-2 text-gray-900">
 								24/7 Availability
@@ -438,9 +462,9 @@ export function LandingPage() {
 							</p>
 						</div>
 
-						<div className="group rounded-xl bg-gradient-to-br from-blue-50 to-orange-50 border border-blue-200 p-6 transition-all hover:shadow-md">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-orange-50 mb-4">
-								<Sparkles className="size-6 text-orange-500" />
+						<div className="group rounded-xl bg-gradient-to-br from-slate-50 to-amber-50 border border-slate-200 p-6 transition-all hover:shadow-md">
+							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-amber-50 mb-4">
+								<Sparkles className="size-6 text-amber-700" />
 							</div>
 							<h3 className="font-semibold text-lg mb-2 text-gray-900">
 								Scale Without Limits
@@ -459,7 +483,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-20 bg-gray-50">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center mb-12">
-						<p className="text-sm font-semibold text-blue-600 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
 							See the Difference
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -472,7 +496,7 @@ export function LandingPage() {
 							<div className="px-6 py-4 text-sm font-semibold">
 								Traditional Staffing
 							</div>
-							<div className="px-6 py-4 text-sm font-semibold text-blue-300">
+							<div className="px-6 py-4 text-sm font-semibold text-slate-400">
 								AI Staffing Agency
 							</div>
 						</div>
@@ -522,7 +546,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-24 bg-white">
 				<div className="container">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-blue-600 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
 							How It Works
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -536,28 +560,28 @@ export function LandingPage() {
 								step: "1",
 								title: "Contact Us",
 								desc: "Visit our site, browse the agent roster, or fill out a contact form describing what your business needs.",
-								color: "bg-blue-600",
-								shadow: "shadow-blue-600/25",
+								color: "bg-slate-800",
+								shadow: "shadow-slate-800/25",
 							},
 							{
 								step: "2",
 								title: "We Assess",
 								desc: "An account manager contacts you to understand your needs and determine what infrastructure you have in place.",
-								color: "bg-blue-600",
-								shadow: "shadow-blue-600/25",
+								color: "bg-slate-800",
+								shadow: "shadow-slate-800/25",
 							},
 							{
 								step: "3",
 								title: "We Build & Deploy",
 								desc: "If you need a phone system, portal, or tools — we build them. Then we configure and deploy your AI agent.",
-								color: "bg-blue-600",
-								shadow: "shadow-blue-600/25",
+								color: "bg-slate-800",
+								shadow: "shadow-slate-800/25",
 							},
 							{
 								step: "4",
 								title: "You're Live",
 								desc: "Your AI agent starts working immediately. Monitor activity in your portal. Add more agents anytime.",
-								color: "bg-orange-500",
+								color: "bg-amber-700",
 								shadow: "shadow-orange-500/25",
 							},
 						].map((s) => (
@@ -583,7 +607,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-24 bg-gray-50">
 				<div className="container">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-blue-600 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
 							The Full Roster
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -600,7 +624,7 @@ export function LandingPage() {
 						{departments.map((dept) => (
 							<div
 								key={dept.name}
-								className="rounded-xl border border-gray-200 bg-white p-6 hover:shadow-md hover:border-blue-200 transition-all"
+								className="rounded-xl border border-gray-200 bg-white p-6 hover:shadow-md hover:border-slate-200 transition-all"
 							>
 								<div className="flex items-center gap-3 mb-4">
 									<div
@@ -626,7 +650,7 @@ export function LandingPage() {
 											key={agent}
 											className="flex items-center gap-2 text-sm text-gray-600"
 										>
-											<Check className="size-4 text-blue-600 shrink-0" />
+											<Check className="size-4 text-slate-800 shrink-0" />
 											{agent}
 										</li>
 									))}
@@ -641,7 +665,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-24 bg-white">
 				<div className="container">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-orange-500 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
 							Industries We Serve
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -658,10 +682,10 @@ export function LandingPage() {
 						{industries.map((ind) => (
 							<div
 								key={ind.name}
-								className="flex items-start gap-3 rounded-lg border border-gray-100 bg-white p-4 hover:border-blue-200 hover:shadow-sm transition-all"
+								className="flex items-start gap-3 rounded-lg border border-gray-100 bg-white p-4 hover:border-slate-200 hover:shadow-sm transition-all"
 							>
-								<div className="inline-flex size-9 items-center justify-center rounded-lg bg-blue-50 shrink-0 mt-0.5">
-									<ind.icon className="size-4 text-blue-600" />
+								<div className="inline-flex size-9 items-center justify-center rounded-lg bg-slate-50 shrink-0 mt-0.5">
+									<ind.icon className="size-4 text-slate-800" />
 								</div>
 								<div>
 									<h4 className="font-medium text-sm text-gray-900">
@@ -681,7 +705,7 @@ export function LandingPage() {
 			<section className="py-16 md:py-24 bg-gray-50">
 				<div className="container">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-orange-500 mb-3 tracking-wide uppercase">
+						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
 							Simple Pricing
 						</p>
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
@@ -700,12 +724,12 @@ export function LandingPage() {
 								key={plan.title}
 								className={`rounded-xl border p-6 md:p-8 transition-all hover:shadow-lg flex flex-col ${
 									plan.popular
-										? "border-blue-300 bg-white ring-2 ring-blue-100 shadow-md"
+										? "border-slate-300 bg-white ring-2 ring-slate-100 shadow-md"
 										: "border-gray-200 bg-white"
 								}`}
 							>
 								{plan.popular && (
-									<span className="inline-block self-start text-xs font-semibold text-blue-700 bg-blue-50 px-3 py-1 rounded-full mb-3">
+									<span className="inline-block self-start text-xs font-semibold text-white bg-red-500 px-3 py-1 rounded-full mb-3">
 										<Star className="size-3 inline mr-1" />
 										Most Popular
 									</span>
@@ -740,7 +764,7 @@ export function LandingPage() {
 											key={f}
 											className="flex items-center gap-2 text-sm text-gray-600"
 										>
-											<Check className="size-4 text-blue-600 shrink-0" />
+											<Check className="size-4 text-slate-800 shrink-0" />
 											{f}
 										</li>
 									))}
@@ -748,7 +772,7 @@ export function LandingPage() {
 								<Button
 									className={`w-full ${
 										plan.popular
-											? "bg-blue-600 hover:bg-blue-700 text-white shadow-sm"
+											? "bg-slate-800 hover:bg-slate-900 text-white shadow-sm"
 											: "bg-gray-900 hover:bg-gray-800 text-white"
 									}`}
 									asChild
@@ -773,7 +797,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── CTA ─── */}
-			<section className="py-16 md:py-24 bg-gradient-to-br from-blue-600 to-blue-700">
+			<section className="py-16 md:py-24 bg-gradient-to-br from-slate-800 to-blue-700">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center space-y-6">
 						<h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
@@ -788,7 +812,7 @@ export function LandingPage() {
 						<div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
 							<Button
 								size="lg"
-								className="text-base h-12 px-8 bg-white text-blue-700 hover:bg-blue-50 shadow-lg"
+								className="text-base h-12 px-8 bg-white text-slate-900 hover:bg-slate-50 shadow-lg"
 								asChild
 							>
 								<Link to="/signup">
@@ -799,7 +823,7 @@ export function LandingPage() {
 							<Button
 								size="lg"
 								variant="outline"
-								className="text-base h-12 px-8 border-blue-300 text-white hover:bg-blue-500/20"
+								className="text-base h-12 px-8 border-slate-300 text-white hover:bg-slate-700/20"
 								asChild
 							>
 								<Link to="/login">Sign In</Link>
@@ -814,9 +838,9 @@ export function LandingPage() {
 				<div className="container">
 					<div className="flex flex-col md:flex-row items-start justify-between gap-8">
 						<div>
-							<div className="flex items-center gap-2 mb-3">
-								<Bot className="size-5 text-blue-600" />
-								<span className="font-semibold text-gray-900">
+							<div className="flex items-center gap-3 mb-3">
+								<img src="/logo.png" alt="AI Staffing Agency" className="h-8 w-8" />
+								<span className="font-bold text-gray-900">
 									AI Staffing Agency
 								</span>
 							</div>
@@ -835,7 +859,7 @@ export function LandingPage() {
 									<li>
 										<a
 											href="#"
-											className="hover:text-blue-600"
+											className="hover:text-slate-800"
 										>
 											About
 										</a>
@@ -843,7 +867,7 @@ export function LandingPage() {
 									<li>
 										<a
 											href="#"
-											className="hover:text-blue-600"
+											className="hover:text-slate-800"
 										>
 											Pricing
 										</a>
@@ -851,7 +875,7 @@ export function LandingPage() {
 									<li>
 										<a
 											href="#"
-											className="hover:text-blue-600"
+											className="hover:text-slate-800"
 										>
 											Contact
 										</a>
@@ -866,7 +890,7 @@ export function LandingPage() {
 									<li>
 										<a
 											href="#"
-											className="hover:text-blue-600"
+											className="hover:text-slate-800"
 										>
 											Privacy
 										</a>
@@ -874,7 +898,7 @@ export function LandingPage() {
 									<li>
 										<a
 											href="#"
-											className="hover:text-blue-600"
+											className="hover:text-slate-800"
 										>
 											Terms
 										</a>

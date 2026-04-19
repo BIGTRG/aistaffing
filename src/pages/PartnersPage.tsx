@@ -50,10 +50,10 @@ const partnerServices = [
 		tagline: "HR & Recruiting System",
 		desc: "Need to hire human staff alongside your AI agents? Steward's Solution provides a complete HR and recruiting system to help you find, onboard, and manage your team.",
 		icon: Users,
-		color: "text-blue-600",
-		bg: "bg-blue-50",
-		border: "border-blue-200",
-		gradient: "from-blue-50 to-white",
+		color: "text-slate-800",
+		bg: "bg-slate-50",
+		border: "border-slate-200",
+		gradient: "from-slate-50 to-white",
 		features: [
 			{
 				name: "Recruiting System",
@@ -91,8 +91,8 @@ export function PartnersPage() {
 			{/* Partner banner */}
 			<Card className="border-gray-200 bg-gradient-to-r from-gray-50 to-white overflow-hidden">
 				<CardContent className="p-6 flex flex-col md:flex-row items-start md:items-center gap-4">
-					<div className="inline-flex size-14 items-center justify-center rounded-2xl bg-orange-50 shrink-0">
-						<Handshake className="size-7 text-orange-500" />
+					<div className="inline-flex size-14 items-center justify-center rounded-2xl bg-amber-50 shrink-0">
+						<Handshake className="size-7 text-amber-700" />
 					</div>
 					<div className="flex-1">
 						<h3 className="font-semibold text-gray-900 text-lg">
@@ -185,7 +185,7 @@ export function PartnersPage() {
 									))}
 								</ul>
 							</div>
-							<Button className="bg-blue-600 hover:bg-blue-700 text-white shadow-sm">
+							<Button className="bg-slate-800 hover:bg-slate-900 text-white shadow-sm">
 								{service.cta}
 								<ArrowRight className="size-4" />
 							</Button>
@@ -211,7 +211,7 @@ export function PartnersPage() {
 								key={step}
 								className="flex items-start gap-3 text-sm text-gray-600"
 							>
-								<span className="inline-flex size-6 items-center justify-center rounded-full bg-blue-50 text-blue-600 text-xs font-semibold shrink-0 mt-0.5">
+								<span className="inline-flex size-6 items-center justify-center rounded-full bg-slate-50 text-slate-800 text-xs font-semibold shrink-0 mt-0.5">
 									{i + 1}
 								</span>
 								{step}

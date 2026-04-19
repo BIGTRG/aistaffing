@@ -19,9 +19,9 @@ const departments = [
 	{
 		name: "Executive Suite",
 		icon: Briefcase,
-		color: "text-orange-500",
-		bg: "bg-orange-50",
-		border: "border-orange-200",
+		color: "text-amber-700",
+		bg: "bg-amber-50",
+		border: "border-amber-200",
 		agents: [
 			{
 				name: "CEO Advisor",
@@ -52,9 +52,9 @@ const departments = [
 	{
 		name: "Management",
 		icon: Users,
-		color: "text-blue-600",
-		bg: "bg-blue-50",
-		border: "border-blue-200",
+		color: "text-slate-800",
+		bg: "bg-slate-50",
+		border: "border-slate-200",
 		agents: [
 			{
 				name: "Project Manager",
@@ -239,8 +239,8 @@ const departments = [
 
 const tierColors: Record<string, { bg: string; text: string }> = {
 	Basic: { bg: "bg-green-50", text: "text-green-700" },
-	Professional: { bg: "bg-blue-50", text: "text-blue-700" },
-	Executive: { bg: "bg-orange-50", text: "text-orange-700" },
+	Professional: { bg: "bg-slate-50", text: "text-slate-900" },
+	Executive: { bg: "bg-amber-50", text: "text-orange-700" },
 };
 
 export function AgentsPage() {
@@ -289,7 +289,7 @@ export function AgentsPage() {
 					<input
 						type="text"
 						placeholder="Search agents by name or skill..."
-						className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+						className="w-full pl-10 pr-4 py-2.5 rounded-lg border border-gray-200 bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:border-transparent"
 						value={searchQuery}
 						onChange={(e) => setSearchQuery(e.target.value)}
 					/>
@@ -299,7 +299,7 @@ export function AgentsPage() {
 						onClick={() => setSelectedDept(null)}
 						className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
 							!selectedDept
-								? "bg-blue-600 text-white"
+								? "bg-slate-800 text-white"
 								: "bg-gray-100 text-gray-600 hover:bg-gray-200"
 						}`}
 					>
@@ -315,7 +315,7 @@ export function AgentsPage() {
 							}
 							className={`px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${
 								selectedDept === d.name
-									? "bg-blue-600 text-white"
+									? "bg-slate-800 text-white"
 									: "bg-gray-100 text-gray-600 hover:bg-gray-200"
 							}`}
 						>
@@ -379,7 +379,7 @@ export function AgentsPage() {
 											<Button
 												size="sm"
 												variant="outline"
-												className="text-xs h-8 border-blue-200 text-blue-600 hover:bg-blue-50"
+												className="text-xs h-8 border-slate-200 text-slate-800 hover:bg-slate-50"
 											>
 												<Plus className="size-3 mr-1" />
 												Deploy

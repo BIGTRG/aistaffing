@@ -15,8 +15,8 @@ const stats = [
     label: "Active Agents",
     value: "0",
     icon: Bot,
-    color: "text-blue-600",
-    bg: "bg-blue-50",
+    color: "text-slate-800",
+    bg: "bg-slate-50",
   },
   {
     label: "Calls Handled",
@@ -36,8 +36,8 @@ const stats = [
     label: "Revenue Generated",
     value: "$0",
     icon: DollarSign,
-    color: "text-orange-500",
-    bg: "bg-orange-50",
+    color: "text-amber-700",
+    bg: "bg-amber-50",
   },
 ];
 
@@ -79,7 +79,7 @@ export function DashboardPage() {
         <Card className="border-gray-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Users className="size-5 text-blue-600" />
+              <Users className="size-5 text-slate-800" />
               My Agents
             </CardTitle>
           </CardHeader>
@@ -101,7 +101,7 @@ export function DashboardPage() {
         <Card className="border-gray-200">
           <CardHeader>
             <CardTitle className="flex items-center gap-2 text-gray-900">
-              <Activity className="size-5 text-orange-500" />
+              <Activity className="size-5 text-amber-700" />
               Recent Activity
             </CardTitle>
           </CardHeader>
