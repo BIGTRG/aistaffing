@@ -7,9 +7,11 @@ import { PublicOnlyRoute } from "./components/PublicOnlyRoute";
 import { Toaster } from "./components/ui/sonner";
 import { ThemeProvider } from "./contexts/ThemeContext";
 import {
+  AgentsPage,
   DashboardPage,
   LandingPage,
   LoginPage,
+  PartnersPage,
   SettingsPage,
   SignupPage,
 } from "./pages";
@@ -31,6 +33,8 @@ function App() {
           <Route element={<ProtectedRoute />}>
             <Route element={<AppLayout />}>
               <Route path="/dashboard" element={<DashboardPage />} />
+              <Route path="/agents" element={<AgentsPage />} />
+              <Route path="/partners" element={<PartnersPage />} />
               <Route path="/settings" element={<SettingsPage />} />
             </Route>
           </Route>
