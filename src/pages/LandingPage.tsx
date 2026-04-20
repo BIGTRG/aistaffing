@@ -268,9 +268,9 @@ export function LandingPage() {
 			</nav>
 
 			{/* ─── HERO ─── */}
-			<section className="relative flex flex-col items-center justify-center px-4 py-20 md:py-28 bg-gradient-to-b from-slate-50 to-white">
+			<section className="relative flex flex-col items-center justify-center px-4 py-20 md:py-28 bg-gradient-to-b from-gray-300 to-gray-200">
 				<div className="absolute inset-0 -z-10 overflow-hidden">
-					<div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(220_14%_90%)_1px,transparent_1px),linear-gradient(to_bottom,hsl(220_14%_90%)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-50" />
+					<div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(220_14%_82%)_1px,transparent_1px),linear-gradient(to_bottom,hsl(220_14%_82%)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-50" />
 				</div>
 
 				<div className="max-w-4xl mx-auto text-center space-y-6">
@@ -356,7 +356,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── STATS BAR ─── */}
-			<section className="py-8 bg-white border-y border-gray-100">
+			<section className="py-8 bg-gray-100 border-y border-gray-300">
 				<div className="container">
 					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
 						{stats.map((s) => (
@@ -374,7 +374,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── VALUE PROPS ─── */}
-			<section className="py-16 md:py-24 bg-white">
+			<section className="py-16 md:py-24 bg-gray-200">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center mb-16">
 						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
@@ -480,7 +480,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── COMPARISON TABLE ─── */}
-			<section className="py-16 md:py-20 bg-gray-50">
+			<section className="py-16 md:py-20 bg-gray-300">
 				<div className="container">
 					<div className="max-w-3xl mx-auto text-center mb-12">
 						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
@@ -528,7 +528,7 @@ export function LandingPage() {
 						].map(([trad, ai], i) => (
 							<div
 								key={trad}
-								className={`grid grid-cols-2 ${i % 2 === 0 ? "bg-white" : "bg-gray-50"}`}
+								className={`grid grid-cols-2 ${i % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
 							>
 								<div className="px-6 py-4 text-sm text-gray-500 border-r border-gray-100">
 									{trad}
@@ -543,7 +543,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── HOW IT WORKS ─── */}
-			<section className="py-16 md:py-24 bg-white">
+			<section className="py-16 md:py-24 bg-gray-200">
 				<div className="container">
 					<div className="text-center mb-16">
 						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
@@ -604,7 +604,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── FULL AGENT ROSTER ─── */}
-			<section className="py-16 md:py-24 bg-gray-50">
+			<section className="py-16 md:py-24 bg-gray-300">
 				<div className="container">
 					<div className="text-center mb-16">
 						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
@@ -662,7 +662,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── INDUSTRIES ─── */}
-			<section className="py-16 md:py-24 bg-white">
+			<section className="py-16 md:py-24 bg-gray-200">
 				<div className="container">
 					<div className="text-center mb-16">
 						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
@@ -702,7 +702,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── PRICING ─── */}
-			<section className="py-16 md:py-24 bg-gray-50">
+			<section className="py-16 md:py-24 bg-gray-300">
 				<div className="container">
 					<div className="text-center mb-16">
 						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
@@ -834,7 +834,7 @@ export function LandingPage() {
 			</section>
 
 			{/* ─── FOOTER ─── */}
-			<footer className="border-t border-gray-200 py-10 bg-white">
+			<footer className="border-t border-gray-300 py-10 bg-gray-200">
 				<div className="container">
 					<div className="flex flex-col md:flex-row items-start justify-between gap-8">
 						<div>
@@ -907,7 +907,7 @@ export function LandingPage() {
 							</div>
 						</div>
 					</div>
-					<div className="mt-8 pt-6 border-t border-gray-100 text-center text-sm text-gray-500">
+					<div className="mt-8 pt-6 border-t border-gray-300 text-center text-sm text-gray-500">
 						&copy; {new Date().getFullYear()} AI Staffing Agency
 						&mdash; A TRG Tech Link Company. All rights reserved.
 					</div>
