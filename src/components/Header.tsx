@@ -18,7 +18,7 @@ export function Header() {
 					className="flex items-center gap-3 hover:opacity-80 transition-opacity"
 				>
 					<img
-						src="/logo.png"
+						src="/logo-white.png"
 						alt="AI Staffing Agency"
 						className="h-12 w-12 object-contain"
 					/>
