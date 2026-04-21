@@ -14,6 +14,10 @@ import {
 	Users,
 	Database,
 	Zap,
+	Heart,
+	Cog,
+	Banknote,
+	Monitor,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
@@ -21,15 +25,16 @@ import { useState } from "react";
 import { toast } from "sonner";
 
 const departmentIcons: Record<string, React.ElementType> = {
-	"Executive Suite": Briefcase,
-	Management: Users,
-	"Customer Service": Headphones,
+	"Front Office": Headphones,
 	Sales: DollarSign,
 	Marketing: Megaphone,
-	Admin: Database,
-	Tech: Code,
-	"Legal Support": Scale,
-	"HR / Recruiting": GraduationCap,
+	"Customer Success": Heart,
+	Operations: Cog,
+	"Finance & Billing": Banknote,
+	"HR & Recruiting": GraduationCap,
+	"IT & Tech Support": Monitor,
+	"Legal & Compliance": Scale,
+	"Executive & Strategy": Briefcase,
 };
 
 export function AgentsPage() {

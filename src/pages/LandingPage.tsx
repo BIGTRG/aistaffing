@@ -3,6 +3,8 @@ import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
+import { ROICalculator } from "@/components/ROICalculator";
+import { GuaranteeBadge } from "@/components/GuaranteeBadge";
 
 /* ═══════════════════════════════════════════════════════
    AI STAFFING AGENCY — CUSTOM LANDING PAGE
@@ -141,6 +143,7 @@ export function LandingPage() {
 					</Link>
 					<div className="hidden md:flex items-center gap-8">
 						<a href="#agents" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Agents</a>
+						<a href="#roi-calculator" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">ROI Calculator</a>
 						<a href="#pricing" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Pricing</a>
 						<a href="#industries" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Industries</a>
 						{isAuthenticated ? (
@@ -416,6 +419,9 @@ export function LandingPage() {
 				</div>
 			</section>
 
+			{/* ═══════════════════ ROI CALCULATOR ═══════════════════ */}
+			<ROICalculator />
+
 			{/* ═══════════════════ PRICING ═══════════════════ */}
 			<section ref={pricing.ref} id="pricing" className={`py-24 md:py-32 px-6 bg-[#BFC5CD] transition-all duration-1000 ${pricing.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
 				<div className="max-w-5xl mx-auto">
@@ -443,9 +449,10 @@ export function LandingPage() {
 									</div>
 								))}
 							</div>
-							<Button className="w-full bg-[#1A1D23]/5 hover:bg-[#1A1D23]/10 text-[#1A1D23] border border-[#1A1D23]/10 rounded-sm h-10 text-sm" asChild>
+							<Button className="w-full bg-[#1A1D23]/5 hover:bg-[#1A1D23]/10 text-[#1A1D23] border border-[#1A1D23]/10 rounded-sm h-10 text-sm mb-3" asChild>
 								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
 							</Button>
+							<GuaranteeBadge variant="inline" className="justify-center" />
 						</div>
 
 						{/* Professional — Featured */}
@@ -464,9 +471,10 @@ export function LandingPage() {
 									</div>
 								))}
 							</div>
-							<Button className="w-full bg-[#2B7AE0] hover:bg-[#2468c4] text-white rounded-sm h-10 text-sm shadow-[0_0_20px_rgba(43,122,224,0.25)]" asChild>
+							<Button className="w-full bg-[#2B7AE0] hover:bg-[#2468c4] text-white rounded-sm h-10 text-sm shadow-[0_0_20px_rgba(43,122,224,0.25)] mb-3" asChild>
 								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
 							</Button>
+							<GuaranteeBadge variant="inline" className="justify-center [&_span]:text-white/40 [&_svg]:text-[#2B7AE0]" />
 						</div>
 
 						{/* Executive */}
@@ -482,13 +490,18 @@ export function LandingPage() {
 									</div>
 								))}
 							</div>
-							<Button className="w-full bg-[#1A1D23]/5 hover:bg-[#1A1D23]/10 text-[#1A1D23] border border-[#1A1D23]/10 rounded-sm h-10 text-sm" asChild>
+							<Button className="w-full bg-[#1A1D23]/5 hover:bg-[#1A1D23]/10 text-[#1A1D23] border border-[#1A1D23]/10 rounded-sm h-10 text-sm mb-3" asChild>
 								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
 							</Button>
+							<GuaranteeBadge variant="inline" className="justify-center" />
 						</div>
 					</div>
 
-					<p className="text-center text-xs text-[#3A3F48]/30 mt-8 font-mono">
+					<div className="flex justify-center mt-10">
+						<GuaranteeBadge variant="dark" className="max-w-sm w-full" />
+					</div>
+
+					<p className="text-center text-xs text-[#3A3F48]/30 mt-6 font-mono">
 						Platform setup fee: $500 – $1,500 (one-time) for businesses needing phone systems, portals, or scheduling tools.
 					</p>
 				</div>

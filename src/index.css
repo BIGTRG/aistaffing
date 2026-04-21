@@ -283,3 +283,64 @@
     transform: translateY(0);
   }
 }
+
+/* ═══════════════════════════════════════════════════════
+   ROI CALCULATOR — Custom Range Slider
+   ═══════════════════════════════════════════════════════ */
+
+.roi-slider {
+  -webkit-appearance: none;
+  appearance: none;
+  background: transparent;
+}
+
+.roi-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #F27A2E;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(242, 122, 46, 0.35), 0 0 0 1px rgba(242, 122, 46, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.roi-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 12px rgba(242, 122, 46, 0.5), 0 0 0 1px rgba(242, 122, 46, 0.2);
+}
+
+.roi-slider::-webkit-slider-thumb:active {
+  transform: scale(1.05);
+}
+
+.roi-slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: #F27A2E;
+  border: 3px solid white;
+  box-shadow: 0 2px 8px rgba(242, 122, 46, 0.35), 0 0 0 1px rgba(242, 122, 46, 0.1);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.roi-slider::-moz-range-thumb:hover {
+  transform: scale(1.15);
+  box-shadow: 0 2px 12px rgba(242, 122, 46, 0.5), 0 0 0 1px rgba(242, 122, 46, 0.2);
+}
+
+.roi-slider::-moz-range-track {
+  background: transparent;
+  border: none;
+}
+
+.roi-slider:focus {
+  outline: none;
+}
+
+.roi-slider:focus::-webkit-slider-thumb {
+  box-shadow: 0 2px 12px rgba(242, 122, 46, 0.5), 0 0 0 3px rgba(43, 122, 224, 0.2);
+}
