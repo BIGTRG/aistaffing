@@ -5,6 +5,14 @@ import { v } from "convex/values";
 const schema = defineSchema({
   ...authTables,
 
+  // ── Platform Users (extends auth users) ──
+  platformUsers: defineTable({
+    userId: v.id("users"),
+    role: v.string(), // employer | admin
+  })
+    .index("by_user", ["userId"])
+    .index("by_role", ["role"]),
+
   // ── Identity ──
   organizations: defineTable({
     name: v.string(),

@@ -19,7 +19,7 @@ export function LoginPage() {
 						className="mx-auto h-16 w-16 object-contain mb-4"
 					/>
 					<h1 className="text-2xl font-bold tracking-tight text-slate-900">
-						Welcome back
+						Employer Portal
 					</h1>
 					<p className="text-slate-500 text-sm">
 						Sign in to manage your AI workforce
@@ -35,6 +35,12 @@ export function LoginPage() {
 						<Link to="/signup">Sign up</Link>
 					</Button>
 				</p>
+
+				<div className="text-center">
+					<Link to="/admin/login" className="text-xs text-slate-400 hover:text-slate-600 transition-colors">
+						Admin access →
+					</Link>
+				</div>
 			</div>
 		</div>
 	);

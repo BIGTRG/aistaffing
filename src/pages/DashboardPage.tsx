@@ -50,7 +50,7 @@ export function DashboardPage() {
 
 	// If no org yet, redirect to onboarding
 	if (org === null) {
-		navigate("/onboarding");
+		navigate("/onboarding");  // onboarding stays at top level
 		return null;
 	}
 
@@ -111,7 +111,7 @@ export function DashboardPage() {
 							: "Your AI workforce at a glance."}
 					</p>
 				</div>
-				<Link to="/agents">
+				<Link to="/employer/agents">
 					<Button className="bg-slate-800 hover:bg-slate-900 text-white">
 						<Plus className="size-4 mr-2" />
 						Add Agent
@@ -253,7 +253,7 @@ export function DashboardPage() {
 								<p className="text-xs text-gray-500 mt-1 mb-4">
 									Your AI staff will appear here once deployed.
 								</p>
-								<Link to="/agents">
+								<Link to="/employer/agents">
 									<Button
 										size="sm"
 										className="bg-slate-800 hover:bg-slate-900 text-white"

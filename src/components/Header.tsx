@@ -34,7 +34,7 @@ export function Header() {
 							className="bg-amber-600 hover:bg-amber-700 text-white font-semibold px-6 h-10"
 							asChild
 						>
-							<Link to="/dashboard">
+							<Link to="/employer/dashboard">
 								Open Dashboard
 								<ArrowRight className="size-4 ml-1" />
 							</Link>

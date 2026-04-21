@@ -170,7 +170,7 @@ export function LandingPage() {
 						<a href="#pricing" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Pricing</a>
 						<a href="#industries" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Industries</a>
 						{isAuthenticated ? (
-							<Link to="/dashboard">
+							<Link to="/employer/dashboard">
 								<Button size="sm" className="bg-[#1A1D23] hover:bg-[#2A2D33] text-white text-xs font-semibold px-5 h-8 rounded-sm">
 									Dashboard <ArrowRight className="size-3 ml-1" />
 								</Button>
@@ -225,7 +225,7 @@ export function LandingPage() {
 					)}
 					{isAuthenticated && (
 						<div className="pt-4">
-							<Link to="/dashboard">
+							<Link to="/employer/dashboard">
 								<Button size="lg" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-sm font-semibold h-12 px-8 rounded-sm shadow-[0_0_30px_rgba(242,122,46,0.25)]">
 									Go to Dashboard <ArrowRight className="size-4 ml-2" />
 								</Button>

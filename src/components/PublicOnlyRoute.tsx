@@ -1,5 +1,6 @@
-import { useConvexAuth } from "convex/react";
+import { useConvexAuth, useQuery } from "convex/react";
 import { Navigate, Outlet } from "react-router-dom";
+import { api } from "../../convex/_generated/api";
 import {
   Card,
   CardContent,
@@ -43,13 +44,21 @@ function AuthFormSkeleton() {
 
 export function PublicOnlyRoute() {
   const { isAuthenticated, isLoading } = useConvexAuth();
+  const role = useQuery(
+    api.platformUsers.getMyRole,
+    isAuthenticated ? {} : "skip"
+  );
 
-  if (isLoading) {
+  if (isLoading || (isAuthenticated && role === undefined)) {
     return <AuthFormSkeleton />;
   }
 
   if (isAuthenticated) {
-    return <Navigate to="/dashboard" replace />;
+    // Redirect based on role
+    if (role === "admin") {
+      return <Navigate to="/admin/dashboard" replace />;
+    }
+    return <Navigate to="/employer/dashboard" replace />;
   }
 
   return <Outlet />;

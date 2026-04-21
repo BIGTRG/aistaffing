@@ -104,7 +104,7 @@ export function OnboardingPage() {
 			}
 
 			await completeOnboarding({ orgId });
-			navigate("/dashboard");
+			navigate("/employer/dashboard");
 		} catch (err) {
 			console.error("Onboarding error:", err);
 		} finally {

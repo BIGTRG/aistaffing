@@ -86,7 +86,7 @@ export function SettingsPage() {
     try {
       await deleteAccount();
       await signOut();
-      navigate("/");
+      navigate("/employer/dashboard");
     } catch {
       setError("Could not delete account. Please try again.");
       setLoading(false);

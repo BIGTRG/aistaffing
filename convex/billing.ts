@@ -85,3 +85,24 @@ export const revenueOverview = query({
     };
   },
 });
+
+/* ─── Admin: list all contracts ─── */
+export const listAllContracts = query({
+  args: {},
+  handler: async (ctx) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) return [];
+
+    const contracts = await ctx.db.query("contracts").collect();
+
+    const enriched = await Promise.all(
+      contracts.map(async (c) => {
+        const org = await ctx.db.get(c.orgId);
+        const deployment = await ctx.db.get(c.deploymentId);
+        return { ...c, org, deployment };
+      })
+    );
+
+    return enriched;
+  },
+});
