@@ -194,11 +194,18 @@
    AI STAFFING AGENCY — CUSTOM ANIMATIONS
    ═══════════════════════════════════════════════════════ */
 
-/* Frosted glass nav */
+/* Frosted glass nav (dark) */
 .nav-glass {
   background: rgba(10, 15, 23, 0.8);
   backdrop-filter: blur(16px) saturate(180%);
   border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+/* Frosted glass nav (light/silver) */
+.nav-glass-light {
+  background: rgba(200, 205, 213, 0.85);
+  backdrop-filter: blur(16px) saturate(180%);
+  border-bottom: 1px solid rgba(26, 29, 35, 0.08);
 }
 
 /* Animated grid background */
