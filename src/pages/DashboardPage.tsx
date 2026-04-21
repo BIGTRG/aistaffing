@@ -1,12 +1,14 @@
 import { useQuery, useMutation } from "convex/react";
 import { api } from "../../convex/_generated/api";
 import { Link, useNavigate } from "react-router-dom";
+import { useState } from "react";
 import {
 	Activity,
 	Bot,
 	Clock,
 	DollarSign,
 	Mail,
+	MessageSquare,
 	Pause,
 	Phone,
 	Play,
@@ -17,27 +19,31 @@ import {
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { TestAgentChat } from "@/components/TestAgentChat";
 
 export function DashboardPage() {
 	const navigate = useNavigate();
 	const org = useQuery(api.organizations.getMine);
 	const deployments = useQuery(
 		api.deployments.listByOrg,
-		org ? { orgId: org._id } : "skip"
+		org ? { orgId: org._id } : "skip",
 	);
 	const activityItems = useQuery(
 		api.activity.listByOrg,
-		org ? { orgId: org._id, limit: 10 } : "skip"
+		org ? { orgId: org._id, limit: 10 } : "skip",
 	);
 	const activityStats = useQuery(
 		api.activity.stats,
-		org ? { orgId: org._id } : "skip"
+		org ? { orgId: org._id } : "skip",
 	);
 	const spendSummary = useQuery(
 		api.billing.spendSummary,
-		org ? { orgId: org._id } : "skip"
+		org ? { orgId: org._id } : "skip",
 	);
 	const updateStatus = useMutation(api.deployments.updateStatus);
+
+	// Test chat state
+	const [testChatDeployment, setTestChatDeployment] = useState<any>(null);
 
 	// If no org yet, redirect to onboarding
 	if (org === null) {
@@ -80,7 +86,7 @@ export function DashboardPage() {
 
 	const handleToggle = async (
 		deploymentId: string,
-		currentStatus: string
+		currentStatus: string,
 	) => {
 		const newStatus = currentStatus === "active" ? "paused" : "active";
 		await updateStatus({
@@ -181,6 +187,15 @@ export function DashboardPage() {
 											</div>
 										</div>
 										<div className="flex items-center gap-2">
+											{/* Test Chat Button */}
+											<button
+												onClick={() => setTestChatDeployment(d)}
+												className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-slate-700 bg-slate-100 hover:bg-slate-200 rounded-lg transition-colors"
+												title="Test this agent"
+											>
+												<MessageSquare className="size-3" />
+												Test
+											</button>
 											<span
 												className={`text-xs font-medium px-2 py-0.5 rounded-full ${
 													d.status === "active"
@@ -265,7 +280,7 @@ export function DashboardPage() {
 											</p>
 											<p className="text-xs text-gray-400">
 												{new Date(
-													item._creationTime
+													item._creationTime,
 												).toLocaleString()}
 											</p>
 										</div>
@@ -327,6 +342,19 @@ export function DashboardPage() {
 					</div>
 				</CardContent>
 			</Card>
+
+			{/* Test Agent Chat Dialog */}
+			{testChatDeployment && (
+				<TestAgentChat
+					open={!!testChatDeployment}
+					onOpenChange={(open) => {
+						if (!open) setTestChatDeployment(null);
+					}}
+					deployment={testChatDeployment}
+					orgName={org?.name ?? "Our Business"}
+					orgIndustry={org?.industry ?? ""}
+				/>
+			)}
 		</div>
 	);
 }
