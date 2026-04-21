@@ -11,6 +11,7 @@ import {
 	AdminPage,
 	BillingPage,
 	DashboardPage,
+	IndustryPage,
 	LandingPage,
 	LoginPage,
 	OnboardingPage,
@@ -25,8 +26,9 @@ function App() {
 			<ThemeProvider defaultTheme="light" switchable={false}>
 				<Toaster />
 				<Routes>
-					{/* Landing page has its own nav — no PublicLayout wrapper */}
+					{/* Landing page and industry pages have their own nav — no PublicLayout wrapper */}
 					<Route path="/" element={<LandingPage />} />
+					<Route path="/industries/:slug" element={<IndustryPage />} />
 
 					<Route element={<PublicLayout />}>
 						<Route element={<PublicOnlyRoute />}>

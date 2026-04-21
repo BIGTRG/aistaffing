@@ -8,3 +8,4 @@ export { BillingPage } from "./BillingPage";
 export { AdminPage } from "./AdminPage";
 export { OnboardingPage } from "./OnboardingPage";
 export { SettingsPage } from "./SettingsPage";
+export { IndustryPage } from "./IndustryPage";

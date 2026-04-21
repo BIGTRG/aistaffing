@@ -25,10 +25,32 @@ const DEPARTMENTS = [
 	{ name: "Executive & Strategy", agents: ["CEO Advisor", "CFO Advisor", "CTO Advisor", "COO / President", "Business Intelligence Agent", "Market Research Agent", "Competitive Intel Agent", "Risk Assessment Agent", "Board Report Generator", "Strategic Planning Agent"], count: 10 },
 ];
 
-const INDUSTRIES = [
-	"Cleaning Services", "Law Firms", "Medical / Dental", "Real Estate",
-	"Construction", "Insurance", "Lawn Care", "Restaurants",
-	"Retail / E-commerce", "Financial Services", "Trucking / Logistics", "Tech Startups",
+const INDUSTRY_LINKS = [
+	{ name: "Legal Firms", slug: "legal-firms", icon: "⚖️" },
+	{ name: "Medical & Healthcare", slug: "medical-healthcare", icon: "🏥" },
+	{ name: "Insurance", slug: "insurance", icon: "🛡️" },
+	{ name: "Dental Offices", slug: "dental-offices", icon: "🦷" },
+	{ name: "Veterinary Clinics", slug: "veterinary-clinics", icon: "🐾" },
+	{ name: "Real Estate", slug: "real-estate", icon: "🏠" },
+	{ name: "Auto Dealerships", slug: "auto-dealerships", icon: "🚗" },
+	{ name: "Restaurants & Hospitality", slug: "restaurants-hospitality", icon: "🍽️" },
+	{ name: "Pool Services", slug: "pool-services", icon: "🏊" },
+	{ name: "Plumbing & HVAC", slug: "plumbing-hvac", icon: "🔧" },
+	{ name: "Landscaping", slug: "landscaping", icon: "🌿" },
+	{ name: "Construction", slug: "construction", icon: "🏗️" },
+	{ name: "Property Management", slug: "property-management", icon: "🏢" },
+	{ name: "Salons & Spas", slug: "salons-spas", icon: "💇" },
+	{ name: "Technology Companies", slug: "technology-companies", icon: "💻" },
+	{ name: "E-Commerce", slug: "e-commerce", icon: "🛒" },
+	{ name: "Financial Services", slug: "financial-services", icon: "📊" },
+	{ name: "Education", slug: "education", icon: "📚" },
+	{ name: "Logistics & Shipping", slug: "logistics-shipping", icon: "🚛" },
+	{ name: "Cleaning Services", slug: "cleaning-services", icon: "🧹" },
+	{ name: "Roofing", slug: "roofing", icon: "🏠" },
+	{ name: "Fitness & Gyms", slug: "fitness-gyms", icon: "💪" },
+	{ name: "Accounting Firms", slug: "accounting-firms", icon: "📋" },
+	{ name: "Consulting", slug: "consulting", icon: "🎯" },
+	{ name: "Nonprofits", slug: "nonprofits", icon: "🤝" },
 ];
 
 const COMPARISON = [
@@ -234,7 +256,7 @@ export function LandingPage() {
 				<div className="ticker-track">
 					{[...Array(2)].map((_, copy) => (
 						<div key={copy} className="ticker-content">
-							{["⬡ 100 AI AGENTS READY", "⬡ 10 DEPARTMENTS", "⬡ 12 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $199/MO"].map((t) => (
+							{["⬡ 100 AI AGENTS READY", "⬡ 10 DEPARTMENTS", "⬡ 25 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $199/MO"].map((t) => (
 								<span key={`${copy}-${t}`} className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#1A1D23]/20 whitespace-nowrap px-8">{t}</span>
 							))}
 						</div>
@@ -395,26 +417,29 @@ export function LandingPage() {
 
 			{/* ═══════════════════ INDUSTRIES ═══════════════════ */}
 			<section ref={industries.ref} id="industries" className={`py-24 md:py-32 px-6 transition-all duration-1000 ${industries.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
-				<div className="max-w-5xl mx-auto">
+				<div className="max-w-6xl mx-auto">
 					<div className="text-center mb-16">
 						<SectionTag>Target Sectors</SectionTag>
 						<h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-[#1A1D23]">
-							Built for Small Service Businesses
+							Built for <span className="text-[#2B7AE0]">25 Industries</span>
 						</h2>
 						<p className="text-[#3A3F48]/50 max-w-xl mx-auto">
-							If your business takes calls, sends emails, or communicates with customers — we have an AI agent for you.
+							If your business takes calls, sends emails, or communicates with customers — we have an AI agent for you. Click any industry to see how.
 						</p>
 					</div>
 
-					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
-						{INDUSTRIES.map((ind, i) => (
-							<div
-								key={ind}
-								className="group relative px-5 py-4 border border-[#1A1D23]/10 rounded-lg hover:border-[#2B7AE0]/30 hover:bg-white/40 transition-all duration-300 text-center bg-white/20 backdrop-blur-sm"
-								style={{ transitionDelay: `${i * 30}ms` }}
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3">
+						{INDUSTRY_LINKS.map((ind, i) => (
+							<Link
+								key={ind.slug}
+								to={`/industries/${ind.slug}`}
+								className="group relative px-4 py-4 border border-[#1A1D23]/10 rounded-lg hover:border-[#2B7AE0]/30 hover:bg-white/40 transition-all duration-300 text-center bg-white/20 backdrop-blur-sm"
+								style={{ transitionDelay: `${i * 20}ms` }}
 							>
-								<span className="text-sm text-[#1A1D23]/50 group-hover:text-[#1A1D23]/80 transition-colors font-medium">{ind}</span>
-							</div>
+								<span className="text-lg block mb-1">{ind.icon}</span>
+								<span className="text-xs text-[#1A1D23]/50 group-hover:text-[#1A1D23]/80 transition-colors font-medium leading-tight block">{ind.name}</span>
+								<ChevronRight className="size-3 text-[#2B7AE0]/0 group-hover:text-[#2B7AE0]/50 transition-all absolute top-2 right-2" />
+							</Link>
 						))}
 					</div>
 				</div>
