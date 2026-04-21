@@ -13,15 +13,16 @@ import { GuaranteeBadge } from "@/components/GuaranteeBadge";
 
 /* ─── DATA ─── */
 const DEPARTMENTS = [
-	{ name: "Executive Suite", agents: ["CEO Advisor", "CFO Advisor", "CTO Advisor", "President / COO"], count: 4 },
-	{ name: "Management", agents: ["Project Manager", "Account Manager", "HR Manager"], count: 3 },
-	{ name: "Customer Service", agents: ["Phone Receptionist", "Customer Service Rep"], count: 2 },
-	{ name: "Sales", agents: ["Sales Representative", "Internet Sales Team"], count: 2 },
-	{ name: "Consulting", agents: ["Business Consultant", "Legal Advisor", "Financial Advisor"], count: 3 },
-	{ name: "Technology", agents: ["Software Engineer", "UI/UX Designer", "Software Architect", "IT Support Specialist", "Data Analyst"], count: 5 },
-	{ name: "Marketing", agents: ["Marketing Specialist", "Copywriter"], count: 2 },
-	{ name: "Operations", agents: ["Dispatcher"], count: 1 },
-	{ name: "Training", agents: ["Business Trainer"], count: 1 },
+	{ name: "Front Office", agents: ["Virtual Receptionist", "Phone Triage Agent", "Live Chat Agent", "Appointment Setter", "After-Hours Answering", "Bilingual Receptionist", "Queue Manager", "Visitor Check-In Agent", "Email Triage Agent", "Callback Scheduler"], count: 10 },
+	{ name: "Sales", agents: ["Lead Gen Specialist", "Follow-Up Agent", "BDC Agent", "Quote Generator", "Pipeline Manager", "Cold Outreach Agent", "Upsell Specialist", "Contract Closer", "Sales Forecaster", "Demo Scheduler"], count: 10 },
+	{ name: "Marketing", agents: ["Social Media Manager", "Content Writer", "SEO Specialist", "Email Marketing Agent", "Ad Campaign Manager", "Brand Monitor", "PR / Outreach Agent", "Analytics Reporter", "Video Content Planner", "Influencer Coordinator"], count: 10 },
+	{ name: "Customer Success", agents: ["Onboarding Specialist", "Retention Agent", "Review Manager", "Customer Feedback Analyst", "Loyalty Program Manager", "Renewal Agent", "NPS Survey Agent", "Issue Escalation Agent", "Help Desk Tier 1", "Knowledge Base Manager"], count: 10 },
+	{ name: "Operations", agents: ["Project Manager", "Inventory Tracker", "Dispatch Coordinator", "Process Optimizer", "Compliance Monitor", "Quality Assurance Agent", "Vendor Manager", "Fleet / Asset Tracker", "Shift Scheduler", "Report Generator"], count: 10 },
+	{ name: "Finance & Billing", agents: ["Invoice Manager", "Collections Agent", "Payroll Assistant", "Expense Tracker", "Budget Analyst", "Financial Reporter", "Tax Prep Assistant", "Payment Processor", "Accounts Receivable Agent", "Revenue Forecaster"], count: 10 },
+	{ name: "HR & Recruiting", agents: ["Resume Screener", "Interview Scheduler", "Employee Onboarding Agent", "Benefits Coordinator", "Time-Off Manager", "Performance Review Agent", "Training Coordinator", "Candidate Outreach Agent", "Policy Compliance Agent", "Workplace Culture Agent"], count: 10 },
+	{ name: "IT & Tech Support", agents: ["IT Help Desk", "Website Monitor", "Security Alert Agent", "Password Reset Agent", "System Admin Assistant", "Software License Manager", "Data Backup Monitor", "Network Monitor", "Cloud Infrastructure Monitor", "API Integration Agent"], count: 10 },
+	{ name: "Legal & Compliance", agents: ["Contract Review Assistant", "NDA Generator", "Compliance Checker", "Regulatory Monitor", "Privacy (GDPR/CCPA) Agent", "Dispute Resolution Agent", "IP Monitor", "Document Filing Agent", "Legal Research Agent", "Trademark Watch Agent"], count: 10 },
+	{ name: "Executive & Strategy", agents: ["CEO Advisor", "CFO Advisor", "CTO Advisor", "COO / President", "Business Intelligence Agent", "Market Research Agent", "Competitive Intel Agent", "Risk Assessment Agent", "Board Report Generator", "Strategic Planning Agent"], count: 10 },
 ];
 
 const INDUSTRIES = [
@@ -217,7 +218,7 @@ export function LandingPage() {
 						<StatBlock value="24/7" label="Availability" />
 						<StatBlock value="<24h" label="Deploy Time" />
 						<StatBlock value="$0" label="Workers' Comp" />
-						<StatBlock value="22+" label="Agent Roles" />
+						<StatBlock value="100" label="Agent Roles" />
 					</div>
 				</div>
 
@@ -233,7 +234,7 @@ export function LandingPage() {
 				<div className="ticker-track">
 					{[...Array(2)].map((_, copy) => (
 						<div key={copy} className="ticker-content">
-							{["⬡ 22 AI AGENTS READY", "⬡ 9 DEPARTMENTS", "⬡ 12 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $200/MO"].map((t) => (
+							{["⬡ 100 AI AGENTS READY", "⬡ 10 DEPARTMENTS", "⬡ 12 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $199/MO"].map((t) => (
 								<span key={`${copy}-${t}`} className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#1A1D23]/20 whitespace-nowrap px-8">{t}</span>
 							))}
 						</div>
@@ -285,7 +286,7 @@ export function LandingPage() {
 					<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
 						<div>
 							<h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1A1D23]">
-								22 Agents. 9 Departments.
+								100 Agents. 10 Departments.
 							</h2>
 							<p className="text-[#3A3F48]/50 mt-3 max-w-lg">
 								Every agent has a defined role, skill set, and knowledge base.

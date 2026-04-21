@@ -106,7 +106,7 @@ export function AgentsPage() {
 					Agent Roster
 				</h1>
 				<p className="text-gray-500">
-					22 AI agents across 7 departments. Deploy any agent to your
+					100 AI agents across 10 departments. Deploy any agent to your
 					business.
 				</p>
 			</div>
