@@ -901,12 +901,4 @@ export const get = query({
   },
 });
 
-/* ─── Reseed: clear + seed ─── */
-export const reseedAction = action({
-  args: {},
-  handler: async (ctx) => {
-    await ctx.runMutation(internal.agentTemplates.clearAll);
-    await ctx.runMutation(internal.agentTemplates.seed);
-    return "Reseeded successfully";
-  },
-});
+
