@@ -1,540 +1,283 @@
 import { useConvexAuth } from "convex/react";
-import {
-	ArrowRight,
-	Check,
-	Clock,
-	DollarSign,
-	Headphones,
-	Mail,
-	Phone,
-	Shield,
-	Sparkles,
-	Users,
-	Zap,
-	Bot,
-	Play,
-	Star,
-	Briefcase,
-	Code,
-	Scale,
-	GraduationCap,
-	Truck,
-	Megaphone,
-	Scissors,
-	Stethoscope,
-	Home,
-	HardHat,
-	ShoppingCart,
-	UtensilsCrossed,
-	Landmark,
-	Monitor,
-} from "lucide-react";
+import { useEffect, useRef, useState } from "react";
+import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 import { Button } from "@/components/ui/button";
 
-/* ─── FULL 22-AGENT ROSTER BY DEPARTMENT ─── */
-const departments = [
-	{
-		name: "Executive Suite",
-		icon: Briefcase,
-		color: "text-amber-700",
-		bg: "bg-amber-50",
-		agents: [
-			"CEO Advisor",
-			"CFO Advisor",
-			"CTO Advisor",
-			"President / COO",
-		],
-	},
-	{
-		name: "Management",
-		icon: Users,
-		color: "text-slate-800",
-		bg: "bg-slate-50",
-		agents: ["Project Manager", "Account Manager", "HR Manager"],
-	},
-	{
-		name: "Customer Service",
-		icon: Headphones,
-		color: "text-emerald-600",
-		bg: "bg-emerald-50",
-		agents: ["Phone Receptionist", "Customer Service Rep"],
-	},
-	{
-		name: "Sales",
-		icon: DollarSign,
-		color: "text-amber-500",
-		bg: "bg-amber-50",
-		agents: ["Sales Representative", "Internet Sales Team"],
-	},
-	{
-		name: "Consulting",
-		icon: Scale,
-		color: "text-purple-600",
-		bg: "bg-purple-50",
-		agents: ["Business Consultant", "Legal Advisor", "Financial Advisor"],
-	},
-	{
-		name: "Training",
-		icon: GraduationCap,
-		color: "text-cyan-600",
-		bg: "bg-cyan-50",
-		agents: ["Business Trainer"],
-	},
-	{
-		name: "Technology",
-		icon: Code,
-		color: "text-indigo-600",
-		bg: "bg-indigo-50",
-		agents: [
-			"Software Engineer",
-			"UI/UX Designer",
-			"Software Architect",
-			"IT Support Specialist",
-			"Data Analyst",
-		],
-	},
-	{
-		name: "Marketing",
-		icon: Megaphone,
-		color: "text-pink-600",
-		bg: "bg-pink-50",
-		agents: ["Marketing Specialist", "Copywriter"],
-	},
-	{
-		name: "Operations",
-		icon: Truck,
-		color: "text-slate-600",
-		bg: "bg-slate-50",
-		agents: ["Dispatcher"],
-	},
+/* ═══════════════════════════════════════════════════════
+   AI STAFFING AGENCY — CUSTOM LANDING PAGE
+   Theme: Military Command Center × Premium Tech
+   ═══════════════════════════════════════════════════════ */
+
+/* ─── DATA ─── */
+const DEPARTMENTS = [
+	{ name: "Executive Suite", agents: ["CEO Advisor", "CFO Advisor", "CTO Advisor", "President / COO"], count: 4 },
+	{ name: "Management", agents: ["Project Manager", "Account Manager", "HR Manager"], count: 3 },
+	{ name: "Customer Service", agents: ["Phone Receptionist", "Customer Service Rep"], count: 2 },
+	{ name: "Sales", agents: ["Sales Representative", "Internet Sales Team"], count: 2 },
+	{ name: "Consulting", agents: ["Business Consultant", "Legal Advisor", "Financial Advisor"], count: 3 },
+	{ name: "Technology", agents: ["Software Engineer", "UI/UX Designer", "Software Architect", "IT Support Specialist", "Data Analyst"], count: 5 },
+	{ name: "Marketing", agents: ["Marketing Specialist", "Copywriter"], count: 2 },
+	{ name: "Operations", agents: ["Dispatcher"], count: 1 },
+	{ name: "Training", agents: ["Business Trainer"], count: 1 },
 ];
 
-/* ─── PRICING TIERS (from brief) ─── */
-const pricing = [
-	{
-		title: "Basic",
-		price: "$200 – $500",
-		period: "/month",
-		desc: "Phone answering, scheduling, dispatch. Your AI handles the front lines 24/7 so you never miss a call or appointment.",
-		examples: [
-			"Phone Receptionist",
-			"Customer Service Rep",
-			"Dispatcher",
-		],
-		features: [
-			"24/7 phone answering",
-			"Appointment scheduling",
-			"Call logging & transcripts",
-			"FAQ handling",
-			"SMS follow-ups",
-		],
-		popular: false,
-	},
-	{
-		title: "Professional",
-		price: "$500 – $1,500",
-		period: "/month",
-		desc: "Project managers, sales reps, marketing teams, and business advisors. The agents that grow your revenue.",
-		examples: [
-			"Sales Representative",
-			"Project Manager",
-			"Marketing Specialist",
-		],
-		features: [
-			"Everything in Basic",
-			"Lead qualification & outreach",
-			"Social media management",
-			"CRM integration",
-			"Weekly performance reports",
-		],
-		popular: true,
-	},
-	{
-		title: "Executive",
-		price: "$1,500 – $5,000",
-		period: "/month",
-		desc: "C-suite advisory, strategic planning, and technology leadership. Enterprise-grade intelligence for your business.",
-		examples: ["CEO Advisor", "CTO Advisor", "CFO Advisor"],
-		features: [
-			"Everything in Professional",
-			"Strategic business planning",
-			"Financial forecasting",
-			"Technology roadmapping",
-			"Dedicated account manager",
-		],
-		popular: false,
-	},
+const INDUSTRIES = [
+	"Cleaning Services", "Law Firms", "Medical / Dental", "Real Estate",
+	"Construction", "Insurance", "Lawn Care", "Restaurants",
+	"Retail / E-commerce", "Financial Services", "Trucking / Logistics", "Tech Startups",
 ];
 
-/* ─── INDUSTRIES ─── */
-const industries = [
-	{
-		name: "Cleaning Services",
-		icon: Sparkles,
-		desc: "Answer phones, dispatch cleaners, schedule appointments, send reminders",
-	},
-	{
-		name: "Law Firms",
-		icon: Scale,
-		desc: "Screen intake calls, schedule consultations, manage follow-ups",
-	},
-	{
-		name: "Medical / Dental",
-		icon: Stethoscope,
-		desc: "Patient calls, appointment scheduling, reminders, health FAQs",
-	},
-	{
-		name: "Real Estate",
-		icon: Home,
-		desc: "Answer buyer questions, schedule showings, follow up on leads",
-	},
-	{
-		name: "Construction",
-		icon: HardHat,
-		desc: "Schedule jobs, coordinate subs, client check-ins, project tracking",
-	},
-	{
-		name: "Insurance",
-		icon: Shield,
-		desc: "Quote requests, policy questions, claims intake, renewals",
-	},
-	{
-		name: "Lawn Care",
-		icon: Scissors,
-		desc: "Booking, dispatch, seasonal scheduling, customer follow-ups",
-	},
-	{
-		name: "Restaurants",
-		icon: UtensilsCrossed,
-		desc: "Reservations, menu questions, catering inquiries, special requests",
-	},
-	{
-		name: "Retail / E-commerce",
-		icon: ShoppingCart,
-		desc: "Customer service, order tracking, product questions, returns",
-	},
-	{
-		name: "Financial Services",
-		icon: Landmark,
-		desc: "Schedule advisor meetings, answer questions, send report summaries",
-	},
-	{
-		name: "Trucking / Logistics",
-		icon: Truck,
-		desc: "Dispatch drivers, track loads, delivery status updates",
-	},
-	{
-		name: "Tech Startups",
-		icon: Monitor,
-		desc: "Virtual CTO, project manager, or engineer for early-stage teams",
-	},
+const COMPARISON = [
+	{ old: "Human workers on a roster", new: "AI agents ready to deploy" },
+	{ old: "Client pays hourly + markup", new: "Flat monthly subscription" },
+	{ old: "One worker per client", new: "Unlimited capacity per agent" },
+	{ old: "You handle payroll & insurance", new: "Zero liability, ever" },
+	{ old: "Weeks to hire & train", new: "Live in under 24 hours" },
+	{ old: "Workers call in sick", new: "24/7/365 — no exceptions" },
 ];
 
-const stats = [
-	{ value: "24/7", label: "Availability" },
-	{ value: "< 24hrs", label: "Deploy Time" },
-	{ value: "$0", label: "Workers' Comp" },
-	{ value: "22+", label: "Agent Roles" },
-];
+/* ─── HOOKS ─── */
+function useScrollReveal() {
+	const ref = useRef<HTMLDivElement>(null);
+	const [animated, setAnimated] = useState(false);
+	useEffect(() => {
+		const el = ref.current;
+		if (!el) return;
+		const obs = new IntersectionObserver(
+			([e]) => { if (e.isIntersecting) { setAnimated(true); obs.disconnect(); } },
+			{ threshold: 0.05, rootMargin: "0px 0px 50px 0px" }
+		);
+		obs.observe(el);
+		return () => obs.disconnect();
+	}, []);
+	// Always visible — animation is purely decorative enhancement
+	return { ref, animated };
+}
+
+function useTypingText(text: string, speed = 60, startDelay = 800) {
+	const [displayed, setDisplayed] = useState("");
+	const [started, setStarted] = useState(false);
+	useEffect(() => {
+		const t = setTimeout(() => setStarted(true), startDelay);
+		return () => clearTimeout(t);
+	}, [startDelay]);
+	useEffect(() => {
+		if (!started) return;
+		let i = 0;
+		const iv = setInterval(() => {
+			i++;
+			setDisplayed(text.slice(0, i));
+			if (i >= text.length) clearInterval(iv);
+		}, speed);
+		return () => clearInterval(iv);
+	}, [text, speed, started]);
+	return displayed;
+}
+
+/* ─── COMPONENTS ─── */
+
+function GridBackground() {
+	return (
+		<div className="absolute inset-0 overflow-hidden pointer-events-none">
+			{/* Animated grid */}
+			<div className="absolute inset-0 grid-bg opacity-[0.08]" />
+			{/* Radial glow behind logo area */}
+			<div className="absolute top-1/4 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#2B7AE0] opacity-[0.06] blur-[120px]" />
+			{/* Corner accent glow */}
+			<div className="absolute -bottom-20 -right-20 w-[400px] h-[400px] rounded-full bg-[#F27A2E] opacity-[0.04] blur-[100px]" />
+			{/* Scan line animation */}
+			<div className="absolute inset-0 scan-line opacity-[0.03]" />
+		</div>
+	);
+}
+
+function HudBadge({ children }: { children: React.ReactNode }) {
+	return (
+		<div className="inline-flex items-center gap-2 px-3 py-1 border border-[#2B7AE0]/30 rounded text-[11px] font-mono uppercase tracking-[0.2em] text-[#2B7AE0] bg-[#2B7AE0]/5">
+			<span className="w-1.5 h-1.5 rounded-full bg-[#2B7AE0] animate-pulse" />
+			{children}
+		</div>
+	);
+}
+
+function StatBlock({ value, label }: { value: string; label: string }) {
+	return (
+		<div className="text-center px-6">
+			<div className="text-3xl md:text-4xl font-bold text-white font-mono tracking-tight">{value}</div>
+			<div className="text-[11px] uppercase tracking-[0.15em] text-[#B8C4CE] mt-1">{label}</div>
+		</div>
+	);
+}
+
+function SectionTag({ children }: { children: React.ReactNode }) {
+	return (
+		<div className="flex items-center gap-3 mb-6">
+			<div className="w-8 h-px bg-[#F27A2E]" />
+			<span className="text-[11px] font-mono uppercase tracking-[0.2em] text-[#F27A2E]">{children}</span>
+		</div>
+	);
+}
+
+/* ─── MAIN PAGE ─── */
 
 export function LandingPage() {
 	const { isAuthenticated, isLoading } = useConvexAuth();
+	const typedTagline = useTypingText("When you sleep, your staff doesn't.", 55, 600);
+
+	const mission = useScrollReveal();
+	const agents = useScrollReveal();
+	const compare = useScrollReveal();
+	const howIt = useScrollReveal();
+	const industries = useScrollReveal();
+	const pricing = useScrollReveal();
 
 	return (
-		<div className="flex-1 flex flex-col overflow-hidden">
-			{/* ─── NAV ─── */}
-			<nav className="sticky top-0 z-50 bg-slate-900">
-				<div className="container flex h-20 items-center justify-between">
-					<div className="flex items-center gap-3">
-						<img src="/logo.png" alt="AI Staffing Agency" className="h-12 w-12" />
-						<span className="font-bold text-xl text-white tracking-tight">AI Staffing Agency</span>
-					</div>
-					<div className="hidden md:flex items-center gap-8 text-sm font-medium text-slate-300">
-						<a href="#agents" className="hover:text-white transition-colors">Agents</a>
-						<a href="#pricing" className="hover:text-white transition-colors">Pricing</a>
-						<a href="#industries" className="hover:text-white transition-colors">Industries</a>
+		<div className="bg-[#0A0F17] text-white overflow-x-hidden">
+
+			{/* ═══════════════════ NAV ═══════════════════ */}
+			<nav className="fixed top-0 left-0 right-0 z-50 nav-glass">
+				<div className="max-w-7xl mx-auto px-6 flex items-center justify-between h-16">
+					<Link to="/" className="flex items-center gap-3 group">
+						<img src="/logo-white.png" alt="AI Staffing Agency" className="h-9 w-9 transition-transform group-hover:scale-105" />
+						<span className="text-sm font-semibold tracking-tight text-white/90">AI Staffing Agency</span>
+					</Link>
+					<div className="hidden md:flex items-center gap-8">
+						<a href="#agents" className="text-xs font-medium tracking-wide text-white/50 hover:text-white transition-colors uppercase">Agents</a>
+						<a href="#pricing" className="text-xs font-medium tracking-wide text-white/50 hover:text-white transition-colors uppercase">Pricing</a>
+						<a href="#industries" className="text-xs font-medium tracking-wide text-white/50 hover:text-white transition-colors uppercase">Industries</a>
 						{isAuthenticated ? (
 							<Link to="/dashboard">
-								<Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold">Dashboard</Button>
+								<Button size="sm" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-xs font-semibold px-5 h-8 rounded-sm">
+									Dashboard <ArrowRight className="size-3 ml-1" />
+								</Button>
 							</Link>
 						) : (
-							<Link to="/signup">
-								<Button size="sm" className="bg-amber-600 hover:bg-amber-700 text-white font-semibold">Get Started</Button>
-							</Link>
+							<>
+								<Link to="/login" className="text-xs font-medium tracking-wide text-white/50 hover:text-white transition-colors uppercase">Sign In</Link>
+								<Link to="/signup">
+									<Button size="sm" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-xs font-semibold px-5 h-8 rounded-sm">
+										Get Started <ArrowRight className="size-3 ml-1" />
+									</Button>
+								</Link>
+							</>
 						)}
 					</div>
 				</div>
 			</nav>
 
-			{/* ─── HERO ─── */}
-			<section className="relative flex flex-col items-center justify-center px-4 py-20 md:py-28 bg-gradient-to-b from-gray-300 to-gray-200">
-				<div className="absolute inset-0 -z-10 overflow-hidden">
-					<div className="absolute inset-0 bg-[linear-gradient(to_right,hsl(220_14%_82%)_1px,transparent_1px),linear-gradient(to_bottom,hsl(220_14%_82%)_1px,transparent_1px)] bg-[size:4rem_4rem] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_100%)] opacity-50" />
-				</div>
+			{/* ═══════════════════ HERO ═══════════════════ */}
+			<section className="relative min-h-screen flex flex-col items-center justify-center px-6 pt-16">
+				<GridBackground />
 
-				<div className="max-w-4xl mx-auto text-center space-y-6">
-					<div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-slate-200 bg-slate-50 text-xs font-semibold text-slate-900 tracking-wide uppercase">
-						<Bot className="size-3.5" />
-						The Future of Staffing
-					</div>
+				<div className="relative z-10 max-w-5xl mx-auto text-center space-y-8">
+					<HudBadge>Systems Online — Deploying Agents</HudBadge>
 
-					<h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold tracking-tight leading-[1.1] text-gray-900">
-						Your Staff Never
-						<br />
-						<span className="text-transparent bg-clip-text bg-gradient-to-r from-slate-800 to-slate-700">
-							Sleeps.
+					<h1 className="hero-title text-[clamp(2.5rem,8vw,7rem)] font-black leading-[0.9] tracking-[-0.03em]">
+						<span className="block text-white">YOUR STAFF</span>
+						<span className="block text-transparent bg-clip-text bg-gradient-to-r from-[#2B7AE0] via-[#4A9AF5] to-[#2B7AE0]">
+							NEVER SLEEPS
 						</span>
 					</h1>
 
-					<p className="text-lg md:text-xl text-gray-600 max-w-2xl mx-auto leading-relaxed">
-						The first staffing agency that deploys AI agents instead
-						of human temps. Receptionists, sales reps, project
-						managers, marketing teams, and C-suite advisors
-						&mdash; deployed to your business in under 24 hours.
-						<span className="font-semibold text-gray-800">
-							{" "}
-							No liability. No insurance. No days off.
-						</span>
+					<p className="font-mono text-sm md:text-base text-[#B8C4CE]/80 max-w-xl mx-auto h-6">
+						{typedTagline}<span className="animate-pulse">▊</span>
+					</p>
+
+					<p className="text-base md:text-lg text-white/50 max-w-2xl mx-auto leading-relaxed">
+						The first staffing agency that deploys <span className="text-white font-medium">AI agents</span> instead
+						of human temps. Receptionists, sales reps, C-suite advisors — deployed to your business
+						in under 24 hours. <span className="text-[#F27A2E]">No liability. No insurance. No days off.</span>
 					</p>
 
 					{!isAuthenticated && !isLoading && (
-						<div className="flex flex-col sm:flex-row gap-3 justify-center pt-4">
-							<Button
-								size="lg"
-								className="text-base h-12 px-8 bg-slate-800 hover:bg-slate-900 text-white shadow-lg shadow-slate-800/25"
-								asChild
-							>
-								<Link to="/signup">
-									Get Started Free
-									<ArrowRight className="size-4" />
-								</Link>
-							</Button>
-							<Button
-								size="lg"
-								variant="outline"
-								className="text-base h-12 px-8 border-gray-300 text-gray-700 hover:bg-gray-50"
-								asChild
-							>
-								<Link to="/login">
-									<Play className="size-4" />
-									Watch Demo
-								</Link>
-							</Button>
+						<div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+							<Link to="/signup">
+								<Button size="lg" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-sm font-semibold h-12 px-8 rounded-sm shadow-[0_0_30px_rgba(242,122,46,0.3)] hover:shadow-[0_0_40px_rgba(242,122,46,0.4)] transition-all">
+									Book a Free Consultation
+									<ArrowRight className="size-4 ml-2" />
+								</Button>
+							</Link>
+							<Link to="/login">
+								<Button size="lg" variant="outline" className="text-white/70 border-white/10 hover:bg-white/5 hover:text-white text-sm font-semibold h-12 px-8 rounded-sm">
+									Sign In
+								</Button>
+							</Link>
 						</div>
 					)}
 					{isAuthenticated && (
 						<div className="pt-4">
-							<Button
-								size="lg"
-								className="text-base h-12 px-8 bg-slate-800 hover:bg-slate-900 text-white shadow-lg shadow-slate-800/25"
-								asChild
-							>
-								<Link to="/dashboard">
-									Go to Dashboard
-									<ArrowRight className="size-4" />
-								</Link>
-							</Button>
+							<Link to="/dashboard">
+								<Button size="lg" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-sm font-semibold h-12 px-8 rounded-sm shadow-[0_0_30px_rgba(242,122,46,0.3)]">
+									Go to Dashboard <ArrowRight className="size-4 ml-2" />
+								</Button>
+							</Link>
 						</div>
 					)}
+				</div>
 
-					<div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 pt-2 text-sm text-gray-500">
-						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-slate-800" />
-							<span>Free consultation</span>
-						</div>
-						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-slate-800" />
-							<span>Deploy in 24 hours</span>
-						</div>
-						<div className="flex items-center gap-1.5">
-							<Check className="size-4 text-slate-800" />
-							<span>Setup from $500</span>
-						</div>
+				{/* HUD Stats at bottom of hero */}
+				<div className="relative z-10 mt-auto mb-12 w-full max-w-4xl mx-auto">
+					<div className="flex items-center justify-center divide-x divide-white/10">
+						<StatBlock value="24/7" label="Availability" />
+						<StatBlock value="<24h" label="Deploy Time" />
+						<StatBlock value="$0" label="Workers' Comp" />
+						<StatBlock value="22+" label="Agent Roles" />
 					</div>
+				</div>
+
+				{/* Scroll indicator */}
+				<div className="absolute bottom-6 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 text-white/20">
+					<span className="text-[10px] uppercase tracking-[0.3em] font-mono">Scroll</span>
+					<div className="w-px h-8 bg-gradient-to-b from-white/20 to-transparent scroll-pulse" />
 				</div>
 			</section>
 
-			{/* ─── STATS BAR ─── */}
-			<section className="py-8 bg-gray-100 border-y border-gray-300">
-				<div className="container">
-					<div className="grid grid-cols-2 md:grid-cols-4 gap-8 max-w-3xl mx-auto">
-						{stats.map((s) => (
-							<div key={s.label} className="text-center">
-								<div className="text-2xl md:text-3xl font-bold text-slate-800">
-									{s.value}
-								</div>
-								<div className="text-sm text-gray-500 mt-1">
-									{s.label}
-								</div>
-							</div>
-						))}
-					</div>
+			{/* ═══════════════════ TICKER ═══════════════════ */}
+			<div className="border-y border-white/5 bg-[#0D1320] py-3 overflow-hidden">
+				<div className="ticker-track">
+					{[...Array(2)].map((_, copy) => (
+						<div key={copy} className="ticker-content">
+							{["⬡ 22 AI AGENTS READY", "⬡ 9 DEPARTMENTS", "⬡ 12 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $200/MO"].map((t) => (
+								<span key={`${copy}-${t}`} className="text-[11px] font-mono uppercase tracking-[0.15em] text-white/25 whitespace-nowrap px-8">{t}</span>
+							))}
+						</div>
+					))}
 				</div>
-			</section>
+			</div>
 
-			{/* ─── VALUE PROPS ─── */}
-			<section className="py-16 md:py-24 bg-gray-200">
-				<div className="container">
-					<div className="max-w-3xl mx-auto text-center mb-16">
-						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
-							Why AI Staffing
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
-							A Real Staffing Agency. Powered by AI.
+			{/* ═══════════════════ THE MISSION ═══════════════════ */}
+			<section ref={mission.ref} className={`py-24 md:py-32 px-6 transition-all duration-1000 ${mission.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-7xl mx-auto grid lg:grid-cols-[1.2fr_1fr] gap-16 items-start">
+					{/* Left — Big statement */}
+					<div>
+						<SectionTag>The Mission</SectionTag>
+						<h2 className="text-4xl md:text-5xl lg:text-6xl font-bold leading-[1.05] tracking-tight mb-8">
+							A Real Staffing Agency.{" "}
+							<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#2B7AE0] to-[#4A9AF5]">Powered&nbsp;by&nbsp;AI.</span>
 						</h2>
-						<p className="text-gray-600 text-lg leading-relaxed">
-							We operate exactly like a traditional staffing agency
-							&mdash; but instead of placing human workers, we
-							deploy intelligent AI agents into your business. Same
-							process. Better results. Fraction of the cost.
+						<p className="text-white/40 text-lg leading-relaxed max-w-lg">
+							We operate exactly like a traditional staffing agency — but instead of placing
+							human workers, we deploy intelligent AI agents. Same process. Better results.
+							A fraction of the cost.
 						</p>
 					</div>
 
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-5xl mx-auto">
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-slate-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-slate-50 mb-4">
-								<Shield className="size-6 text-slate-800" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								Zero Liability
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								No workers' comp. No insurance. No HR issues. No
-								payroll taxes. AI agents work without the legal
-								overhead of human employees.
-							</p>
-						</div>
-
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-amber-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-amber-50 mb-4">
-								<Clock className="size-6 text-amber-700" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								24/7 Availability
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								No sick days. No vacations. No lunch breaks. Your
-								AI staff is always on, always professional,
-								always ready to serve your customers.
-							</p>
-						</div>
-
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-green-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-green-50 mb-4">
-								<Zap className="size-6 text-green-600" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								Deploy in 24 Hours
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								No training period. No ramp-up time. Tell us
-								about your business, and your AI agent is
-								configured and live within a day.
-							</p>
-						</div>
-
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-purple-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-purple-50 mb-4">
-								<Phone className="size-6 text-purple-600" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								We Build Your Setup
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								No tech team? No problem. We build the phone
-								system, client portal, and scheduling tools your
-								business needs before deploying your agent.
-							</p>
-						</div>
-
-						<div className="group rounded-xl bg-white border border-gray-200 p-6 transition-all hover:shadow-md hover:border-cyan-200">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-cyan-50 mb-4">
-								<Mail className="size-6 text-cyan-600" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								Multi-Channel
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								Phone, email, chat, social media. Your AI agents
-								work across every communication channel your
-								customers use.
-							</p>
-						</div>
-
-						<div className="group rounded-xl bg-gradient-to-br from-slate-50 to-amber-50 border border-slate-200 p-6 transition-all hover:shadow-md">
-							<div className="inline-flex size-12 items-center justify-center rounded-xl bg-amber-50 mb-4">
-								<Sparkles className="size-6 text-amber-700" />
-							</div>
-							<h3 className="font-semibold text-lg mb-2 text-gray-900">
-								Scale Without Limits
-							</h3>
-							<p className="text-gray-600 text-sm leading-relaxed">
-								One AI agent can serve unlimited interactions.
-								Add more agents as you grow. No recruiting, no
-								onboarding, no turnover.
-							</p>
-						</div>
-					</div>
-				</div>
-			</section>
-
-			{/* ─── COMPARISON TABLE ─── */}
-			<section className="py-16 md:py-20 bg-gray-300">
-				<div className="container">
-					<div className="max-w-3xl mx-auto text-center mb-12">
-						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
-							See the Difference
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
-							Traditional Staffing vs. AI Staffing
-						</h2>
-					</div>
-
-					<div className="max-w-3xl mx-auto overflow-hidden rounded-xl border border-gray-200 bg-white">
-						<div className="grid grid-cols-2 bg-gray-900 text-white">
-							<div className="px-6 py-4 text-sm font-semibold">
-								Traditional Staffing
-							</div>
-							<div className="px-6 py-4 text-sm font-semibold text-slate-400">
-								AI Staffing Agency
-							</div>
-						</div>
+					{/* Right — Feature list with military numbering */}
+					<div className="space-y-6 pt-4">
 						{[
-							[
-								"Human workers on a roster",
-								"AI agents on a roster",
-							],
-							[
-								"Client pays hourly + markup",
-								"Client pays monthly subscription",
-							],
-							[
-								"One worker, one client at a time",
-								"One AI agent serves unlimited clients",
-							],
-							[
-								"You handle payroll, taxes, insurance",
-								"We handle platform, tech, and support",
-							],
-							[
-								"Call in, we send a person",
-								"Call in, we deploy an AI agent + build your setup",
-							],
-							[
-								"Weeks to find & train a hire",
-								"Live in under 24 hours",
-							],
-						].map(([trad, ai], i) => (
-							<div
-								key={trad}
-								className={`grid grid-cols-2 ${i % 2 === 0 ? "bg-white" : "bg-gray-100"}`}
-							>
-								<div className="px-6 py-4 text-sm text-gray-500 border-r border-gray-100">
-									{trad}
-								</div>
-								<div className="px-6 py-4 text-sm text-gray-900 font-medium">
-									{ai}
+							{ num: "01", title: "Zero Liability", desc: "No workers' comp, no insurance, no HR issues, no payroll taxes." },
+							{ num: "02", title: "24/7 Operations", desc: "No sick days. No vacations. Always on, always professional." },
+							{ num: "03", title: "Instant Deploy", desc: "Tell us about your business, agent is live within 24 hours." },
+							{ num: "04", title: "We Build Your Setup", desc: "No tech team? We build the phone system, portal, and tools." },
+							{ num: "05", title: "Multi-Channel", desc: "Phone, email, chat, social media — every channel covered." },
+							{ num: "06", title: "Unlimited Scale", desc: "Add more agents as you grow. No recruiting, no turnover." },
+						].map((f) => (
+							<div key={f.num} className="group flex gap-5 p-4 -mx-4 rounded-lg hover:bg-white/[0.02] transition-colors">
+								<span className="text-xs font-mono text-[#F27A2E]/60 mt-1 shrink-0">{f.num}</span>
+								<div>
+									<h3 className="text-sm font-semibold text-white mb-1">{f.title}</h3>
+									<p className="text-sm text-white/35 leading-relaxed">{f.desc}</p>
 								</div>
 							</div>
 						))}
@@ -542,375 +285,291 @@ export function LandingPage() {
 				</div>
 			</section>
 
-			{/* ─── HOW IT WORKS ─── */}
-			<section className="py-16 md:py-24 bg-gray-200">
-				<div className="container">
-					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
-							How It Works
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
-							From Sign-Up to Deployed in 4 Steps
-						</h2>
+			{/* ═══════════════════ AGENT DEPLOYMENT MANIFEST ═══════════════════ */}
+			<section ref={agents.ref} id="agents" className={`py-24 md:py-32 px-6 bg-[#0D1320] transition-all duration-1000 ${agents.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-7xl mx-auto">
+					<SectionTag>Deployment Manifest</SectionTag>
+					<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
+						<div>
+							<h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+								22 Agents. 9 Departments.
+							</h2>
+							<p className="text-white/40 mt-3 max-w-lg">
+								Every agent has a defined role, skill set, and knowledge base.
+								Browse the roster, pick who you need, and we deploy them.
+							</p>
+						</div>
+						<Link to="/signup" className="text-[#F27A2E] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all shrink-0">
+							Deploy your first agent <ChevronRight className="size-4" />
+						</Link>
 					</div>
 
-					<div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 max-w-5xl mx-auto">
-						{[
-							{
-								step: "1",
-								title: "Contact Us",
-								desc: "Visit our site, browse the agent roster, or fill out a contact form describing what your business needs.",
-								color: "bg-slate-800",
-								shadow: "shadow-slate-800/25",
-							},
-							{
-								step: "2",
-								title: "We Assess",
-								desc: "An account manager contacts you to understand your needs and determine what infrastructure you have in place.",
-								color: "bg-slate-800",
-								shadow: "shadow-slate-800/25",
-							},
-							{
-								step: "3",
-								title: "We Build & Deploy",
-								desc: "If you need a phone system, portal, or tools — we build them. Then we configure and deploy your AI agent.",
-								color: "bg-slate-800",
-								shadow: "shadow-slate-800/25",
-							},
-							{
-								step: "4",
-								title: "You're Live",
-								desc: "Your AI agent starts working immediately. Monitor activity in your portal. Add more agents anytime.",
-								color: "bg-amber-700",
-								shadow: "shadow-orange-500/25",
-							},
-						].map((s) => (
-							<div key={s.step} className="text-center">
-								<div
-									className={`inline-flex size-16 items-center justify-center rounded-2xl ${s.color} text-white text-2xl font-bold mb-4 shadow-lg ${s.shadow}`}
-								>
-									{s.step}
-								</div>
-								<h3 className="font-semibold text-lg mb-2 text-gray-900">
-									{s.title}
-								</h3>
-								<p className="text-gray-600 text-sm">
-									{s.desc}
-								</p>
-							</div>
-						))}
-					</div>
-				</div>
-			</section>
-
-			{/* ─── FULL AGENT ROSTER ─── */}
-			<section className="py-16 md:py-24 bg-gray-300">
-				<div className="container">
-					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-slate-800 mb-3 tracking-wide uppercase">
-							The Full Roster
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
-							22 AI Agents. 9 Departments. Your Pick.
-						</h2>
-						<p className="text-gray-600 max-w-2xl mx-auto text-lg">
-							Every agent has a defined role, skill set, and
-							knowledge base. Browse the roster, pick who you
-							need, and we deploy them to your business.
-						</p>
-					</div>
-
-					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-5 max-w-5xl mx-auto">
-						{departments.map((dept) => (
+					{/* Terminal-style agent grid */}
+					<div className="grid md:grid-cols-2 lg:grid-cols-3 gap-4">
+						{DEPARTMENTS.map((dept, i) => (
 							<div
 								key={dept.name}
-								className="rounded-xl border border-gray-200 bg-white p-6 hover:shadow-md hover:border-slate-200 transition-all"
+								className="group relative border border-white/[0.06] rounded-lg p-5 hover:border-[#2B7AE0]/30 transition-all duration-300 bg-gradient-to-br from-white/[0.02] to-transparent"
+								style={{ transitionDelay: `${i * 50}ms` }}
 							>
-								<div className="flex items-center gap-3 mb-4">
-									<div
-										className={`inline-flex size-10 items-center justify-center rounded-lg ${dept.bg}`}
-									>
-										<dept.icon
-											className={`size-5 ${dept.color}`}
-										/>
+								{/* Department header */}
+								<div className="flex items-center justify-between mb-4">
+									<div className="flex items-center gap-2">
+										<div className="w-2 h-2 rounded-full bg-emerald-500/80 group-hover:animate-pulse" />
+										<span className="text-xs font-mono uppercase tracking-wider text-white/60">{dept.name}</span>
 									</div>
-									<div>
-										<h3 className="font-semibold text-gray-900">
-											{dept.name}
-										</h3>
-										<p className="text-xs text-gray-500">
-											{dept.agents.length} agent
-											{dept.agents.length > 1 ? "s" : ""}
-										</p>
-									</div>
+									<span className="text-[10px] font-mono text-white/20">{dept.count} AGENT{dept.count > 1 ? "S" : ""}</span>
 								</div>
-								<ul className="space-y-2">
+								{/* Agent list */}
+								<div className="space-y-2">
 									{dept.agents.map((agent) => (
-										<li
-											key={agent}
-											className="flex items-center gap-2 text-sm text-gray-600"
-										>
-											<Check className="size-4 text-slate-800 shrink-0" />
+										<div key={agent} className="flex items-center gap-2.5 text-sm text-white/70 group-hover:text-white/90 transition-colors">
+											<span className="text-[#2B7AE0]/50 text-xs font-mono">›</span>
 											{agent}
-										</li>
+										</div>
 									))}
-								</ul>
+								</div>
 							</div>
 						))}
 					</div>
 				</div>
 			</section>
 
-			{/* ─── INDUSTRIES ─── */}
-			<section className="py-16 md:py-24 bg-gray-200">
-				<div className="container">
+			{/* ═══════════════════ COMPARISON ═══════════════════ */}
+			<section ref={compare.ref} className={`py-24 md:py-32 px-6 transition-all duration-1000 ${compare.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-4xl mx-auto">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
-							Industries We Serve
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
+						<SectionTag>Threat Assessment</SectionTag>
+						<h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+							Old Guard vs. <span className="text-[#2B7AE0]">New Era</span>
+						</h2>
+					</div>
+
+					<div className="border border-white/[0.06] rounded-lg overflow-hidden">
+						{/* Header */}
+						<div className="grid grid-cols-2 bg-white/[0.03]">
+							<div className="px-6 py-4 text-[11px] font-mono uppercase tracking-[0.15em] text-red-400/60 border-r border-white/[0.06]">
+								⚠ Traditional Staffing
+							</div>
+							<div className="px-6 py-4 text-[11px] font-mono uppercase tracking-[0.15em] text-emerald-400/60">
+								✓ AI Staffing Agency
+							</div>
+						</div>
+						{/* Rows */}
+						{COMPARISON.map((row, i) => (
+							<div key={row.old} className={`grid grid-cols-2 border-t border-white/[0.04] ${i % 2 === 0 ? "" : "bg-white/[0.01]"}`}>
+								<div className="px-6 py-4 text-sm text-white/30 border-r border-white/[0.06]">{row.old}</div>
+								<div className="px-6 py-4 text-sm text-white/80 font-medium">{row.new}</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ═══════════════════ HOW IT WORKS — VERTICAL TIMELINE ═══════════════════ */}
+			<section ref={howIt.ref} className={`py-24 md:py-32 px-6 bg-[#0D1320] transition-all duration-1000 ${howIt.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-3xl mx-auto">
+					<div className="text-center mb-20">
+						<SectionTag>Operations Protocol</SectionTag>
+						<h2 className="text-4xl md:text-5xl font-bold tracking-tight">
+							Four Steps to Deployment
+						</h2>
+					</div>
+
+					<div className="relative">
+						{/* Vertical line */}
+						<div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-[#2B7AE0]/40 via-[#2B7AE0]/20 to-transparent" />
+
+						{[
+							{ step: "01", title: "CONTACT", desc: "Visit our site, browse the agent roster, or submit a contact form describing your business needs." },
+							{ step: "02", title: "ASSESS", desc: "An account manager evaluates your needs and determines what infrastructure you have in place." },
+							{ step: "03", title: "BUILD & DEPLOY", desc: "We build your phone system, portal, and tools if needed. Then configure and deploy your AI agent." },
+							{ step: "04", title: "OPERATIONAL", desc: "Your AI agent starts working immediately. Monitor activity in your portal. Add more agents anytime." },
+						].map((s, i) => (
+							<div key={s.step} className="relative flex gap-8 mb-16 last:mb-0">
+								{/* Timeline dot */}
+								<div className="relative z-10 shrink-0">
+									<div className={`w-12 h-12 rounded-full border-2 flex items-center justify-center text-xs font-mono font-bold ${
+										i === 3 ? "border-[#F27A2E] text-[#F27A2E] bg-[#F27A2E]/10" : "border-[#2B7AE0]/40 text-[#2B7AE0] bg-[#2B7AE0]/5"
+									}`}>
+										{s.step}
+									</div>
+								</div>
+								{/* Content */}
+								<div className="pt-2.5">
+									<h3 className="text-sm font-mono font-bold tracking-[0.1em] text-white mb-2">{s.title}</h3>
+									<p className="text-sm text-white/40 leading-relaxed">{s.desc}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ═══════════════════ INDUSTRIES ═══════════════════ */}
+			<section ref={industries.ref} id="industries" className={`py-24 md:py-32 px-6 transition-all duration-1000 ${industries.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-5xl mx-auto">
+					<div className="text-center mb-16">
+						<SectionTag>Target Sectors</SectionTag>
+						<h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
 							Built for Small Service Businesses
 						</h2>
-						<p className="text-gray-600 max-w-2xl mx-auto text-lg">
-							If your business takes calls, sends emails, or
-							communicates with customers digitally &mdash; we
-							have an AI agent for you.
+						<p className="text-white/40 max-w-xl mx-auto">
+							If your business takes calls, sends emails, or communicates with customers — we have an AI agent for you.
 						</p>
 					</div>
 
-					<div className="grid sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 max-w-6xl mx-auto">
-						{industries.map((ind) => (
+					<div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3">
+						{INDUSTRIES.map((ind, i) => (
 							<div
-								key={ind.name}
-								className="flex items-start gap-3 rounded-lg border border-gray-100 bg-white p-4 hover:border-slate-200 hover:shadow-sm transition-all"
+								key={ind}
+								className="group relative px-5 py-4 border border-white/[0.06] rounded-lg hover:border-[#2B7AE0]/20 hover:bg-[#2B7AE0]/[0.03] transition-all duration-300 text-center"
+								style={{ transitionDelay: `${i * 30}ms` }}
 							>
-								<div className="inline-flex size-9 items-center justify-center rounded-lg bg-slate-50 shrink-0 mt-0.5">
-									<ind.icon className="size-4 text-slate-800" />
-								</div>
-								<div>
-									<h4 className="font-medium text-sm text-gray-900">
-										{ind.name}
-									</h4>
-									<p className="text-xs text-gray-500 mt-0.5 leading-relaxed">
-										{ind.desc}
-									</p>
-								</div>
+								<span className="text-sm text-white/60 group-hover:text-white/90 transition-colors font-medium">{ind}</span>
 							</div>
 						))}
 					</div>
 				</div>
 			</section>
 
-			{/* ─── PRICING ─── */}
-			<section className="py-16 md:py-24 bg-gray-300">
-				<div className="container">
+			{/* ═══════════════════ PRICING ═══════════════════ */}
+			<section ref={pricing.ref} id="pricing" className={`py-24 md:py-32 px-6 bg-[#0D1320] transition-all duration-1000 ${pricing.animated ? "opacity-100 translate-y-0" : "opacity-90 translate-y-2"}`}>
+				<div className="max-w-5xl mx-auto">
 					<div className="text-center mb-16">
-						<p className="text-sm font-semibold text-amber-700 mb-3 tracking-wide uppercase">
-							Simple Pricing
-						</p>
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-4 text-gray-900">
-							Pay Less Than a Human. Get More.
+						<SectionTag>Investment Tiers</SectionTag>
+						<h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4">
+							Pay Less Than a Human. <span className="text-[#F27A2E]">Get&nbsp;More.</span>
 						</h2>
-						<p className="text-gray-600 max-w-xl mx-auto text-lg">
-							Monthly subscriptions based on agent complexity.
-							One-time platform setup starts at $500 for
-							businesses that need infrastructure built.
+						<p className="text-white/40 max-w-xl mx-auto">
+							Monthly subscriptions based on agent complexity. One-time platform setup starts at $500.
 						</p>
 					</div>
 
-					<div className="grid md:grid-cols-3 gap-6 max-w-4xl mx-auto">
-						{pricing.map((plan) => (
-							<div
-								key={plan.title}
-								className={`rounded-xl border p-6 md:p-8 transition-all hover:shadow-lg flex flex-col ${
-									plan.popular
-										? "border-slate-300 bg-white ring-2 ring-slate-100 shadow-md"
-										: "border-gray-200 bg-white"
-								}`}
-							>
-								{plan.popular && (
-									<span className="inline-block self-start text-xs font-semibold text-white bg-red-500 px-3 py-1 rounded-full mb-3">
-										<Star className="size-3 inline mr-1" />
-										Most Popular
-									</span>
-								)}
-								<h3 className="font-semibold text-lg mb-1 text-gray-900">
-									{plan.title}
-								</h3>
-								<div className="mb-1">
-									<span className="text-2xl font-bold text-gray-900">
-										{plan.price}
-									</span>
-									<span className="text-sm text-gray-500">
-										{plan.period}
-									</span>
-								</div>
-								<div className="flex flex-wrap gap-1 mb-3">
-									{plan.examples.map((ex) => (
-										<span
-											key={ex}
-											className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded"
-										>
-											{ex}
-										</span>
-									))}
-								</div>
-								<p className="text-sm text-gray-600 mb-5">
-									{plan.desc}
-								</p>
-								<ul className="space-y-2 mb-6 flex-1">
-									{plan.features.map((f) => (
-										<li
-											key={f}
-											className="flex items-center gap-2 text-sm text-gray-600"
-										>
-											<Check className="size-4 text-slate-800 shrink-0" />
-											{f}
-										</li>
-									))}
-								</ul>
-								<Button
-									className={`w-full ${
-										plan.popular
-											? "bg-slate-800 hover:bg-slate-900 text-white shadow-sm"
-											: "bg-gray-900 hover:bg-gray-800 text-white"
-									}`}
-									asChild
-								>
-									<Link to="/signup">
-										Get Started{" "}
-										<ArrowRight className="size-4" />
-									</Link>
-								</Button>
+					<div className="grid md:grid-cols-3 gap-6">
+						{/* Basic */}
+						<div className="relative border border-white/[0.06] rounded-lg p-8 hover:border-white/[0.12] transition-all group">
+							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-white/30 mb-4">Basic</div>
+							<div className="text-3xl font-bold mb-1">$200 – $500</div>
+							<div className="text-xs text-white/30 mb-6">per month</div>
+							<p className="text-sm text-white/40 mb-6 leading-relaxed">Phone answering, scheduling, dispatch. Your AI handles the front lines 24/7.</p>
+							<div className="space-y-2.5 mb-8">
+								{["24/7 phone answering", "Appointment scheduling", "Call logging & transcripts", "FAQ handling", "SMS follow-ups"].map((f) => (
+									<div key={f} className="flex items-center gap-2 text-sm text-white/50">
+										<Check className="size-3.5 text-[#2B7AE0]/60 shrink-0" />{f}
+									</div>
+								))}
 							</div>
-						))}
-					</div>
-
-					<div className="text-center mt-8">
-						<p className="text-sm text-gray-500">
-							Platform setup fee: $500 &ndash; $1,500 (one-time)
-							for businesses that need phone systems, portals, or
-							scheduling tools built.
-						</p>
-					</div>
-				</div>
-			</section>
-
-			{/* ─── CTA ─── */}
-			<section className="py-16 md:py-24 bg-gradient-to-br from-slate-900 to-slate-800">
-				<div className="container">
-					<div className="max-w-3xl mx-auto text-center space-y-6">
-						<h2 className="text-3xl md:text-4xl font-bold tracking-tight text-white">
-							Ready to Staff Up?
-						</h2>
-						<p className="text-lg text-slate-300">
-							Book a free consultation. Tell us what your business
-							needs. We'll recommend the right agents, build your
-							setup if needed, and have you live in under 24
-							hours.
-						</p>
-						<div className="flex flex-col sm:flex-row gap-3 justify-center pt-2">
-							<Button
-								size="lg"
-								className="text-base h-12 px-8 bg-white text-slate-900 hover:bg-slate-50 shadow-lg"
-								asChild
-							>
-								<Link to="/signup">
-									Book a Free Consultation
-									<ArrowRight className="size-4" />
-								</Link>
+							<Button className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-sm h-10 text-sm" asChild>
+								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
 							</Button>
-							<Button
-								size="lg"
-								variant="outline"
-								className="text-base h-12 px-8 border-slate-300 text-white hover:bg-slate-700/20"
-								asChild
-							>
-								<Link to="/login">Sign In</Link>
+						</div>
+
+						{/* Professional — Featured */}
+						<div className="relative border border-[#2B7AE0]/30 rounded-lg p-8 bg-gradient-to-b from-[#2B7AE0]/[0.06] to-transparent shadow-[0_0_40px_rgba(43,122,224,0.08)] group">
+							<div className="absolute -top-3 left-1/2 -translate-x-1/2">
+								<span className="text-[10px] font-mono uppercase tracking-[0.2em] text-[#2B7AE0] bg-[#0D1320] border border-[#2B7AE0]/30 px-3 py-1 rounded-full">Recommended</span>
+							</div>
+							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#2B7AE0] mb-4">Professional</div>
+							<div className="text-3xl font-bold mb-1">$500 – $1,500</div>
+							<div className="text-xs text-white/30 mb-6">per month</div>
+							<p className="text-sm text-white/40 mb-6 leading-relaxed">Project managers, sales reps, marketing teams. The agents that grow your revenue.</p>
+							<div className="space-y-2.5 mb-8">
+								{["Everything in Basic", "Lead qualification & outreach", "Social media management", "CRM integration", "Weekly performance reports"].map((f) => (
+									<div key={f} className="flex items-center gap-2 text-sm text-white/60">
+										<Check className="size-3.5 text-[#2B7AE0] shrink-0" />{f}
+									</div>
+								))}
+							</div>
+							<Button className="w-full bg-[#2B7AE0] hover:bg-[#2468c4] text-white rounded-sm h-10 text-sm shadow-[0_0_20px_rgba(43,122,224,0.25)]" asChild>
+								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
+							</Button>
+						</div>
+
+						{/* Executive */}
+						<div className="relative border border-white/[0.06] rounded-lg p-8 hover:border-white/[0.12] transition-all group">
+							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-white/30 mb-4">Executive</div>
+							<div className="text-3xl font-bold mb-1">$1,500 – $5,000</div>
+							<div className="text-xs text-white/30 mb-6">per month</div>
+							<p className="text-sm text-white/40 mb-6 leading-relaxed">C-suite advisory, strategic planning, and technology leadership for your business.</p>
+							<div className="space-y-2.5 mb-8">
+								{["Everything in Professional", "Strategic business planning", "Financial forecasting", "Technology roadmapping", "Dedicated account manager"].map((f) => (
+									<div key={f} className="flex items-center gap-2 text-sm text-white/50">
+										<Check className="size-3.5 text-[#2B7AE0]/60 shrink-0" />{f}
+									</div>
+								))}
+							</div>
+							<Button className="w-full bg-white/5 hover:bg-white/10 text-white border border-white/10 rounded-sm h-10 text-sm" asChild>
+								<Link to="/signup">Get Started <ArrowRight className="size-3.5 ml-1" /></Link>
 							</Button>
 						</div>
 					</div>
+
+					<p className="text-center text-xs text-white/20 mt-8 font-mono">
+						Platform setup fee: $500 – $1,500 (one-time) for businesses needing phone systems, portals, or scheduling tools.
+					</p>
 				</div>
 			</section>
 
-			{/* ─── FOOTER ─── */}
-			<footer className="border-t border-gray-300 py-10 bg-gray-200">
-				<div className="container">
-					<div className="flex flex-col md:flex-row items-start justify-between gap-8">
+			{/* ═══════════════════ CTA ═══════════════════ */}
+			<section className="relative py-32 md:py-40 px-6 overflow-hidden">
+				{/* Background glow */}
+				<div className="absolute inset-0">
+					<div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] rounded-full bg-[#2B7AE0] opacity-[0.04] blur-[150px]" />
+				</div>
+
+				<div className="relative z-10 max-w-3xl mx-auto text-center space-y-8">
+					<h2 className="text-4xl md:text-6xl font-bold tracking-tight leading-[1.05]">
+						Ready to Deploy<br />
+						<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F27A2E] to-[#FF9A52]">Your First Agent?</span>
+					</h2>
+					<p className="text-white/40 text-lg max-w-lg mx-auto">
+						Book a free consultation. Tell us what your business needs. We'll have you live in under 24 hours.
+					</p>
+					<div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
+						<Link to="/signup">
+							<Button size="lg" className="bg-[#F27A2E] hover:bg-[#d96a24] text-white text-sm font-semibold h-14 px-10 rounded-sm shadow-[0_0_40px_rgba(242,122,46,0.3)] hover:shadow-[0_0_50px_rgba(242,122,46,0.4)] transition-all">
+								Book a Free Consultation
+								<ArrowRight className="size-4 ml-2" />
+							</Button>
+						</Link>
+					</div>
+				</div>
+			</section>
+
+			{/* ═══════════════════ FOOTER ═══════════════════ */}
+			<footer className="border-t border-white/[0.04] py-12 px-6 bg-[#080C14]">
+				<div className="max-w-7xl mx-auto flex flex-col md:flex-row items-start justify-between gap-8">
+					<div>
+						<div className="flex items-center gap-3 mb-3">
+							<img src="/logo-white.png" alt="AI Staffing Agency" className="h-8 w-8 opacity-60" />
+							<span className="text-sm font-semibold text-white/60">AI Staffing Agency</span>
+						</div>
+						<p className="text-xs text-white/20 max-w-xs leading-relaxed">
+							The first staffing agency that deploys AI agents instead of human temps.
+							Built for small service businesses.
+						</p>
+					</div>
+					<div className="flex gap-12 text-xs">
 						<div>
-							<div className="flex items-center gap-3 mb-3">
-								<img src="/logo.png" alt="AI Staffing Agency" className="h-8 w-8" />
-								<span className="font-bold text-gray-900">
-									AI Staffing Agency
-								</span>
-							</div>
-							<p className="text-sm text-gray-500 max-w-xs">
-								The first staffing agency that deploys AI agents
-								instead of human temps. Built for small service
-								businesses.
-							</p>
+							<h4 className="font-mono uppercase tracking-[0.15em] text-white/30 mb-3 text-[10px]">Company</h4>
+							<ul className="space-y-2 text-white/20">
+								<li><a href="#" className="hover:text-white/50 transition-colors">About</a></li>
+								<li><a href="#pricing" className="hover:text-white/50 transition-colors">Pricing</a></li>
+								<li><a href="#" className="hover:text-white/50 transition-colors">Contact</a></li>
+							</ul>
 						</div>
-						<div className="flex gap-12 text-sm">
-							<div>
-								<h4 className="font-semibold text-gray-900 mb-3">
-									Company
-								</h4>
-								<ul className="space-y-2 text-gray-500">
-									<li>
-										<a
-											href="#"
-											className="hover:text-slate-800"
-										>
-											About
-										</a>
-									</li>
-									<li>
-										<a
-											href="#"
-											className="hover:text-slate-800"
-										>
-											Pricing
-										</a>
-									</li>
-									<li>
-										<a
-											href="#"
-											className="hover:text-slate-800"
-										>
-											Contact
-										</a>
-									</li>
-								</ul>
-							</div>
-							<div>
-								<h4 className="font-semibold text-gray-900 mb-3">
-									Legal
-								</h4>
-								<ul className="space-y-2 text-gray-500">
-									<li>
-										<a
-											href="#"
-											className="hover:text-slate-800"
-										>
-											Privacy
-										</a>
-									</li>
-									<li>
-										<a
-											href="#"
-											className="hover:text-slate-800"
-										>
-											Terms
-										</a>
-									</li>
-								</ul>
-							</div>
+						<div>
+							<h4 className="font-mono uppercase tracking-[0.15em] text-white/30 mb-3 text-[10px]">Legal</h4>
+							<ul className="space-y-2 text-white/20">
+								<li><a href="#" className="hover:text-white/50 transition-colors">Privacy</a></li>
+								<li><a href="#" className="hover:text-white/50 transition-colors">Terms</a></li>
+							</ul>
 						</div>
 					</div>
-					<div className="mt-8 pt-6 border-t border-gray-300 text-center text-sm text-gray-500">
-						&copy; {new Date().getFullYear()} AI Staffing Agency
-						&mdash; A TRG Tech Link Company. All rights reserved.
-					</div>
+				</div>
+				<div className="max-w-7xl mx-auto mt-10 pt-6 border-t border-white/[0.04] text-center text-[11px] text-white/15 font-mono">
+					© {new Date().getFullYear()} AI STAFFING AGENCY — A TRG TECH LINK COMPANY
 				</div>
 			</footer>
 		</div>
