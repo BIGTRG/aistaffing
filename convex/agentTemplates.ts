@@ -1,5 +1,4 @@
-import { query, internalMutation, action } from "./_generated/server";
-import { internal } from "./_generated/api";
+import { query, internalMutation } from "./_generated/server";
 import { v } from "convex/values";
 
 /* ─── Clear all existing templates (for re-seeding) ─── */
