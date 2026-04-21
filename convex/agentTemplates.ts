@@ -1,4 +1,5 @@
-import { query, internalMutation } from "./_generated/server";
+import { query, internalMutation, action } from "./_generated/server";
+import { internal } from "./_generated/api";
 import { v } from "convex/values";
 
 /* ─── Clear all existing templates (for re-seeding) ─── */
@@ -897,5 +898,15 @@ export const get = query({
   args: { id: v.id("agentTemplates") },
   handler: async (ctx, { id }) => {
     return await ctx.db.get(id);
+  },
+});
+
+/* ─── Reseed: clear + seed ─── */
+export const reseedAction = action({
+  args: {},
+  handler: async (ctx) => {
+    await ctx.runMutation(internal.agentTemplates.clearAll);
+    await ctx.runMutation(internal.agentTemplates.seed);
+    return "Reseeded successfully";
   },
 });
