@@ -9,3 +9,5 @@ export { AdminPage } from "./AdminPage";
 export { OnboardingPage } from "./OnboardingPage";
 export { SettingsPage } from "./SettingsPage";
 export { IndustryPage } from "./IndustryPage";
+export { ConversationsPage } from "./ConversationsPage";
+export { AnalyticsPage } from "./AnalyticsPage";

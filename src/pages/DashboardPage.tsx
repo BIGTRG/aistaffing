@@ -20,6 +20,7 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { TestAgentChat } from "@/components/TestAgentChat";
+import { AgentConfigPanel } from "@/components/AgentConfigPanel";
 
 export function DashboardPage() {
 	const navigate = useNavigate();
@@ -44,6 +45,8 @@ export function DashboardPage() {
 
 	// Test chat state
 	const [testChatDeployment, setTestChatDeployment] = useState<any>(null);
+	// Config panel state
+	const [configDeployment, setConfigDeployment] = useState<any>(null);
 
 	// If no org yet, redirect to onboarding
 	if (org === null) {
@@ -187,6 +190,15 @@ export function DashboardPage() {
 											</div>
 										</div>
 										<div className="flex items-center gap-2">
+											{/* Configure Button */}
+											<button
+												onClick={() => setConfigDeployment(d)}
+												className="flex items-center gap-1 px-2 py-1 text-xs font-medium text-amber-700 bg-amber-50 hover:bg-amber-100 rounded-lg transition-colors"
+												title="Configure this agent"
+											>
+												<Zap className="size-3" />
+												Configure
+											</button>
 											{/* Test Chat Button */}
 											<button
 												onClick={() => setTestChatDeployment(d)}
@@ -353,6 +365,17 @@ export function DashboardPage() {
 					deployment={testChatDeployment}
 					orgName={org?.name ?? "Our Business"}
 					orgIndustry={org?.industry ?? ""}
+				/>
+			)}
+
+			{/* Agent Config Panel */}
+			{configDeployment && (
+				<AgentConfigPanel
+					open={!!configDeployment}
+					onOpenChange={(open) => {
+						if (!open) setConfigDeployment(null);
+					}}
+					deployment={configDeployment}
 				/>
 			)}
 		</div>

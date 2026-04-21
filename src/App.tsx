@@ -9,7 +9,9 @@ import { ThemeProvider } from "./contexts/ThemeContext";
 import {
 	AgentsPage,
 	AdminPage,
+	AnalyticsPage,
 	BillingPage,
+	ConversationsPage,
 	DashboardPage,
 	IndustryPage,
 	LandingPage,
@@ -42,6 +44,8 @@ function App() {
 						<Route element={<AppLayout />}>
 							<Route path="/dashboard" element={<DashboardPage />} />
 							<Route path="/agents" element={<AgentsPage />} />
+							<Route path="/conversations" element={<ConversationsPage />} />
+							<Route path="/analytics" element={<AnalyticsPage />} />
 							<Route path="/partners" element={<PartnersPage />} />
 							<Route path="/billing" element={<BillingPage />} />
 							<Route path="/admin" element={<AdminPage />} />

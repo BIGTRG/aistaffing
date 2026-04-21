@@ -692,6 +692,16 @@ export const seed = internalMutation({
         icon: "Plug",
       },
 
+      // Website Developer / Manager Agent (bonus)
+      {
+        name: "Website Developer Agent",
+        department: "IT & Tech Support",
+        description: "Your AI website manager that monitors, updates, and improves your business website around the clock. Handles content updates, SEO optimization, blog post creation, design tweaks, performance monitoring, and broken link fixes. Suggests improvements based on analytics, keeps your site fresh with regular content, and ensures it ranks well on Google — all without needing a web developer on staff.",
+        pricingModel: "flat_monthly",
+        basePriceCents: 69900,
+        icon: "Code",
+      },
+
       // ═══════════════════════════════════════════
       // LEGAL & COMPLIANCE (10 agents)
       // ═══════════════════════════════════════════

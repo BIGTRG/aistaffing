@@ -10,6 +10,8 @@ import {
 	Handshake,
 	CreditCard,
 	Shield,
+	MessageSquare,
+	BarChart3,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -38,6 +40,8 @@ import {
 const navItems = [
 	{ href: "/dashboard", label: "Dashboard", icon: LayoutDashboard },
 	{ href: "/agents", label: "Agent Roster", icon: Bot },
+	{ href: "/conversations", label: "Conversation Logs", icon: MessageSquare },
+	{ href: "/analytics", label: "Analytics", icon: BarChart3 },
 	{ href: "/billing", label: "Billing", icon: CreditCard },
 	{ href: "/partners", label: "Partner Services", icon: Handshake },
 	{ href: "/admin", label: "Admin Panel", icon: Shield },

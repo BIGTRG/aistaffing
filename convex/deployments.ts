@@ -97,6 +97,62 @@ export const updateStatus = mutation({
   },
 });
 
+/* ─── Get single deployment ─── */
+export const get = query({
+  args: { deploymentId: v.id("deployments") },
+  handler: async (ctx, { deploymentId }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const deployment = await ctx.db.get(deploymentId);
+    if (!deployment) throw new Error("Deployment not found");
+
+    const template = await ctx.db.get(deployment.templateId);
+    return { ...deployment, template };
+  },
+});
+
+/* ─── Update agent configuration ─── */
+export const updateConfig = mutation({
+  args: {
+    deploymentId: v.id("deployments"),
+    displayName: v.optional(v.string()),
+    config: v.object({
+      businessHours: v.optional(v.string()),
+      services: v.optional(v.string()),
+      pricing: v.optional(v.string()),
+      faqs: v.optional(v.string()),
+      phoneRouting: v.optional(v.string()),
+      websiteUrl: v.optional(v.string()),
+      customInstructions: v.optional(v.string()),
+      tone: v.optional(v.string()),
+      greeting: v.optional(v.string()),
+      escalationRules: v.optional(v.string()),
+    }),
+  },
+  handler: async (ctx, { deploymentId, displayName, config }) => {
+    const userId = await getAuthUserId(ctx);
+    if (!userId) throw new Error("Not authenticated");
+
+    const deployment = await ctx.db.get(deploymentId);
+    if (!deployment) throw new Error("Deployment not found");
+
+    const updates: any = { config };
+    if (displayName) updates.displayName = displayName;
+
+    await ctx.db.patch(deploymentId, updates);
+
+    await ctx.db.insert("activityLog", {
+      orgId: deployment.orgId,
+      deploymentId,
+      eventType: "agent.configured",
+      title: `${deployment.displayName} configuration updated`,
+    });
+
+    return deploymentId;
+  },
+});
+
 /* ─── Get deployment count for org ─── */
 export const countByOrg = query({
   args: { orgId: v.id("organizations") },

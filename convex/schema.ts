@@ -59,6 +59,19 @@ const schema = defineSchema({
     vapiAssistantId: v.optional(v.string()),
     twilioNumber: v.optional(v.string()),
     deployedAt: v.optional(v.number()),
+    // ── Agent Configuration ──
+    config: v.optional(v.object({
+      businessHours: v.optional(v.string()),       // e.g. "Mon-Fri 9am-5pm EST"
+      services: v.optional(v.string()),             // services offered
+      pricing: v.optional(v.string()),              // pricing info
+      faqs: v.optional(v.string()),                 // frequently asked questions
+      phoneRouting: v.optional(v.string()),         // phone number to route calls to
+      websiteUrl: v.optional(v.string()),           // website to pull info from
+      customInstructions: v.optional(v.string()),   // custom role instructions
+      tone: v.optional(v.string()),                 // professional | friendly | casual | formal
+      greeting: v.optional(v.string()),             // custom greeting message
+      escalationRules: v.optional(v.string()),      // when to escalate to human
+    })),
   })
     .index("by_org", ["orgId"])
     .index("by_org_status", ["orgId", "status"])
