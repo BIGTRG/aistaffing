@@ -13,6 +13,7 @@ export { IndustryPage } from "./IndustryPage";
 export { ConversationsPage } from "./ConversationsPage";
 export { AnalyticsPage } from "./AnalyticsPage";
 export { SupportPage } from "./SupportPage";
+export { PricingPage } from "./PricingPage";
 export { AdminDashboardPage } from "./admin/AdminDashboardPage";
 export { AdminClientsPage } from "./admin/AdminClientsPage";
 export { AdminAgentTemplatesPage } from "./admin/AdminAgentTemplatesPage";

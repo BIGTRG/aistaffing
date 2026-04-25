@@ -151,6 +151,33 @@ const schema = defineSchema({
     .index("by_org", ["orgId"])
     .index("by_status", ["status"]),
 
+  // ── Quotes ──
+  quotes: defineTable({
+    orgId: v.optional(v.id("organizations")),
+    businessName: v.string(),
+    industry: v.string(),
+    contactEmail: v.optional(v.string()),
+    contactPhone: v.optional(v.string()),
+    lineItems: v.any(), // array of line items with pricing
+    totalMonthlyCents: v.number(),
+    humanEquivalentCents: v.number(),
+    savingsCents: v.number(),
+    status: v.string(), // draft | sent | accepted | expired
+    createdAt: v.number(),
+    expiresAt: v.number(),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_status", ["status"]),
+
+  // ── Stripe / Payment ──
+  stripeEvents: defineTable({
+    stripeEventId: v.string(),
+    type: v.string(),
+    data: v.any(),
+    processedAt: v.number(),
+  })
+    .index("by_event_id", ["stripeEventId"]),
+
   // ── Activity ──
   activityLog: defineTable({
     orgId: v.id("organizations"),

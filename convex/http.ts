@@ -106,4 +106,45 @@ http.route({
 	}),
 });
 
+/* ─── Stripe Webhook ─── */
+http.route({
+	path: "/stripe/webhook",
+	method: "POST",
+	handler: httpAction(async (ctx, req) => {
+		try {
+			const body = await req.text();
+			const event = JSON.parse(body);
+
+			// Record the event
+			await ctx.runMutation(api.stripe.recordEvent, {
+				stripeEventId: event.id ?? `evt_${Date.now()}`,
+				type: event.type ?? "unknown",
+				data: event.data?.object ?? {},
+			});
+
+			// Handle specific event types
+			if (event.type === "checkout.session.completed") {
+				const session = event.data.object;
+				const orgId = session.metadata?.orgId;
+				if (orgId && session.customer) {
+					await ctx.runMutation(api.stripe.setStripeCustomerId, {
+						orgId,
+						stripeCustomerId: session.customer,
+					});
+				}
+			}
+
+			return new Response(JSON.stringify({ received: true }), {
+				status: 200,
+				headers: { "Content-Type": "application/json" },
+			});
+		} catch (e: any) {
+			return new Response(
+				JSON.stringify({ error: e.message }),
+				{ status: 400, headers: { "Content-Type": "application/json" } }
+			);
+		}
+	}),
+});
+
 export default http;

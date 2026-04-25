@@ -120,6 +120,14 @@ export const completeOnboarding = mutation({
   },
 });
 
+/* ─── Get org by ID (for internal use) ─── */
+export const getById = query({
+  args: { orgId: v.id("organizations") },
+  handler: async (ctx, { orgId }) => {
+    return await ctx.db.get(orgId);
+  },
+});
+
 /* ─── Admin: list all organizations ─── */
 export const listAll = query({
   args: {},

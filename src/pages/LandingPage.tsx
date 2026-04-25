@@ -167,7 +167,7 @@ export function LandingPage() {
 					<div className="hidden md:flex items-center gap-8">
 						<a href="#agents" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Agents</a>
 						<a href="#roi-calculator" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">ROI Calculator</a>
-						<a href="#pricing" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Pricing</a>
+						<Link to="/pricing" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Pricing</Link>
 						<a href="#industries" className="text-xs font-medium tracking-wide text-[#1A1D23]/40 hover:text-[#1A1D23] transition-colors uppercase">Industries</a>
 						{isAuthenticated ? (
 							<Link to="/employer/dashboard">
@@ -408,6 +408,140 @@ export function LandingPage() {
 								<div className="pt-2.5">
 									<h3 className="text-sm font-mono font-bold tracking-[0.1em] text-[#1A1D23] mb-2">{s.title}</h3>
 									<p className="text-sm text-[#3A3F48]/50 leading-relaxed">{s.desc}</p>
+								</div>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			{/* ═══════════════════ VIDEO DEMOS / EXPLAINER ═══════════════════ */}
+			<section className="py-24 md:py-32 px-6 relative overflow-hidden">
+				<div className="absolute inset-0 pointer-events-none">
+					<div className="absolute top-1/3 left-1/4 w-[500px] h-[500px] rounded-full bg-[#F27A2E] opacity-[0.04] blur-[120px]" />
+					<div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-[#2B7AE0] opacity-[0.04] blur-[100px]" />
+				</div>
+				<div className="max-w-6xl mx-auto relative z-10">
+					<div className="text-center mb-16">
+						<SectionTag>See It In Action</SectionTag>
+						<h2 className="text-4xl md:text-5xl font-bold tracking-tight mb-4 text-[#1A1D23]">
+							Watch Your AI Team <span className="text-[#2B7AE0]">Come Alive</span>
+						</h2>
+						<p className="text-[#3A3F48]/50 max-w-xl mx-auto">
+							From sign-up to live deployment in under 24 hours. Here's how it works.
+						</p>
+					</div>
+
+					{/* Hero Video Placeholder */}
+					<div className="relative rounded-2xl overflow-hidden mb-16 bg-[#1A1D23] aspect-video max-w-4xl mx-auto shadow-[0_8px_60px_rgba(0,0,0,0.15)]">
+						<div className="absolute inset-0 flex flex-col items-center justify-center">
+							<div className="absolute inset-0 bg-gradient-to-br from-[#2B7AE0]/20 via-transparent to-[#F27A2E]/10" />
+							{/* Animated glow ring play button */}
+							<button className="relative z-10 group cursor-pointer">
+								<div className="absolute inset-0 rounded-full bg-white/20 animate-ping" style={{animationDuration: '2s'}} />
+								<div className="w-20 h-20 rounded-full bg-white/90 flex items-center justify-center shadow-[0_4px_30px_rgba(0,0,0,0.2)] group-hover:bg-white transition-colors">
+									<svg className="size-8 text-[#1A1D23] ml-1" fill="currentColor" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+								</div>
+							</button>
+							<p className="relative z-10 mt-6 text-white/50 text-sm font-medium">Watch the 2-minute overview</p>
+						</div>
+						{/* Decorative UI lines */}
+						<div className="absolute top-4 left-4 right-4 flex justify-between items-center text-white/20 text-[10px] font-mono">
+							<span>AI-STAFFING-AGENCY://DEMO</span>
+							<span>▶ 02:14</span>
+						</div>
+						<div className="absolute bottom-0 left-0 right-0 h-1 bg-white/10">
+							<div className="h-full w-0 bg-[#F27A2E] rounded-full" />
+						</div>
+					</div>
+
+					{/* Animated Process Steps */}
+					<div className="grid md:grid-cols-3 gap-6 mb-20">
+						{[
+							{
+								icon: "📋",
+								title: "Sign Up & Select",
+								desc: "Create your account, tell us your industry, and pick your agents from our roster of 100+.",
+								animation: (
+									<div className="relative h-32 flex items-center justify-center">
+										<div className="absolute w-24 h-24 rounded-2xl border-2 border-dashed border-[#2B7AE0]/30 animate-spin" style={{animationDuration: '12s'}} />
+										<div className="w-16 h-16 rounded-xl bg-[#2B7AE0]/10 flex items-center justify-center text-2xl">📋</div>
+									</div>
+								)
+							},
+							{
+								icon: "⚙️",
+								title: "We Configure & Train",
+								desc: "Our team configures your agents with your business knowledge, services, FAQs, and brand voice.",
+								animation: (
+									<div className="relative h-32 flex items-center justify-center">
+										<div className="flex gap-1 items-center">
+											{[0,1,2,3,4].map(i => (
+												<div key={i} className="w-3 rounded-full bg-[#F27A2E]/30 animate-pulse" style={{height: `${20 + Math.random() * 40}px`, animationDelay: `${i * 200}ms`}} />
+											))}
+										</div>
+										<div className="absolute w-16 h-16 rounded-xl bg-[#F27A2E]/10 flex items-center justify-center text-2xl">⚙️</div>
+									</div>
+								)
+							},
+							{
+								icon: "🚀",
+								title: "Go Live in 24 Hours",
+								desc: "Your AI team starts handling calls, chats, and emails. Monitor everything from your dashboard.",
+								animation: (
+									<div className="relative h-32 flex items-center justify-center">
+										<div className="absolute w-20 h-20 rounded-full border border-emerald-400/30 animate-ping" style={{animationDuration: '2s'}} />
+										<div className="absolute w-14 h-14 rounded-full border border-emerald-400/20 animate-ping" style={{animationDuration: '2.5s'}} />
+										<div className="w-12 h-12 rounded-full bg-emerald-500/20 flex items-center justify-center text-xl">🚀</div>
+									</div>
+								)
+							},
+						].map((step) => (
+							<div key={step.title} className="text-center group">
+								{step.animation}
+								<h3 className="font-bold text-[#1A1D23] mb-2 mt-2">{step.title}</h3>
+								<p className="text-sm text-[#3A3F48]/50 leading-relaxed">{step.desc}</p>
+							</div>
+						))}
+					</div>
+
+					{/* Testimonials */}
+					<div className="grid md:grid-cols-3 gap-6">
+						{[
+							{
+								quote: "Our AI receptionist handles 200+ calls a day. We went from missing 40% of calls to missing zero.",
+								name: "Sarah M.",
+								role: "Owner, Bright Smile Dental",
+								savings: "$4,200/mo saved",
+							},
+							{
+								quote: "The sales follow-up agent closed 3 deals in the first week that we would have lost. Paid for itself instantly.",
+								name: "Marcus T.",
+								role: "CEO, TrueNorth Roofing",
+								savings: "$12,000 new revenue",
+							},
+							{
+								quote: "We replaced our $3,500/mo receptionist with a $399/mo AI that works 24/7. The ROI is insane.",
+								name: "Jennifer L.",
+								role: "Managing Partner, West Law Group",
+								savings: "$3,100/mo saved",
+							},
+						].map((t) => (
+							<div key={t.name} className="bg-white/40 backdrop-blur-sm border border-[#1A1D23]/10 rounded-xl p-6 hover:border-[#2B7AE0]/20 transition-colors">
+								<div className="flex gap-0.5 mb-3">
+									{[1,2,3,4,5].map(s => (
+										<svg key={s} className="size-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+											<path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+										</svg>
+									))}
+								</div>
+								<p className="text-sm text-[#3A3F48]/70 leading-relaxed mb-4 italic">"{t.quote}"</p>
+								<div className="flex items-center justify-between">
+									<div>
+										<p className="text-sm font-semibold text-[#1A1D23]">{t.name}</p>
+										<p className="text-xs text-[#3A3F48]/40">{t.role}</p>
+									</div>
+									<span className="text-xs font-semibold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-full">{t.savings}</span>
 								</div>
 							</div>
 						))}

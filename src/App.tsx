@@ -32,6 +32,7 @@ import {
 	SettingsPage,
 	SignupPage,
 	SupportPage,
+	PricingPage,
 } from "./pages";
 
 function App() {
@@ -42,6 +43,7 @@ function App() {
 				<Routes>
 					{/* ── Public Pages ── */}
 					<Route path="/" element={<LandingPage />} />
+					<Route path="/pricing" element={<PricingPage />} />
 					<Route path="/industries/:slug" element={<IndustryPage />} />
 
 					{/* ── Public-Only Auth Pages ── */}
