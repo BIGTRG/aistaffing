@@ -11,12 +11,13 @@ import {
 	Zap,
 	CheckCircle2,
 	AlertTriangle,
-
 	Activity,
 	Mail,
 	Globe,
+	Download,
 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 
 export function AnalyticsPage() {
 	const org = useQuery(api.organizations.getMine);
@@ -35,15 +36,80 @@ export function AnalyticsPage() {
 
 	const activeAgents = deployments?.filter((d) => d.status === "active").length ?? 0;
 
+	const handleDownloadReport = () => {
+		// Build CSV report
+		const lines: string[] = [];
+		lines.push("AI Staffing Agency — Performance Report");
+		lines.push(`Generated: ${new Date().toLocaleString()}`);
+		lines.push("");
+
+		// KPIs
+		lines.push("=== KEY METRICS ===");
+		lines.push(`Total Conversations,${stats?.total ?? 0}`);
+		lines.push(`Active Agents,${activeAgents}`);
+		lines.push(`Avg Response Time (sec),${stats?.avgDurationSeconds ?? 0}`);
+		lines.push(`Resolution Rate,${stats && stats.total > 0 ? Math.round((stats.resolved / stats.total) * 100) : 0}%`);
+		lines.push(`Resolved,${stats?.resolved ?? 0}`);
+		lines.push("");
+
+		// Channel breakdown
+		lines.push("=== CONVERSATIONS BY CHANNEL ===");
+		lines.push("Channel,Count");
+		lines.push(`Chat,${stats?.byChannel?.chat ?? 0}`);
+		lines.push(`Phone,${stats?.byChannel?.phone ?? 0}`);
+		lines.push(`Email,${stats?.byChannel?.email ?? 0}`);
+		lines.push(`SMS,${stats?.byChannel?.sms ?? 0}`);
+		lines.push("");
+
+		// Outcomes
+		lines.push("=== CONVERSATION OUTCOMES ===");
+		lines.push("Outcome,Count");
+		lines.push(`Resolved,${stats?.byOutcome?.resolved ?? 0}`);
+		lines.push(`Escalated,${stats?.byOutcome?.escalated ?? 0}`);
+		lines.push(`Sales Closed,${stats?.byOutcome?.sale_closed ?? 0}`);
+		lines.push(`Appointments Booked,${stats?.byOutcome?.appointment_booked ?? 0}`);
+		lines.push(`Follow-ups,${stats?.byOutcome?.follow_up ?? 0}`);
+		lines.push("");
+
+		// Agent performance
+		lines.push("=== AGENT PERFORMANCE ===");
+		lines.push("Agent,Department,Status");
+		deployments?.forEach((d) => {
+			lines.push(`${d.displayName},${d.template?.department ?? ""},${d.status}`);
+		});
+
+		const csv = lines.join("\n");
+		const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+		const url = URL.createObjectURL(blob);
+		const link = document.createElement("a");
+		link.href = url;
+		link.download = `ai-staffing-report-${new Date().toISOString().split("T")[0]}.csv`;
+		link.click();
+		URL.revokeObjectURL(url);
+	};
+
 	return (
 		<div className="space-y-6">
-			<div>
-				<h1 className="text-2xl font-bold tracking-tight text-gray-900">
-					Analytics Dashboard
-				</h1>
-				<p className="text-gray-500">
-					Performance insights across all your AI agents.
-				</p>
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-2xl font-bold tracking-tight text-gray-900">
+						Analytics Dashboard
+					</h1>
+					<p className="text-gray-500">
+						Performance insights across all your AI agents.
+					</p>
+				</div>
+				<div className="flex items-center gap-2">
+					<Button
+						variant="outline"
+						size="sm"
+						className="text-xs gap-1.5"
+						onClick={handleDownloadReport}
+					>
+						<Download className="size-3.5" />
+						Download Report
+					</Button>
+				</div>
 			</div>
 
 			{/* KPI Cards */}

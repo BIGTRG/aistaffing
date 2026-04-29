@@ -14,6 +14,7 @@ export { ConversationsPage } from "./ConversationsPage";
 export { AnalyticsPage } from "./AnalyticsPage";
 export { SupportPage } from "./SupportPage";
 export { PricingPage } from "./PricingPage";
+export { AgentActivityPage } from "./AgentActivityPage";
 export { AdminDashboardPage } from "./admin/AdminDashboardPage";
 export { AdminClientsPage } from "./admin/AdminClientsPage";
 export { AdminAgentTemplatesPage } from "./admin/AdminAgentTemplatesPage";

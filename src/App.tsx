@@ -33,6 +33,7 @@ import {
 	SignupPage,
 	SupportPage,
 	PricingPage,
+	AgentActivityPage,
 } from "./pages";
 
 function App() {
@@ -64,6 +65,7 @@ function App() {
 							<Route element={<EmployerLayout />}>
 								<Route path="/employer/dashboard" element={<DashboardPage />} />
 								<Route path="/employer/agents" element={<AgentsPage />} />
+								<Route path="/employer/activity" element={<AgentActivityPage />} />
 								<Route path="/employer/conversations" element={<ConversationsPage />} />
 								<Route path="/employer/analytics" element={<AnalyticsPage />} />
 								<Route path="/employer/billing" element={<BillingPage />} />

@@ -11,6 +11,7 @@ import {
 	MessageSquare,
 	BarChart3,
 	Headphones,
+	Activity,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -40,6 +41,7 @@ import {
 const mainNavItems = [
 	{ href: "/employer/dashboard", label: "Dashboard", icon: LayoutDashboard },
 	{ href: "/employer/agents", label: "My Agents", icon: Bot },
+	{ href: "/employer/activity", label: "Agent Activity", icon: Activity },
 ];
 
 const insightNavItems = [

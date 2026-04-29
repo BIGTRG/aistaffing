@@ -15,11 +15,16 @@ import {
 	Cog,
 	Banknote,
 	Monitor,
+	MessageSquare,
+	ShoppingCart,
+	Settings,
 } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import { toast } from "sonner";
+import { TestAgentChat } from "@/components/TestAgentChat";
+import { AgentConfigPanel } from "@/components/AgentConfigPanel";
 
 const departmentIcons: Record<string, React.ElementType> = {
 	"Front Office": Headphones,
@@ -38,6 +43,8 @@ export function AgentsPage() {
 	const [search, setSearch] = useState("");
 	const [filterDept, setFilterDept] = useState<string>("All");
 	const [deploying, setDeploying] = useState<string | null>(null);
+	const [testChatDeployment, setTestChatDeployment] = useState<any>(null);
+	const [configDeployment, setConfigDeployment] = useState<any>(null);
 
 	const templates = useQuery(api.agentTemplates.list) ?? [];
 	const org = useQuery(api.organizations.getMine);
@@ -98,14 +105,105 @@ export function AgentsPage() {
 
 	return (
 		<div className="space-y-6">
-			<div>
-				<h1 className="text-2xl font-bold tracking-tight text-gray-900">
-					Agent Roster
-				</h1>
-				<p className="text-gray-500">
-					100 AI agents across 10 departments. Deploy any agent to your
-					business.
-				</p>
+			<div className="flex items-center justify-between">
+				<div>
+					<h1 className="text-2xl font-bold tracking-tight text-gray-900">
+						Agent Roster
+					</h1>
+					<p className="text-gray-500">
+						100 AI agents across 10 departments. Deploy any agent to your
+						business.
+					</p>
+				</div>
+			</div>
+
+			{/* My Deployed Agents — quick access to configure/test */}
+			{deployments.length > 0 && (
+				<Card className="border-gray-200 bg-gradient-to-r from-slate-50 to-white">
+					<CardContent className="p-5">
+						<div className="flex items-center justify-between mb-4">
+							<h3 className="font-semibold text-gray-900 flex items-center gap-2">
+								<Bot className="size-4 text-slate-700" />
+								Your Deployed Agents ({deployments.length})
+							</h3>
+						</div>
+						<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
+							{deployments.map((d) => (
+								<div
+									key={d._id}
+									className="flex items-center justify-between bg-white rounded-lg border border-gray-200 p-3"
+								>
+									<div className="flex items-center gap-2.5">
+										<div
+											className={`size-8 rounded-lg flex items-center justify-center ${
+												d.status === "active"
+													? "bg-emerald-50"
+													: "bg-gray-100"
+											}`}
+										>
+											<Bot
+												className={`size-4 ${
+													d.status === "active"
+														? "text-emerald-600"
+														: "text-gray-400"
+												}`}
+											/>
+										</div>
+										<div>
+											<p className="text-sm font-medium text-gray-900">
+												{d.displayName}
+											</p>
+											<p className="text-[10px] text-gray-500">
+												{d.template?.department}
+											</p>
+										</div>
+									</div>
+									<div className="flex items-center gap-1.5">
+										<button
+											onClick={() => setConfigDeployment(d)}
+											className="p-1.5 rounded-md hover:bg-amber-50 text-amber-600 transition-colors"
+											title="Configure"
+										>
+											<Settings className="size-3.5" />
+										</button>
+										<button
+											onClick={() => setTestChatDeployment(d)}
+											className="p-1.5 rounded-md hover:bg-blue-50 text-blue-600 transition-colors"
+											title="Test Chat"
+										>
+											<MessageSquare className="size-3.5" />
+										</button>
+									</div>
+								</div>
+							))}
+						</div>
+					</CardContent>
+				</Card>
+			)}
+
+			{/* Purchase More CTA Banner */}
+			<div className="bg-gradient-to-r from-slate-900 to-slate-800 rounded-xl p-6 flex items-center justify-between">
+				<div className="flex items-center gap-4">
+					<div className="size-12 rounded-xl bg-white/10 flex items-center justify-center">
+						<ShoppingCart className="size-6 text-amber-400" />
+					</div>
+					<div>
+						<h3 className="font-bold text-white text-lg">
+							Expand Your AI Team
+						</h3>
+						<p className="text-slate-300 text-sm mt-0.5">
+							Browse {templates.length - deployments.length} more agents available to deploy. Scroll down to find the perfect fit.
+						</p>
+					</div>
+				</div>
+				<div className="text-right">
+					<p className="text-xs text-slate-400 mb-1">
+						Currently deployed: {deployments.length} agents
+					</p>
+					<span className="text-amber-400 text-sm font-semibold">
+						↓ Browse below
+					</span>
+				</div>
 			</div>
 
 			{/* Search & Filter */}
@@ -249,6 +347,30 @@ export function AgentsPage() {
 						No agents match your search.
 					</p>
 				</div>
+			)}
+
+			{/* Test Agent Chat Dialog */}
+			{testChatDeployment && (
+				<TestAgentChat
+					open={!!testChatDeployment}
+					onOpenChange={(open) => {
+						if (!open) setTestChatDeployment(null);
+					}}
+					deployment={testChatDeployment}
+					orgName={org?.name ?? "Our Business"}
+					orgIndustry={org?.industry ?? ""}
+				/>
+			)}
+
+			{/* Agent Config Panel */}
+			{configDeployment && (
+				<AgentConfigPanel
+					open={!!configDeployment}
+					onOpenChange={(open) => {
+						if (!open) setConfigDeployment(null);
+					}}
+					deployment={configDeployment}
+				/>
 			)}
 		</div>
 	);
