@@ -23,6 +23,7 @@ const DEPARTMENTS = [
 	{ name: "IT & Tech Support", agents: ["IT Help Desk", "Website Monitor", "Security Alert Agent", "Password Reset Agent", "System Admin Assistant", "Software License Manager", "Data Backup Monitor", "Network Monitor", "Cloud Infrastructure Monitor", "API Integration Agent"], count: 10 },
 	{ name: "Legal & Compliance", agents: ["Contract Review Assistant", "NDA Generator", "Compliance Checker", "Regulatory Monitor", "Privacy (GDPR/CCPA) Agent", "Dispute Resolution Agent", "IP Monitor", "Document Filing Agent", "Legal Research Agent", "Trademark Watch Agent"], count: 10 },
 	{ name: "Executive & Strategy", agents: ["CEO Advisor", "CFO Advisor", "CTO Advisor", "COO / President", "Business Intelligence Agent", "Market Research Agent", "Competitive Intel Agent", "Risk Assessment Agent", "Board Report Generator", "Strategic Planning Agent"], count: 10 },
+	{ name: "Digital Services & Platform Building", agents: ["Full-Stack Platform Builder", "Mobile App Developer", "Custom Software Engineer", "Cloud Architect", "Data Engineer & Analytics", "Cybersecurity Specialist", "DevOps & Infrastructure", "AI & Machine Learning Engineer", "UI/UX Designer", "Systems Integrator"], count: 10 },
 ];
 
 const INDUSTRY_LINKS = [
@@ -58,7 +59,7 @@ const COMPARISON = [
 	{ old: "Client pays hourly + markup", new: "Flat monthly subscription" },
 	{ old: "One worker per client", new: "Unlimited capacity per agent" },
 	{ old: "You handle payroll & insurance", new: "Zero liability, ever" },
-	{ old: "Weeks to hire & train", new: "Live in under 24 hours" },
+	{ old: "Weeks to hire & train", new: "Live in 48 hours" },
 	{ old: "Workers call in sick", new: "24/7/365 — no exceptions" },
 ];
 
@@ -209,8 +210,8 @@ export function LandingPage() {
 
 					<p className="text-base md:text-lg text-[#3A3F48]/60 max-w-2xl mx-auto leading-relaxed">
 						The first staffing agency that deploys <span className="text-[#1A1D23] font-medium">AI agents</span> instead
-						of human temps. Receptionists, sales reps, C-suite advisors — deployed to your business
-						in under 24 hours. <span className="text-[#F27A2E] font-semibold">No liability. No insurance. No days off.</span>
+						of human temps. Receptionists, sales reps, platform builders, C-suite advisors — deployed to your business
+						in 48 hours or less. <span className="text-[#F27A2E] font-semibold">We build anything digital. No liability. No days off.</span>
 					</p>
 
 					{!isAuthenticated && !isLoading && (
@@ -238,9 +239,9 @@ export function LandingPage() {
 				<div className="relative z-10 mt-auto mb-12 w-full max-w-4xl mx-auto">
 					<div className="flex items-center justify-center divide-x divide-[#1A1D23]/10">
 						<StatBlock value="24/7" label="Availability" />
-						<StatBlock value="<24h" label="Deploy Time" />
+						<StatBlock value="48h" label="Deploy Time" />
 						<StatBlock value="$0" label="Workers' Comp" />
-						<StatBlock value="100" label="Agent Roles" />
+						<StatBlock value="110+" label="Agent Roles" />
 					</div>
 				</div>
 
@@ -256,7 +257,7 @@ export function LandingPage() {
 				<div className="ticker-track">
 					{[...Array(2)].map((_, copy) => (
 						<div key={copy} className="ticker-content">
-							{["⬡ 100 AI AGENTS READY", "⬡ 10 DEPARTMENTS", "⬡ 25 INDUSTRIES", "⬡ DEPLOY IN 24 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ 95% MARGIN TARGET", "⬡ FROM $199/MO"].map((t) => (
+							{["⬡ 110+ AI AGENTS", "⬡ 11 DEPARTMENTS", "⬡ 25 INDUSTRIES", "⬡ DEPLOY IN 48 HRS", "⬡ $0 WORKERS COMP", "⬡ 24/7 OPERATIONS", "⬡ WE BUILD YOUR PLATFORMS", "⬡ 5-MIN ONBOARDING", "⬡ $3K SETUP FEE"].map((t) => (
 								<span key={`${copy}-${t}`} className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#1A1D23]/20 whitespace-nowrap px-8">{t}</span>
 							))}
 						</div>
@@ -275,8 +276,9 @@ export function LandingPage() {
 						</h2>
 						<p className="text-[#3A3F48]/60 text-lg leading-relaxed max-w-lg">
 							We operate exactly like a traditional staffing agency — but instead of placing
-							human workers, we deploy intelligent AI agents. Same process. Better results.
-							A fraction of the cost.
+							human workers, we deploy intelligent AI agents. From answering phones to building
+							entire platforms. Anything electronic, anything digital — we staff it.
+							A fraction of the cost. Deployed in 48 hours.
 						</p>
 					</div>
 
@@ -284,9 +286,9 @@ export function LandingPage() {
 						{[
 							{ num: "01", title: "Zero Liability", desc: "No workers' comp, no insurance, no HR issues, no payroll taxes." },
 							{ num: "02", title: "24/7 Operations", desc: "No sick days. No vacations. Always on, always professional." },
-							{ num: "03", title: "Instant Deploy", desc: "Tell us about your business, agent is live within 24 hours." },
-							{ num: "04", title: "We Build Your Setup", desc: "No tech team? We build the phone system, portal, and tools." },
-							{ num: "05", title: "Multi-Channel", desc: "Phone, email, chat, social media — every channel covered." },
+							{ num: "03", title: "48-Hour Deploy", desc: "Tell us about your business. Your AI agents go live within 48 hours." },
+							{ num: "04", title: "We Build Everything", desc: "Platforms, apps, portals, integrations — anything digital, we build it for you." },
+							{ num: "05", title: "5-Minute Onboarding", desc: "Sign up, pick your agents, and your AI team starts working. That simple." },
 							{ num: "06", title: "Unlimited Scale", desc: "Add more agents as you grow. No recruiting, no turnover." },
 						].map((f) => (
 							<div key={f.num} className="group flex gap-5 p-4 -mx-4 rounded-lg hover:bg-[#1A1D23]/[0.03] transition-colors">
@@ -308,11 +310,11 @@ export function LandingPage() {
 					<div className="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16">
 						<div>
 							<h2 className="text-4xl md:text-5xl font-bold tracking-tight text-[#1A1D23]">
-								100 Agents. 10 Departments.
+								110+ Agents. 11 Departments.
 							</h2>
 							<p className="text-[#3A3F48]/50 mt-3 max-w-lg">
-								Every agent has a defined role, skill set, and knowledge base.
-								Browse the roster, pick who you need, and we deploy them.
+								Every agent has a defined role, skill set, and knowledge base — including a full digital services team that builds platforms, apps, and custom software.
+								Browse the roster, pick who you need, and we deploy them in 48 hours.
 							</p>
 						</div>
 						<Link to="/signup" className="text-[#F27A2E] text-sm font-medium flex items-center gap-1 hover:gap-2 transition-all shrink-0">
@@ -392,10 +394,10 @@ export function LandingPage() {
 						<div className="absolute left-6 top-0 bottom-0 w-px bg-gradient-to-b from-[#2B7AE0]/40 via-[#2B7AE0]/20 to-transparent" />
 
 						{[
-							{ step: "01", title: "CONTACT", desc: "Visit our site, browse the agent roster, or submit a contact form describing your business needs." },
-							{ step: "02", title: "ASSESS", desc: "An account manager evaluates your needs and determines what infrastructure you have in place." },
-							{ step: "03", title: "BUILD & DEPLOY", desc: "We build your phone system, portal, and tools if needed. Then configure and deploy your AI agent." },
-							{ step: "04", title: "OPERATIONAL", desc: "Your AI agent starts working immediately. Monitor activity in your portal. Add more agents anytime." },
+							{ step: "01", title: "5-MINUTE ONBOARDING", desc: "Sign up, tell us your industry, and select your AI agents from our roster of 110+. Takes five minutes." },
+							{ step: "02", title: "WE BUILD IT", desc: "We build everything you need — phone systems, portals, platforms, apps, integrations. You focus on your business." },
+							{ step: "03", title: "48-HOUR DEPLOY", desc: "Your entire AI team is configured, trained on your business, and deployed within 48 hours. Guaranteed." },
+							{ step: "04", title: "OPERATIONAL", desc: "Your AI agents start working immediately. Monitor everything from your dashboard. Scale anytime." },
 						].map((s, i) => (
 							<div key={s.step} className="relative flex gap-8 mb-16 last:mb-0">
 								<div className="relative z-10 shrink-0">
@@ -428,7 +430,7 @@ export function LandingPage() {
 							Watch Your AI Team <span className="text-[#2B7AE0]">Come Alive</span>
 						</h2>
 						<p className="text-[#3A3F48]/50 max-w-xl mx-auto">
-							From sign-up to live deployment in under 24 hours. Here's how it works.
+							From sign-up to live deployment in 48 hours. Here's how it works.
 						</p>
 					</div>
 
@@ -461,7 +463,7 @@ export function LandingPage() {
 							{
 								icon: "📋",
 								title: "Sign Up & Select",
-								desc: "Create your account, tell us your industry, and pick your agents from our roster of 100+.",
+								desc: "5-minute onboarding. Tell us your industry, pick your agents from our roster of 110+.",
 								animation: (
 									<div className="relative h-32 flex items-center justify-center">
 										<div className="absolute w-24 h-24 rounded-2xl border-2 border-dashed border-[#2B7AE0]/30 animate-spin" style={{animationDuration: '12s'}} />
@@ -471,8 +473,8 @@ export function LandingPage() {
 							},
 							{
 								icon: "⚙️",
-								title: "We Configure & Train",
-								desc: "Our team configures your agents with your business knowledge, services, FAQs, and brand voice.",
+								title: "We Build & Configure",
+								desc: "We build your platforms, portals, and tools. Configure every agent with your business knowledge, services, and brand voice.",
 								animation: (
 									<div className="relative h-32 flex items-center justify-center">
 										<div className="flex gap-1 items-center">
@@ -486,8 +488,8 @@ export function LandingPage() {
 							},
 							{
 								icon: "🚀",
-								title: "Go Live in 24 Hours",
-								desc: "Your AI team starts handling calls, chats, and emails. Monitor everything from your dashboard.",
+								title: "Go Live in 48 Hours",
+								desc: "Your AI team starts handling calls, chats, emails, and building your digital infrastructure. Monitor everything from your dashboard.",
 								animation: (
 									<div className="relative h-32 flex items-center justify-center">
 										<div className="absolute w-20 h-20 rounded-full border border-emerald-400/30 animate-ping" style={{animationDuration: '2s'}} />
@@ -521,7 +523,7 @@ export function LandingPage() {
 								savings: "$12,000 new revenue",
 							},
 							{
-								quote: "We replaced our $3,500/mo receptionist with a $399/mo AI that works 24/7. The ROI is insane.",
+								quote: "We replaced our $5,000/mo receptionist with a $1,257/mo AI that works 24/7. The ROI is insane.",
 								name: "Jennifer L.",
 								role: "Managing Partner, West Law Group",
 								savings: "$3,100/mo saved",
@@ -591,7 +593,7 @@ export function LandingPage() {
 							Pay Less Than a Human. <span className="text-[#F27A2E]">Get&nbsp;More.</span>
 						</h2>
 						<p className="text-[#3A3F48]/50 max-w-xl mx-auto">
-							Monthly subscriptions based on agent complexity. One-time platform setup starts at $500.
+							Monthly subscriptions based on agent complexity. One-time platform setup: $3,000. Deployed in 48 hours.
 						</p>
 					</div>
 
@@ -599,9 +601,9 @@ export function LandingPage() {
 						{/* Basic */}
 						<div className="relative border border-[#1A1D23]/10 rounded-lg p-8 hover:border-[#1A1D23]/20 transition-all group bg-white/30 backdrop-blur-sm">
 							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#3A3F48]/40 mb-4">Basic</div>
-							<div className="text-3xl font-bold text-[#1A1D23] mb-1">$200 – $500</div>
+							<div className="text-3xl font-bold text-[#1A1D23] mb-1">$630 – $1,575</div>
 							<div className="text-xs text-[#3A3F48]/40 mb-6">per month</div>
-							<p className="text-sm text-[#3A3F48]/50 mb-6 leading-relaxed">Phone answering, scheduling, dispatch. Your AI handles the front lines 24/7.</p>
+							<p className="text-sm text-[#3A3F48]/50 mb-6 leading-relaxed">Phone answering, scheduling, dispatch, chat. Your AI handles the front lines 24/7.</p>
 							<div className="space-y-2.5 mb-8">
 								{["24/7 phone answering", "Appointment scheduling", "Call logging & transcripts", "FAQ handling", "SMS follow-ups"].map((f) => (
 									<div key={f} className="flex items-center gap-2 text-sm text-[#3A3F48]/50">
@@ -621,7 +623,7 @@ export function LandingPage() {
 								<span className="text-[10px] font-mono uppercase tracking-[0.2em] text-white bg-[#2B7AE0] px-3 py-1 rounded-full">Recommended</span>
 							</div>
 							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#2B7AE0] mb-4">Professional</div>
-							<div className="text-3xl font-bold text-white mb-1">$500 – $1,500</div>
+							<div className="text-3xl font-bold text-white mb-1">$1,575 – $4,725</div>
 							<div className="text-xs text-white/40 mb-6">per month</div>
 							<p className="text-sm text-white/50 mb-6 leading-relaxed">Project managers, sales reps, marketing teams. The agents that grow your revenue.</p>
 							<div className="space-y-2.5 mb-8">
@@ -640,9 +642,9 @@ export function LandingPage() {
 						{/* Executive */}
 						<div className="relative border border-[#1A1D23]/10 rounded-lg p-8 hover:border-[#1A1D23]/20 transition-all group bg-white/30 backdrop-blur-sm">
 							<div className="text-[11px] font-mono uppercase tracking-[0.15em] text-[#3A3F48]/40 mb-4">Executive</div>
-							<div className="text-3xl font-bold text-[#1A1D23] mb-1">$1,500 – $5,000</div>
+							<div className="text-3xl font-bold text-[#1A1D23] mb-1">$4,725 – $12,600</div>
 							<div className="text-xs text-[#3A3F48]/40 mb-6">per month</div>
-							<p className="text-sm text-[#3A3F48]/50 mb-6 leading-relaxed">C-suite advisory, strategic planning, and technology leadership for your business.</p>
+							<p className="text-sm text-[#3A3F48]/50 mb-6 leading-relaxed">C-suite advisory, strategic planning, platform building, and full digital transformation for your business.</p>
 							<div className="space-y-2.5 mb-8">
 								{["Everything in Professional", "Strategic business planning", "Financial forecasting", "Technology roadmapping", "Dedicated account manager"].map((f) => (
 									<div key={f} className="flex items-center gap-2 text-sm text-[#3A3F48]/50">
@@ -662,7 +664,7 @@ export function LandingPage() {
 					</div>
 
 					<p className="text-center text-xs text-[#3A3F48]/30 mt-6 font-mono">
-						Platform setup fee: $500 – $1,500 (one-time) for businesses needing phone systems, portals, or scheduling tools.
+						Platform setup fee: $3,000 (one-time). Includes phone systems, portals, custom platforms, and all digital infrastructure. Deployed in 48 hours.
 					</p>
 				</div>
 			</section>
@@ -679,7 +681,7 @@ export function LandingPage() {
 						<span className="text-transparent bg-clip-text bg-gradient-to-r from-[#F27A2E] to-[#FF9A52]">Your First Agent?</span>
 					</h2>
 					<p className="text-[#3A3F48]/50 text-lg max-w-lg mx-auto">
-						Book a free consultation. Tell us what your business needs. We'll have you live in under 24 hours.
+						Book a free consultation. Tell us what your business needs. We'll have you live in 48 hours or less.
 					</p>
 					<div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
 						<Link to="/signup">

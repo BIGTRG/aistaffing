@@ -66,30 +66,30 @@ const TIERS = [
 ];
 
 const STARTER_AGENTS = [
-	{ name: "Virtual Receptionist", price: 399 },
-	{ name: "Live Chat Agent", price: 349 },
-	{ name: "Appointment Setter", price: 349 },
+	{ name: "Virtual Receptionist", price: 1257 },
+	{ name: "Live Chat Agent", price: 1100 },
+	{ name: "Appointment Setter", price: 1100 },
 ];
 
 const GROWTH_AGENTS = [
-	{ name: "Lead Gen Specialist", price: 599 },
-	{ name: "Follow-Up Agent", price: 499 },
-	{ name: "Social Media Manager", price: 599 },
-	{ name: "Email Marketing Agent", price: 449 },
+	{ name: "Lead Gen Specialist", price: 2202 },
+	{ name: "Follow-Up Agent", price: 1572 },
+	{ name: "Social Media Manager", price: 1887 },
+	{ name: "Email Marketing Agent", price: 1415 },
 ];
 
 const ENTERPRISE_AGENTS = [
-	{ name: "CEO Advisor", price: 999 },
-	{ name: "CFO Advisor", price: 999 },
-	{ name: "Business Intelligence", price: 899 },
-	{ name: "Competitive Intel Agent", price: 799 },
+	{ name: "Full-Stack Platform Builder", price: 8500 },
+	{ name: "CEO Advisor", price: 12597 },
+	{ name: "CFO Advisor", price: 11025 },
+	{ name: "AI & ML Engineer", price: 11000 },
 ];
 
 const PACKAGES = [
 	{
 		name: "Starter",
 		description: "Perfect for small businesses getting started with AI",
-		startingAt: 349,
+		startingAt: 1100,
 		agents: STARTER_AGENTS,
 		icon: Zap,
 		features: [
@@ -106,7 +106,7 @@ const PACKAGES = [
 	{
 		name: "Growth",
 		description: "Scale your operations with dedicated AI teams",
-		startingAt: 449,
+		startingAt: 1415,
 		agents: GROWTH_AGENTS,
 		icon: TrendingUp,
 		features: [
@@ -124,8 +124,8 @@ const PACKAGES = [
 	},
 	{
 		name: "Enterprise",
-		description: "Full AI workforce for large organizations",
-		startingAt: 799,
+		description: "Full AI workforce with digital platform building",
+		startingAt: 2517,
 		agents: ENTERPRISE_AGENTS,
 		icon: Crown,
 		features: [
@@ -145,20 +145,21 @@ const PACKAGES = [
 ];
 
 const COMPARISON_ITEMS = [
-	{ feature: "Salary", human: "$3,500+/mo", ai: "$199–$999/mo" },
-	{ feature: "Benefits & Insurance", human: "$800+/mo", ai: "$0" },
-	{ feature: "Workers' Comp", human: "$200+/mo", ai: "$0" },
-	{ feature: "Training Time", human: "2-4 weeks", ai: "< 24 hours" },
+	{ feature: "Salary", human: "$5,000+/mo", ai: "$630–$12,600/mo" },
+	{ feature: "Benefits & Insurance", human: "$1,200+/mo", ai: "$0" },
+	{ feature: "Workers' Comp", human: "$300+/mo", ai: "$0" },
+	{ feature: "Training Time", human: "2-4 weeks", ai: "48 hours" },
 	{ feature: "Availability", human: "40 hrs/week", ai: "24/7/365" },
 	{ feature: "Sick Days", human: "10+ days/year", ai: "0" },
 	{ feature: "Turnover Risk", human: "High", ai: "Zero" },
-	{ feature: "Scalability", human: "Weeks to hire", ai: "Instant" },
+	{ feature: "Scalability", human: "Weeks to hire", ai: "48 hours" },
+	{ feature: "Platform Building", human: "$50K+ project", ai: "Included" },
 ];
 
 export function PricingPage() {
 	const [selectedTier, setSelectedTier] = useState("semi_annual");
 	const [agentCount, setAgentCount] = useState(3);
-	const [avgPrice, setAvgPrice] = useState(449);
+	const [avgPrice, setAvgPrice] = useState(1415);
 	const [showFaq, setShowFaq] = useState<string | null>(null);
 
 	const currentTier = TIERS.find((t) => t.id === selectedTier) ?? TIERS[0];
@@ -170,7 +171,7 @@ export function PricingPage() {
 	const FAQS = [
 		{
 			q: "How quickly can I deploy agents?",
-			a: "Most agents are live within 24 hours of signing up. Complex configurations with custom knowledge bases may take 48-72 hours.",
+			a: "All agents are deployed within 48 hours of signing up — guaranteed. Onboarding takes just 5 minutes.",
 		},
 		{
 			q: "Can I cancel anytime?",
@@ -231,7 +232,7 @@ export function PricingPage() {
 						of the Cost
 					</h1>
 					<p className="text-lg text-[#3A3F48]/60 max-w-xl mx-auto">
-						Deploy professional AI agents from $199/month. No contracts required on monthly plans. Scale up or down anytime.
+						Deploy professional AI agents from $630/month. $3,000 one-time setup. Live in 48 hours. 5-minute onboarding.
 					</p>
 				</div>
 			</section>
@@ -379,17 +380,17 @@ export function PricingPage() {
 									<label className="text-sm font-semibold text-[#1A1D23]/70 mb-2 block">Average agent price</label>
 									<input
 										type="range"
-										min={199}
-										max={999}
-										step={50}
+										min={630}
+										max={12600}
+										step={100}
 										value={avgPrice}
 										onChange={(e) => setAvgPrice(parseInt(e.target.value))}
 										className="w-full accent-[#2B7AE0]"
 									/>
 									<div className="flex justify-between text-xs text-[#3A3F48]/50 mt-1">
-										<span>$199/mo</span>
-										<span className="font-bold text-[#1A1D23]">${avgPrice}/mo</span>
-										<span>$999/mo</span>
+										<span>$630/mo</span>
+										<span className="font-bold text-[#1A1D23]">${avgPrice.toLocaleString()}/mo</span>
+										<span>$12,600/mo</span>
 									</div>
 								</div>
 							</div>
@@ -528,7 +529,7 @@ export function PricingPage() {
 					</div>
 					<div className="flex items-center justify-center gap-6 mt-8 text-xs text-[#3A3F48]/40">
 						<span className="flex items-center gap-1"><Shield className="size-3" /> 7-day free trial</span>
-						<span className="flex items-center gap-1"><Clock className="size-3" /> Deploy in 24hrs</span>
+						<span className="flex items-center gap-1"><Clock className="size-3" /> Deploy in 48hrs</span>
 						<span className="flex items-center gap-1"><Zap className="size-3" /> Cancel anytime</span>
 					</div>
 				</div>
