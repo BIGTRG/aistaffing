@@ -1,4 +1,4 @@
-import { useAuthActions } from "@convex-dev/auth/react";
+
 import { useQuery } from "convex/react";
 import {
 	LayoutDashboard,
@@ -165,7 +165,6 @@ function SidebarNav() {
 
 function SidebarUserMenu() {
 	const user = useQuery(api.auth.currentUser);
-	const { signOut } = useAuthActions();
 	const { theme, toggleTheme, switchable } = useTheme();
 
 	return (
@@ -207,11 +206,11 @@ function SidebarUserMenu() {
 							)}
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								onClick={() => signOut()}
-								className="text-destructive focus:text-destructive focus:bg-destructive/10"
+								onClick={() => window.location.href = "/admin/dashboard"}
+								className="text-muted-foreground"
 							>
 								<LogOut className="size-4" />
-								Sign out
+								Back to Dashboard
 							</DropdownMenuItem>
 						</DropdownMenuContent>
 					</DropdownMenu>

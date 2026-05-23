@@ -1,6 +1,5 @@
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "./components/AdminLayout";
-import { AdminRoute } from "./components/AdminRoute";
 import { EmployerLayout } from "./components/EmployerLayout";
 import { EmployerRoute } from "./components/EmployerRoute";
 import ErrorBoundary from "./components/ErrorBoundary";
@@ -28,7 +27,6 @@ import {
 	ConversationsPage,
 	DashboardPage,
 	IndustryPage,
-	LandingPage,
 	LoginPage,
 	OnboardingPage,
 	PartnersPage,
@@ -46,7 +44,7 @@ function App() {
 				<Toaster />
 				<Routes>
 					{/* ── Public Pages ── */}
-					<Route path="/" element={<LandingPage />} />
+					<Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
 					<Route path="/pricing" element={<PricingPage />} />
 					<Route path="/industries/:slug" element={<IndustryPage />} />
 
@@ -79,9 +77,8 @@ function App() {
 						</Route>
 					</Route>
 
-					{/* ── Admin Portal ── */}
-					<Route element={<AdminRoute />}>
-						<Route element={<AdminLayout />}>
+					{/* ── Admin Portal (no auth required) ── */}
+					<Route element={<AdminLayout />}>
 							<Route path="/admin/dashboard" element={<AdminDashboardPage />} />
 							<Route path="/admin/clients" element={<AdminClientsPage />} />
 							<Route path="/admin/agents" element={<AdminAgentTemplatesPage />} />
@@ -93,7 +90,6 @@ function App() {
 							<Route path="/admin/platforms" element={<AdminPlatformsPage />} />
 							<Route path="/admin/workflows" element={<AdminWorkflowsPage />} />
 							<Route path="/admin/settings" element={<AdminSettingsPage />} />
-						</Route>
 					</Route>
 
 					{/* ── Legacy redirects ── */}
