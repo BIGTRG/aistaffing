@@ -19,6 +19,9 @@ import {
 	AdminRevenuePage,
 	AdminSettingsPage,
 	AdminUsersPage,
+	AdminIndustriesPage,
+	AdminPlatformsPage,
+	AdminWorkflowsPage,
 	AgentsPage,
 	AnalyticsPage,
 	BillingPage,
@@ -86,6 +89,9 @@ function App() {
 							<Route path="/admin/revenue" element={<AdminRevenuePage />} />
 							<Route path="/admin/invoices" element={<AdminInvoicesPage />} />
 							<Route path="/admin/users" element={<AdminUsersPage />} />
+							<Route path="/admin/industries" element={<AdminIndustriesPage />} />
+							<Route path="/admin/platforms" element={<AdminPlatformsPage />} />
+							<Route path="/admin/workflows" element={<AdminWorkflowsPage />} />
 							<Route path="/admin/settings" element={<AdminSettingsPage />} />
 						</Route>
 					</Route>

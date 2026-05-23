@@ -23,3 +23,6 @@ export { AdminRevenuePage } from "./admin/AdminRevenuePage";
 export { AdminInvoicesPage } from "./admin/AdminInvoicesPage";
 export { AdminUsersPage } from "./admin/AdminUsersPage";
 export { AdminSettingsPage } from "./admin/AdminSettingsPage";
+export { AdminIndustriesPage } from "./admin/AdminIndustriesPage";
+export { AdminPlatformsPage } from "./admin/AdminPlatformsPage";
+export { AdminWorkflowsPage } from "./admin/AdminWorkflowsPage";

@@ -13,6 +13,9 @@ import {
 	Users,
 	Activity,
 	FileText,
+	Globe,
+	Layers,
+	Zap,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -43,6 +46,12 @@ const overviewItems = [
 	{ href: "/admin/dashboard", label: "Platform Overview", icon: LayoutDashboard },
 	{ href: "/admin/clients", label: "Clients", icon: Building2 },
 	{ href: "/admin/agents", label: "Agent Templates", icon: Bot },
+];
+
+const platformItems = [
+	{ href: "/admin/industries", label: "Industry Verticals", icon: Globe },
+	{ href: "/admin/platforms", label: "Core Platforms", icon: Layers },
+	{ href: "/admin/workflows", label: "Workflow Templates", icon: Zap },
 ];
 
 const operationsItems = [
@@ -91,6 +100,22 @@ function SidebarNav() {
 				<SidebarGroupContent>
 					<SidebarMenu>
 						{overviewItems.map((item) => (
+							<NavLink
+								key={item.href}
+								href={item.href}
+								label={item.label}
+								icon={item.icon}
+								isActive={location.pathname === item.href}
+							/>
+						))}
+					</SidebarMenu>
+				</SidebarGroupContent>
+			</SidebarGroup>
+			<SidebarGroup>
+				<SidebarGroupLabel className="text-xs font-semibold text-muted-foreground/70 uppercase tracking-wider">Enterprise Platform</SidebarGroupLabel>
+				<SidebarGroupContent>
+					<SidebarMenu>
+						{platformItems.map((item) => (
 							<NavLink
 								key={item.href}
 								href={item.href}

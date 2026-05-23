@@ -188,6 +188,67 @@ const schema = defineSchema({
   })
     .index("by_org", ["orgId"])
     .index("by_org_type", ["orgId", "eventType"]),
+
+  // ══════════════════════════════════════════════════
+  // ENTERPRISE PLATFORM TABLES
+  // ══════════════════════════════════════════════════
+
+  // ── Industry Verticals ──
+  industries: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    icon: v.string(),           // lucide icon name
+    description: v.string(),
+    category: v.string(),       // original | expanded | creative
+    multiplier: v.number(),     // pricing multiplier (e.g. 1.5 for healthcare)
+    platformIds: v.array(v.string()), // which platforms this industry uses (platform slugs)
+    features: v.array(v.string()),    // industry-specific features
+    isActive: v.boolean(),
+    sortOrder: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category"])
+    .index("by_active", ["isActive"]),
+
+  // ── Core Platforms ──
+  corePlatforms: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    icon: v.string(),
+    description: v.string(),
+    evolvesFrom: v.optional(v.string()),  // e.g. "Stewards Solution"
+    features: v.array(v.string()),
+    aiAgents: v.array(v.string()),        // AI agents embedded in this platform
+    starterPriceCents: v.number(),        // monthly price in cents
+    proPriceCents: v.number(),
+    enterprisePriceCents: v.number(),
+    isActive: v.boolean(),
+    sortOrder: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_active", ["isActive"]),
+
+  // ── Workflow Templates ──
+  workflowTemplates: defineTable({
+    name: v.string(),
+    industrySlug: v.optional(v.string()),  // null = universal template
+    platformSlug: v.string(),              // which platform this workflow lives in
+    description: v.string(),
+    triggerType: v.string(),               // manual | event | schedule | api
+    triggerDescription: v.string(),
+    steps: v.array(v.object({
+      order: v.number(),
+      name: v.string(),
+      type: v.string(),                   // action | condition | delay | human_review | api_call | ai_agent
+      description: v.string(),
+      config: v.optional(v.any()),
+    })),
+    isActive: v.boolean(),
+    isTemplate: v.boolean(),              // true = available as starter template
+  })
+    .index("by_industry", ["industrySlug"])
+    .index("by_platform", ["platformSlug"])
+    .index("by_active", ["isActive"]),
 });
 
 export default schema;
