@@ -300,7 +300,7 @@ function detectIndustry(text: string): { slug: string; label: string; platforms:
 // INDUSTRY-SPECIFIC WORKFLOW TEMPLATES (smart fallbacks)
 // ═══════════════════════════════════════════════════════════
 
-function getIndustryWorkflow(slug: string, clientName: string, painPoints: string[]): any {
+function getIndustryWorkflow(slug: string, clientName: string, _painPoints: string[]): any {
   const templates: Record<string, any> = {
     "car-dealership": {
       name: `${clientName} — Dealership Automation Suite`,
