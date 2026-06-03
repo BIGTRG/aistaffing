@@ -26,3 +26,4 @@ export { AdminSettingsPage } from "./admin/AdminSettingsPage";
 export { AdminIndustriesPage } from "./admin/AdminIndustriesPage";
 export { AdminPlatformsPage } from "./admin/AdminPlatformsPage";
 export { AdminWorkflowsPage } from "./admin/AdminWorkflowsPage";
+export { default as AdminOnboardingAgentPage } from "./admin/AdminOnboardingAgentPage";

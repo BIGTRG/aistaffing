@@ -228,6 +228,37 @@ const schema = defineSchema({
     .index("by_slug", ["slug"])
     .index("by_active", ["isActive"]),
 
+  // ── Onboarding Sessions (AI Workflow Builder Agent) ──
+  onboardingSessions: defineTable({
+    clientName: v.string(),
+    clientEmail: v.optional(v.string()),
+    clientPhone: v.optional(v.string()),
+    detectedIndustry: v.optional(v.string()),     // slug from industries table
+    detectedPlatforms: v.optional(v.array(v.string())), // platform slugs
+    businessSize: v.optional(v.string()),          // solo | small | medium | large
+    painPoints: v.optional(v.array(v.string())),
+    automationGoals: v.optional(v.array(v.string())),
+    answers: v.optional(v.any()),                  // structured answers from conversation
+    status: v.string(),                            // intake | analyzing | workflow_generated | deployed | abandoned
+    generatedWorkflowId: v.optional(v.id("workflowTemplates")),
+    generatedWorkflowPreview: v.optional(v.any()), // preview before deploy
+    createdAt: v.number(),
+    updatedAt: v.number(),
+  })
+    .index("by_status", ["status"])
+    .index("by_industry", ["detectedIndustry"])
+    .index("by_created", ["createdAt"]),
+
+  onboardingMessages: defineTable({
+    sessionId: v.id("onboardingSessions"),
+    role: v.string(),                              // agent | client | system
+    content: v.string(),
+    metadata: v.optional(v.any()),                 // e.g. detected intent, extracted data
+    timestamp: v.number(),
+  })
+    .index("by_session", ["sessionId"])
+    .index("by_session_time", ["sessionId", "timestamp"]),
+
   // ── Workflow Templates ──
   workflowTemplates: defineTable({
     name: v.string(),

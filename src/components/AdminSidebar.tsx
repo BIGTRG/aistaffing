@@ -16,6 +16,7 @@ import {
 	Globe,
 	Layers,
 	Zap,
+	Brain,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -49,6 +50,7 @@ const overviewItems = [
 ];
 
 const platformItems = [
+	{ href: "/admin/onboarding-agent", label: "AI Workflow Builder", icon: Brain },
 	{ href: "/admin/industries", label: "Industry Verticals", icon: Globe },
 	{ href: "/admin/platforms", label: "Core Platforms", icon: Layers },
 	{ href: "/admin/workflows", label: "Workflow Templates", icon: Zap },
