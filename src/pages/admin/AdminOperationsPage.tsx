@@ -16,7 +16,6 @@ import {
   Layers,
   RefreshCw,
   TrendingUp,
-  Users,
   Zap,
   AlertTriangle,
   Shield,
@@ -297,7 +296,7 @@ function ClientDetailPanel({ exec, onClose }: { exec: WorkflowExecution; onClose
 export function AdminOperationsPage() {
   const sessions = useQuery(api.onboardingAgent.listSessions) ?? [];
   const workflows = useQuery(api.workflows.list) ?? [];
-  const industries = useQuery(api.industries.list) ?? [];
+  const _industries = useQuery(api.industries.list) ?? [];
   const [selectedExec, setSelectedExec] = useState<WorkflowExecution | null>(null);
   const [viewMode, setViewMode] = useState<"agency" | "client">("agency");
 
