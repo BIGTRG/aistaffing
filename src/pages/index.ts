@@ -28,3 +28,4 @@ export { AdminPlatformsPage } from "./admin/AdminPlatformsPage";
 export { AdminWorkflowsPage } from "./admin/AdminWorkflowsPage";
 export { default as AdminOnboardingAgentPage } from "./admin/AdminOnboardingAgentPage";
 export { AdminOperationsPage } from "./admin/AdminOperationsPage";
+export { AdminClientPortalPage } from "./admin/AdminClientPortalPage";
