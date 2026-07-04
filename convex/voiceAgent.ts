@@ -1,6 +1,5 @@
 import { v } from "convex/values";
 import { action, mutation, query } from "./_generated/server";
-import { api } from "./_generated/api";
 
 declare const process: { env: Record<string, string | undefined> };
 
@@ -137,7 +136,7 @@ export const processVoiceInput = action({
     agentIndustry: v.string(),
     context: v.optional(v.any()),
   },
-  handler: async (ctx, args) => {
+  handler: async (_ctx, args) => {
     const persona = VOICE_PERSONAS[args.agentIndustry] ?? VOICE_PERSONAS["default"];
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? "";
 

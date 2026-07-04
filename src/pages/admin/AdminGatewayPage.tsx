@@ -9,7 +9,6 @@ import {
   Clock,
   Globe,
   Key,
-  Layers,
   Link2,
   Mail,
   MessageSquare,
@@ -17,9 +16,7 @@ import {
   PhoneCall,
   Radio,
   RefreshCw,
-  Send,
   Server,
-  Settings,
   Shield,
   Smartphone,
   TrendingUp,
@@ -449,13 +446,13 @@ export function AdminGatewayPage() {
                   {roles?.map((role: any, i: number) => (
                     <div key={i} className="flex items-center justify-between p-2.5 rounded-lg bg-gray-50">
                       <div className="flex items-center gap-2">
-                        <span className={cn("size-2 rounded-full", {
-                          "bg-red-500": role.role === "super_admin",
-                          "bg-purple-500": role.role === "agency_admin",
-                          "bg-blue-500": role.role === "client_admin",
-                          "bg-emerald-500": role.role === "client_user",
-                          "bg-gray-400": role.role === "viewer",
-                        }[role.role] ?? "bg-gray-400")} />
+                        <span className={cn("size-2 rounded-full",
+                          role.role === "super_admin" ? "bg-red-500" :
+                          role.role === "agency_admin" ? "bg-purple-500" :
+                          role.role === "client_admin" ? "bg-blue-500" :
+                          role.role === "client_user" ? "bg-emerald-500" :
+                          "bg-gray-400"
+                        )} />
                         <span className="text-sm font-medium capitalize">{role.role.replace(/_/g, " ")}</span>
                       </div>
                       <Badge variant="outline" className="text-xs">
