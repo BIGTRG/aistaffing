@@ -19,6 +19,7 @@ import {
 	Brain,
 	Gauge,
 	Eye,
+	Radio,
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -60,6 +61,7 @@ const platformItems = [
 
 const operationsItems = [
 	{ href: "/admin/operations", label: "Command Center", icon: Gauge },
+	{ href: "/admin/gateway", label: "AI Gateway", icon: Radio },
 	{ href: "/admin/client-portal", label: "Client Portal", icon: Eye },
 	{ href: "/admin/deployments", label: "Deployments", icon: Activity },
 	{ href: "/admin/revenue", label: "Revenue", icon: DollarSign },

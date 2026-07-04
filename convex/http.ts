@@ -147,4 +147,203 @@ http.route({
 	}),
 });
 
+/* ═══════════════════════════════════════════════
+   AI GATEWAY HTTP ENDPOINTS
+   All agent services route through /gateway/*
+   ═══════════════════════════════════════════════ */
+
+// Preflight
+http.route({
+	path: "/gateway",
+	method: "OPTIONS",
+	handler: httpAction(async () => {
+		return new Response(null, { status: 204, headers: corsHeaders });
+	}),
+});
+
+// Main Gateway Endpoint
+http.route({
+	path: "/gateway",
+	method: "POST",
+	handler: httpAction(async (ctx, req) => {
+		try {
+			const body = await req.json();
+			const { channel, orgId, agentId, payload, priority, apiKey } = body;
+
+			if (!channel || !payload) {
+				return new Response(
+					JSON.stringify({ error: "Missing required fields: channel, payload" }),
+					{ status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+				);
+			}
+
+			// Process through gateway
+			const result = await ctx.runMutation(api.gateway.processRequest, {
+				channel,
+				orgId: orgId ?? undefined,
+				agentId: agentId ?? undefined,
+				payload,
+				priority: priority ?? "normal",
+				metadata: { apiKey: apiKey ? "provided" : "none", source: "http" },
+			});
+
+			// Execute the request
+			const execution = await ctx.runAction(api.gateway.executeRequest, {
+				requestId: result.requestId,
+			});
+
+			return new Response(
+				JSON.stringify({
+					requestId: result.requestId,
+					status: execution.status,
+					channel: result.channel,
+					response: execution.response,
+					latencyMs: execution.latencyMs,
+				}),
+				{ status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		} catch (e: any) {
+			return new Response(
+				JSON.stringify({ error: "Gateway error", details: e.message }),
+				{ status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		}
+	}),
+});
+
+// Gateway Stats
+http.route({
+	path: "/gateway/stats",
+	method: "GET",
+	handler: httpAction(async (ctx) => {
+		const stats = await ctx.runQuery(api.gateway.getGatewayStats);
+		return new Response(
+			JSON.stringify(stats),
+			{ status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+		);
+	}),
+});
+
+// Voice Agent Endpoint
+http.route({
+	path: "/gateway/voice",
+	method: "OPTIONS",
+	handler: httpAction(async () => {
+		return new Response(null, { status: 204, headers: corsHeaders });
+	}),
+});
+
+http.route({
+	path: "/gateway/voice",
+	method: "POST",
+	handler: httpAction(async (ctx, req) => {
+		try {
+			const body = await req.json();
+			const { action: callAction, phoneNumber, direction, industry, callId, userSpeech } = body;
+
+			if (callAction === "initiate") {
+				const result = await ctx.runMutation(api.voiceAgent.initiateCall, {
+					direction: direction ?? "inbound",
+					phoneNumber: phoneNumber ?? "unknown",
+					agentIndustry: industry,
+				});
+				return new Response(JSON.stringify(result), {
+					status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+				});
+			}
+
+			if (callAction === "respond" && callId && userSpeech) {
+				const result = await ctx.runAction(api.voiceAgent.processVoiceInput, {
+					callId,
+					userSpeech,
+					agentIndustry: industry ?? "default",
+				});
+				return new Response(JSON.stringify(result), {
+					status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+				});
+			}
+
+			return new Response(
+				JSON.stringify({ error: "Invalid action. Use 'initiate' or 'respond'" }),
+				{ status: 400, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		} catch (e: any) {
+			return new Response(
+				JSON.stringify({ error: e.message }),
+				{ status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		}
+	}),
+});
+
+// Email Endpoint
+http.route({
+	path: "/gateway/email",
+	method: "OPTIONS",
+	handler: httpAction(async () => {
+		return new Response(null, { status: 204, headers: corsHeaders });
+	}),
+});
+
+http.route({
+	path: "/gateway/email",
+	method: "POST",
+	handler: httpAction(async (ctx, req) => {
+		try {
+			const body = await req.json();
+			const result = await ctx.runMutation(api.communications.sendEmail, {
+				to: body.to,
+				subject: body.subject,
+				body: body.body,
+				orgId: body.orgId,
+				templateId: body.templateId,
+				variables: body.variables,
+				scheduledFor: body.scheduledFor,
+			});
+			return new Response(JSON.stringify(result), {
+				status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+			});
+		} catch (e: any) {
+			return new Response(
+				JSON.stringify({ error: e.message }),
+				{ status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		}
+	}),
+});
+
+// SMS Endpoint
+http.route({
+	path: "/gateway/sms",
+	method: "OPTIONS",
+	handler: httpAction(async () => {
+		return new Response(null, { status: 204, headers: corsHeaders });
+	}),
+});
+
+http.route({
+	path: "/gateway/sms",
+	method: "POST",
+	handler: httpAction(async (ctx, req) => {
+		try {
+			const body = await req.json();
+			const result = await ctx.runMutation(api.communications.sendSms, {
+				to: body.to,
+				message: body.message,
+				orgId: body.orgId,
+				mediaUrl: body.mediaUrl,
+				campaignId: body.campaignId,
+			});
+			return new Response(JSON.stringify(result), {
+				status: 200, headers: { ...corsHeaders, "Content-Type": "application/json" },
+			});
+		} catch (e: any) {
+			return new Response(
+				JSON.stringify({ error: e.message }),
+				{ status: 500, headers: { ...corsHeaders, "Content-Type": "application/json" } }
+			);
+		}
+	}),
+});
+
 export default http;

@@ -24,6 +24,7 @@ import {
 	AdminOnboardingAgentPage,
 	AdminOperationsPage,
 	AdminClientPortalPage,
+	AdminGatewayPage,
 	AgentsPage,
 	AnalyticsPage,
 	BillingPage,
@@ -95,6 +96,7 @@ function App() {
 							<Route path="/admin/onboarding-agent" element={<AdminOnboardingAgentPage />} />
 						<Route path="/admin/operations" element={<AdminOperationsPage />} />
 						<Route path="/admin/client-portal" element={<AdminClientPortalPage />} />
+						<Route path="/admin/gateway" element={<AdminGatewayPage />} />
 							<Route path="/admin/settings" element={<AdminSettingsPage />} />
 					</Route>
 

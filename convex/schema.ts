@@ -280,6 +280,192 @@ const schema = defineSchema({
     .index("by_industry", ["industrySlug"])
     .index("by_platform", ["platformSlug"])
     .index("by_active", ["isActive"]),
+  // ══════════════════════════════════════════════════
+  // AI GATEWAY
+  // ══════════════════════════════════════════════════
+
+  gatewayRequests: defineTable({
+    channel: v.string(),        // voice | chat | email | sms | workflow | api
+    orgId: v.optional(v.string()),
+    agentId: v.optional(v.string()),
+    payload: v.any(),
+    priority: v.string(),       // low | normal | high | urgent
+    status: v.string(),         // received | processing | completed | failed
+    metadata: v.optional(v.any()),
+    responsePayload: v.optional(v.any()),
+    errorMessage: v.optional(v.string()),
+    latencyMs: v.optional(v.number()),
+    serviceConnectorsUsed: v.optional(v.array(v.string())),
+    createdAt: v.number(),
+    completedAt: v.optional(v.number()),
+  })
+    .index("by_channel", ["channel"])
+    .index("by_status", ["status"])
+    .index("by_org", ["orgId"])
+    .index("by_created", ["createdAt"]),
+
+  serviceConnectors: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    type: v.string(),           // esign | background_check | notary | payment | voice | email | sms | crm | custom
+    baseUrl: v.string(),
+    authType: v.string(),       // api_key | oauth2 | bearer | hmac
+    description: v.string(),
+    capabilities: v.array(v.string()),
+    isActive: v.boolean(),
+    requestCount: v.number(),
+    lastUsedAt: v.optional(v.number()),
+    avgLatencyMs: v.number(),
+    errorRate: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_type", ["type"])
+    .index("by_active", ["isActive"]),
+
+  // ══════════════════════════════════════════════════
+  // VOICE AI AGENT ENGINE
+  // ══════════════════════════════════════════════════
+
+  voiceCalls: defineTable({
+    orgId: v.optional(v.string()),
+    direction: v.string(),       // inbound | outbound
+    phoneNumber: v.string(),
+    agentName: v.string(),
+    agentIndustry: v.string(),
+    voicePersona: v.any(),
+    status: v.string(),          // ringing | connected | on_hold | completed | ended | failed
+    purpose: v.optional(v.string()),
+    startedAt: v.number(),
+    endedAt: v.optional(v.number()),
+    durationSeconds: v.optional(v.number()),
+    transcript: v.array(v.object({
+      role: v.string(),
+      content: v.string(),
+      timestamp: v.number(),
+    })),
+    sentiment: v.optional(v.string()),    // positive | neutral | negative
+    outcome: v.optional(v.string()),      // resolved | appointment_booked | sale | transfer | voicemail | missed
+    escalatedToHuman: v.boolean(),
+    recordingUrl: v.optional(v.string()),
+    summary: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_status", ["status"])
+    .index("by_industry", ["agentIndustry"])
+    .index("by_started", ["startedAt"]),
+
+  // ══════════════════════════════════════════════════
+  // EMAIL & SMS AUTOMATION
+  // ══════════════════════════════════════════════════
+
+  emailMessages: defineTable({
+    orgId: v.optional(v.string()),
+    to: v.string(),
+    subject: v.string(),
+    body: v.string(),
+    templateId: v.optional(v.string()),
+    status: v.string(),          // queued | scheduled | sent | delivered | opened | clicked | bounced | failed
+    scheduledFor: v.optional(v.number()),
+    sentAt: v.optional(v.number()),
+    openedAt: v.optional(v.number()),
+    clickedAt: v.optional(v.number()),
+    bouncedAt: v.optional(v.number()),
+    sequenceId: v.optional(v.string()),
+    sequenceStep: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_status", ["status"])
+    .index("by_created", ["createdAt"]),
+
+  smsMessages: defineTable({
+    orgId: v.optional(v.string()),
+    to: v.string(),
+    message: v.string(),
+    mediaUrl: v.optional(v.string()),
+    direction: v.string(),       // inbound | outbound
+    status: v.string(),          // queued | sent | delivered | failed
+    campaignId: v.optional(v.string()),
+    isOptInConfirmation: v.boolean(),
+    sentAt: v.optional(v.number()),
+    deliveredAt: v.optional(v.number()),
+    failedAt: v.optional(v.number()),
+    createdAt: v.number(),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_status", ["status"])
+    .index("by_created", ["createdAt"]),
+
+  emailSequences: defineTable({
+    orgId: v.optional(v.string()),
+    name: v.string(),
+    triggerEvent: v.string(),
+    steps: v.array(v.object({
+      delayHours: v.number(),
+      templateId: v.string(),
+      subject: v.string(),
+      body: v.string(),
+      channel: v.string(),
+    })),
+    isActive: v.boolean(),
+    enrolledCount: v.number(),
+    completedCount: v.number(),
+    createdAt: v.number(),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_active", ["isActive"]),
+
+  // ══════════════════════════════════════════════════
+  // ENTERPRISE AUTH & RBAC
+  // ══════════════════════════════════════════════════
+
+  enterpriseUsers: defineTable({
+    userId: v.string(),
+    email: v.string(),
+    name: v.string(),
+    role: v.string(),            // super_admin | agency_admin | client_admin | client_user | viewer
+    orgId: v.optional(v.string()),
+    permissions: v.array(v.string()),
+    isActive: v.boolean(),
+    lastLoginAt: v.optional(v.number()),
+    invitedBy: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_email", ["email"])
+    .index("by_role", ["role"])
+    .index("by_org", ["orgId"])
+    .index("by_user", ["userId"]),
+
+  apiKeys: defineTable({
+    name: v.string(),
+    keyHash: v.string(),
+    keyPrefix: v.string(),
+    orgId: v.optional(v.string()),
+    permissions: v.array(v.string()),
+    isActive: v.boolean(),
+    lastUsedAt: v.optional(v.number()),
+    usageCount: v.number(),
+    expiresAt: v.optional(v.number()),
+    createdBy: v.string(),
+    createdAt: v.number(),
+  })
+    .index("by_hash", ["keyHash"])
+    .index("by_org", ["orgId"])
+    .index("by_active", ["isActive"]),
+
+  auditLog: defineTable({
+    userId: v.string(),
+    action: v.string(),
+    resource: v.string(),
+    resourceId: v.optional(v.any()),
+    details: v.optional(v.any()),
+    ipAddress: v.optional(v.string()),
+    timestamp: v.number(),
+  })
+    .index("by_user", ["userId"])
+    .index("by_action", ["action"])
+    .index("by_timestamp", ["timestamp"]),
 });
 
 export default schema;

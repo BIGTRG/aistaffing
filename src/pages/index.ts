@@ -29,3 +29,4 @@ export { AdminWorkflowsPage } from "./admin/AdminWorkflowsPage";
 export { default as AdminOnboardingAgentPage } from "./admin/AdminOnboardingAgentPage";
 export { AdminOperationsPage } from "./admin/AdminOperationsPage";
 export { AdminClientPortalPage } from "./admin/AdminClientPortalPage";
+export { AdminGatewayPage } from "./admin/AdminGatewayPage";
