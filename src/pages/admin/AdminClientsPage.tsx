@@ -1,13 +1,13 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Building2, Search, Bot } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export function AdminClientsPage() {
-	const orgs = useQuery(api.organizations.listAll) ?? [];
-	const allDeployments = useQuery(api.deployments.listAll) ?? [];
+	const orgs = useApiQuery(() => api.organizations.listAll(), []) ?? [];
+	const allDeployments = useApiQuery(() => api.deployments.listAll(), []) ?? [];
 	const [search, setSearch] = useState("");
 
 	const filtered = orgs.filter((o) =>
@@ -40,11 +40,11 @@ export function AdminClientsPage() {
 
 			<div className="space-y-3">
 				{filtered.map((org) => {
-					const orgDeps = allDeployments.filter((d) => d.orgId === org._id);
+					const orgDeps = allDeployments.filter((d) => d.orgId === org.id);
 					const activeDeps = orgDeps.filter((d) => d.status === "active");
 
 					return (
-						<Card key={org._id} className="border-gray-200">
+						<Card key={org.id} className="border-gray-200">
 							<CardContent className="py-4">
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-4">
@@ -90,7 +90,7 @@ export function AdminClientsPage() {
 										<div className="flex flex-wrap gap-2">
 											{orgDeps.map((d) => (
 												<span
-													key={d._id}
+													key={d.id}
 													className={`text-xs px-2 py-0.5 rounded-full ${
 														d.status === "active"
 															? "bg-emerald-50 text-emerald-700"

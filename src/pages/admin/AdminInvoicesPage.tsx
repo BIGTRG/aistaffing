@@ -1,10 +1,10 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { FileText } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function AdminInvoicesPage() {
-	const orgs = useQuery(api.organizations.listAll) ?? [];
+	const orgs = useApiQuery(() => api.organizations.listAll(), []) ?? [];
 
 	return (
 		<div className="space-y-6">

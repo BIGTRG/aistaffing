@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useState, useMemo } from "react";
 import {
   Activity,
@@ -339,7 +339,7 @@ function WeeklyChart({ data }: { data: any[] }) {
 /* ═══════════════════════ MAIN PAGE ═══════════════════════ */
 
 export function AdminClientPortalPage() {
-  const sessions = useQuery(api.onboardingAgent.listSessions) ?? [];
+  const sessions = useApiQuery(() => api.onboardingAgent.listSessions(), []) ?? [];
   const deployedClients = sessions.filter((s: any) => s.status === "deployed");
   const [selectedClient, setSelectedClient] = useState("Metro Auto Group");
 
@@ -367,7 +367,7 @@ export function AdminClientPortalPage() {
           >
             {deployedClients.length > 0 ? (
               deployedClients.map((c: any) => (
-                <option key={c._id} value={c.clientName}>{c.clientName}</option>
+                <option key={c.id} value={c.clientName}>{c.clientName}</option>
               ))
             ) : (
               <option>Metro Auto Group</option>

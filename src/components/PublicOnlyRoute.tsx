@@ -1,6 +1,7 @@
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth } from "@/contexts/AuthContext";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Navigate, Outlet } from "react-router-dom";
-import { api } from "../../convex/_generated/api";
 import {
   Card,
   CardContent,
@@ -29,10 +30,7 @@ function AuthFormSkeleton() {
               <Skeleton className="h-4 w-12" />
               <Skeleton className="h-10 w-full" />
             </div>
-            <div className="space-y-2">
-              <Skeleton className="h-4 w-16" />
-              <Skeleton className="h-10 w-full" />
-            </div>
+            <Skeleton className="h-4 w-16" />
             <Skeleton className="h-10 w-full" />
           </CardContent>
         </Card>
@@ -44,22 +42,16 @@ function AuthFormSkeleton() {
 
 export function PublicOnlyRoute() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const role = useQuery(
-    api.platformUsers.getMyRole,
-    isAuthenticated ? {} : "skip"
-  );
-
+  const role = useApiQuery(
+    isAuthenticated ? () => api.auth.role().then((r: any) => r.role) : null, [isAuthenticated]);
   if (isLoading || (isAuthenticated && role === undefined)) {
     return <AuthFormSkeleton />;
   }
-
   if (isAuthenticated) {
-    // Redirect based on role
     if (role === "admin") {
       return <Navigate to="/admin/dashboard" replace />;
     }
     return <Navigate to="/employer/dashboard" replace />;
   }
-
   return <Outlet />;
 }

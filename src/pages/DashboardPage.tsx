@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Link, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import {
@@ -24,24 +24,12 @@ import { AgentConfigPanel } from "@/components/AgentConfigPanel";
 
 export function DashboardPage() {
 	const navigate = useNavigate();
-	const org = useQuery(api.organizations.getMine);
-	const deployments = useQuery(
-		api.deployments.listByOrg,
-		org ? { orgId: org._id } : "skip",
-	);
-	const activityItems = useQuery(
-		api.activity.listByOrg,
-		org ? { orgId: org._id, limit: 10 } : "skip",
-	);
-	const activityStats = useQuery(
-		api.activity.stats,
-		org ? { orgId: org._id } : "skip",
-	);
-	const spendSummary = useQuery(
-		api.billing.spendSummary,
-		org ? { orgId: org._id } : "skip",
-	);
-	const updateStatus = useMutation(api.deployments.updateStatus);
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const deployments = useApiQuery(org ? () => api.deployments.listByOrg(org.id) : null, [org]);
+	const activityItems = useApiQuery(org ? () => api.activity.listByOrg(org.id, 10) : null, [org]);
+	const activityStats = useApiQuery(org ? () => api.activity.stats(org.id) : null, [org]);
+	const spendSummary = useApiQuery(org ? () => api.billing.spend(org.id) : null, [org]);
+	const updateStatus = async (...args: any[]) => api.deployments.updateStatus(...args);
 
 	// Test chat state
 	const [testChatDeployment, setTestChatDeployment] = useState<any>(null);
@@ -157,7 +145,7 @@ export function DashboardPage() {
 							<div className="divide-y divide-gray-100">
 								{deployments.map((d) => (
 									<div
-										key={d._id}
+										key={d.id}
 										className="flex items-center justify-between py-3"
 									>
 										<div className="flex items-center gap-3">
@@ -222,7 +210,7 @@ export function DashboardPage() {
 											{d.status !== "terminated" && (
 												<button
 													onClick={() =>
-														handleToggle(d._id, d.status)
+														handleToggle(d.id, d.status)
 													}
 													className="p-1.5 rounded-lg hover:bg-gray-100 transition-colors"
 													title={
@@ -280,7 +268,7 @@ export function DashboardPage() {
 							<div className="space-y-3">
 								{activityItems.map((item) => (
 									<div
-										key={item._id}
+										key={item.id}
 										className="flex items-start gap-3"
 									>
 										<div className="size-8 rounded-lg bg-slate-50 flex items-center justify-center flex-shrink-0 mt-0.5">

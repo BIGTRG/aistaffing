@@ -1,6 +1,6 @@
-// import { useQuery } from "convex/react";
-// import { api } from "../../convex/_generated/api";
-import { Link } from "react-router-dom";
+// import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
+// import { Link } from "react-router-dom";
 import { useState } from "react";
 import {
 	ArrowRight,

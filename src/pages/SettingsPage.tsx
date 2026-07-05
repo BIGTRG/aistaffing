@@ -1,5 +1,6 @@
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useMutation, useQuery } from "convex/react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { ChevronRight, Loader2, Moon, Palette, Sun, User } from "lucide-react";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -18,13 +19,12 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import { useTheme } from "@/contexts/ThemeContext";
-import { api } from "../../convex/_generated/api";
 
 export function SettingsPage() {
-  const user = useQuery(api.auth.currentUser);
+  const user = useApiQuery(() => api.auth.me(), []);
   const { theme, toggleTheme, switchable } = useTheme();
-  const { signIn, signOut } = useAuthActions();
-  const deleteAccount = useMutation(api.users.deleteAccount);
+  const { login, register, logout } = useAuth();
+  const deleteAccount = async (...args: any[]) => api.users.deleteAccount(...args);
   const navigate = useNavigate();
 
   const [changePasswordOpen, setChangePasswordOpen] = useState(false);
@@ -85,7 +85,7 @@ export function SettingsPage() {
 
     try {
       await deleteAccount();
-      await signOut();
+      await logout();
       navigate("/employer/dashboard");
     } catch {
       setError("Could not delete account. Please try again.");

@@ -1,5 +1,5 @@
-import { useMutation, useQuery, useAction } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { useState, useRef, useEffect } from "react";
 import {
@@ -52,8 +52,8 @@ const STEP_ICONS: Record<string, React.ReactNode> = {
 };
 
 export default function AdminOnboardingAgentPage() {
-  const sessions = useQuery(api.onboardingAgent.listSessions);
-  const agentStats = useQuery(api.onboardingAgent.stats);
+  const sessions = useApiQuery(() => api.onboardingAgent.listSessions(), []);
+  const agentStats = useApiQuery(() => api.onboardingAgent.stats(), []);
   const [selectedSessionId, setSelectedSessionId] = useState<Id<"onboardingSessions"> | null>(null);
   const [showNewDialog, setShowNewDialog] = useState(false);
 
@@ -111,11 +111,11 @@ export default function AdminOnboardingAgentPage() {
             ) : (
               sessions.map((session) => {
                 const status = STATUS_CONFIG[session.status] || STATUS_CONFIG.intake;
-                const isSelected = selectedSessionId === session._id;
+                const isSelected = selectedSessionId === session.id;
                 return (
                   <button
-                    key={session._id}
-                    onClick={() => setSelectedSessionId(session._id)}
+                    key={session.id}
+                    onClick={() => setSelectedSessionId(session.id)}
                     className={`w-full text-left p-3 border-b border-border/20 transition-colors hover:bg-muted/50 ${
                       isSelected ? "bg-purple-500/10 border-l-2 border-l-purple-500" : ""
                     }`}
@@ -187,7 +187,7 @@ function NewSessionDialog({
   onOpenChange: (open: boolean) => void;
   onCreated: (id: Id<"onboardingSessions">) => void;
 }) {
-  const createSession = useMutation(api.onboardingAgent.createSession);
+  const createSession = async (...args: any[]) => api.onboardingAgent.createSession(...args);
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [phone, setPhone] = useState("");
@@ -278,12 +278,12 @@ function ChatPanel({
   sessionId: Id<"onboardingSessions">;
   onDelete: () => void;
 }) {
-  const session = useQuery(api.onboardingAgent.getSession, { id: sessionId });
-  const messages = useQuery(api.onboardingAgent.getSessionMessages, { sessionId });
-  const chat = useAction(api.onboardingAgent.chat);
-  const triggerGen = useAction(api.onboardingAgent.triggerGeneration);
-  const deployWorkflow = useAction(api.onboardingAgent.deployWorkflow);
-  const deleteSession = useMutation(api.onboardingAgent.deleteSession);
+  const session = useApiQuery(sessionId ? () => api.onboardingAgent.getSession(sessionId) : null, [sessionId]);
+  const messages = useApiQuery(sessionId ? () => api.onboardingAgent.getSessionMessages(sessionId) : null, [sessionId]);
+  const chat = async (...args: any[]) => api.onboardingAgent.chat(...args);
+  const triggerGen = async (...args: any[]) => api.onboardingAgent.triggerGeneration(...args);
+  const deployWorkflow = async (...args: any[]) => api.onboardingAgent.deployWorkflow(...args);
+  const deleteSession = async (...args: any[]) => api.onboardingAgent.deleteSession(...args);
 
   const [input, setInput] = useState("");
   const [sending, setSending] = useState(false);
@@ -428,7 +428,7 @@ function ChatPanel({
       {/* Messages area */}
       <div className="flex-1 overflow-y-auto px-4 py-4 space-y-4 bg-muted/10">
         {messages.map((msg) => (
-          <ChatBubble key={msg._id} role={msg.role} content={msg.content} timestamp={msg.timestamp} />
+          <ChatBubble key={msg.id} role={msg.role} content={msg.content} timestamp={msg.timestamp} />
         ))}
         {sending && (
           <div className="flex items-start gap-3">

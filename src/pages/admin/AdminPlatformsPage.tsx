@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "convex/react";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
   Bot,
   Check,
@@ -10,7 +11,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useState } from "react";
-import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -30,11 +30,11 @@ function formatPrice(cents: number) {
 }
 
 export function AdminPlatformsPage() {
-  const platforms = useQuery(api.corePlatforms.list) ?? [];
-  const stats = useQuery(api.corePlatforms.stats);
-  const toggleActive = useMutation(api.corePlatforms.toggleActive);
-  const updatePricing = useMutation(api.corePlatforms.updatePricing);
-  const seedPlatforms = useMutation(api.corePlatforms.seed);
+  const platforms = useApiQuery(() => api.corePlatforms.list(), []) ?? [];
+  const stats = useApiQuery(() => api.corePlatforms.stats(), []);
+  const toggleActive = async (...args: any[]) => api.corePlatforms.toggleActive(...args);
+  const updatePricing = async (...args: any[]) => api.corePlatforms.updatePricing(...args);
+  const seedPlatforms = async (...args: any[]) => api.corePlatforms.seed(...args);
 
   const [editingPricing, setEditingPricing] = useState<{
     id: Id<"corePlatforms">;
@@ -135,7 +135,7 @@ export function AdminPlatformsPage() {
       <div className="grid gap-4 lg:grid-cols-2">
         {platforms.map((platform) => (
           <Card
-            key={platform._id}
+            key={platform.id}
             className={`border overflow-hidden transition-all ${
               platform.isActive ? "border-gray-200" : "border-gray-100 opacity-60"
             }`}
@@ -155,7 +155,7 @@ export function AdminPlatformsPage() {
                   <button
                     onClick={() =>
                       setEditingPricing({
-                        id: platform._id,
+                        id: platform.id,
                         name: platform.name,
                         starterPriceCents: platform.starterPriceCents,
                         proPriceCents: platform.proPriceCents,
@@ -167,7 +167,7 @@ export function AdminPlatformsPage() {
                     <Edit className="size-4 text-white" />
                   </button>
                   <button
-                    onClick={() => handleToggle(platform._id, platform.name, platform.isActive)}
+                    onClick={() => handleToggle(platform.id, platform.name, platform.isActive)}
                     className="p-1.5 rounded-lg bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
                   >
                     {platform.isActive ? (

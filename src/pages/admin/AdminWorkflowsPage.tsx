@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "convex/react";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
   Bot,
   ChevronDown,
@@ -15,7 +16,6 @@ import {
   Zap,
 } from "lucide-react";
 import { useState } from "react";
-import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -39,11 +39,11 @@ const TRIGGER_META: Record<string, { icon: React.ReactNode; label: string }> = {
 };
 
 export function AdminWorkflowsPage() {
-  const workflows = useQuery(api.workflows.list) ?? [];
-  const stats = useQuery(api.workflows.stats);
-  const industries = useQuery(api.industries.list) ?? [];
-  const toggleActive = useMutation(api.workflows.toggleActive);
-  const seedWorkflows = useMutation(api.workflows.seed);
+  const workflows = useApiQuery(() => api.workflows.list(), []) ?? [];
+  const stats = useApiQuery(() => api.workflows.stats(), []);
+  const industries = useApiQuery(() => api.industries.list(), []) ?? [];
+  const toggleActive = async (...args: any[]) => api.workflows.toggleActive(...args);
+  const seedWorkflows = async (...args: any[]) => api.workflows.seed(...args);
 
   const [expandedId, setExpandedId] = useState<Id<"workflowTemplates"> | null>(null);
   const [filterIndustry, setFilterIndustry] = useState<string>("all");
@@ -156,11 +156,11 @@ export function AdminWorkflowsPage() {
       {/* Workflow Cards */}
       <div className="space-y-3">
         {filtered.map((wf) => {
-          const isExpanded = expandedId === wf._id;
+          const isExpanded = expandedId === wf.id;
           const triggerMeta = TRIGGER_META[wf.triggerType];
           return (
             <Card
-              key={wf._id}
+              key={wf.id}
               className={`border transition-all ${
                 wf.isActive ? "border-gray-200" : "border-gray-100 opacity-60"
               }`}
@@ -169,7 +169,7 @@ export function AdminWorkflowsPage() {
                 {/* Header Row */}
                 <button
                   className="w-full flex items-center gap-4 px-5 py-4 text-left cursor-pointer hover:bg-gray-50/50 transition-colors"
-                  onClick={() => setExpandedId(isExpanded ? null : wf._id)}
+                  onClick={() => setExpandedId(isExpanded ? null : wf.id)}
                 >
                   <div className="size-10 shrink-0 rounded-xl bg-slate-900 flex items-center justify-center">
                     <Zap className="size-5 text-white" />
@@ -192,7 +192,7 @@ export function AdminWorkflowsPage() {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        handleToggle(wf._id, wf.name, wf.isActive);
+                        handleToggle(wf.id, wf.name, wf.isActive);
                       }}
                       className="p-1 cursor-pointer"
                     >

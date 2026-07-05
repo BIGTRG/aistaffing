@@ -1,4 +1,4 @@
-import { useConvexAuth } from "convex/react";
+import { useConvexAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import {
   Sidebar,
@@ -29,9 +29,6 @@ function AppSkeleton() {
               <SidebarMenuItem>
                 <SidebarMenuSkeleton showIcon />
               </SidebarMenuItem>
-              <SidebarMenuItem>
-                <SidebarMenuSkeleton showIcon />
-              </SidebarMenuItem>
             </SidebarMenu>
           </div>
         </SidebarContent>
@@ -54,8 +51,6 @@ function AppSkeleton() {
           <Skeleton className="h-8 w-48" />
           <div className="grid gap-4 md:grid-cols-3">
             <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
           </div>
         </main>
       </SidebarInset>
@@ -65,14 +60,11 @@ function AppSkeleton() {
 
 export function ProtectedRoute() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-
   if (isLoading) {
     return <AppSkeleton />;
   }
-
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
   return <Outlet />;
 }

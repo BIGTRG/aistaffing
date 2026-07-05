@@ -1,6 +1,7 @@
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth } from "@/contexts/AuthContext";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Navigate, Outlet } from "react-router-dom";
-import { api } from "../../convex/_generated/api";
 import {
   Sidebar,
   SidebarContent,
@@ -27,7 +28,7 @@ function AdminSkeleton() {
         <SidebarContent>
           <div className="p-2 space-y-1">
             <SidebarMenu>
-              {[1, 2, 3, 4, 5, 6].map((i) => (
+              {[1, 2, 3, 4, 5].map((i) => (
                 <SidebarMenuItem key={i}>
                   <SidebarMenuSkeleton showIcon />
                 </SidebarMenuItem>
@@ -50,9 +51,6 @@ function AdminSkeleton() {
           <Skeleton className="h-8 w-48" />
           <div className="grid gap-4 md:grid-cols-4">
             <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
           </div>
         </main>
       </SidebarInset>
@@ -62,23 +60,16 @@ function AdminSkeleton() {
 
 export function AdminRoute() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const role = useQuery(
-    api.platformUsers.getMyRole,
-    isAuthenticated ? {} : "skip"
-  );
-
+  const role = useApiQuery(
+    isAuthenticated ? () => api.auth.role().then((r: any) => r.role) : null, [isAuthenticated]);
   if (isLoading || (isAuthenticated && role === undefined)) {
     return <AdminSkeleton />;
   }
-
   if (!isAuthenticated) {
     return <Navigate to="/admin/login" replace />;
   }
-
-  // Non-admins accessing admin routes get redirected to employer
   if (role !== "admin") {
     return <Navigate to="/employer/dashboard" replace />;
   }
-
   return <Outlet />;
 }

@@ -1,4 +1,4 @@
-import { useConvexAuth } from "convex/react";
+import { useConvexAuth } from "@/contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";

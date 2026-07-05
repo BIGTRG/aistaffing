@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useState, useMemo } from "react";
 import {
   Activity,
@@ -294,10 +294,10 @@ function ClientDetailPanel({ exec, onClose }: { exec: WorkflowExecution; onClose
 /* ═══════════════════════ MAIN DASHBOARD ═══════════════════════ */
 
 export function AdminOperationsPage() {
-  const sessions = useQuery(api.onboardingAgent.listSessions) ?? [];
-  const workflows = useQuery(api.workflows.list) ?? [];
+  const sessions = useApiQuery(() => api.onboardingAgent.listSessions(), []) ?? [];
+  const workflows = useApiQuery(() => api.workflows.list(), []) ?? [];
   // industries loaded for future use
-  void useQuery(api.industries.list);
+  void useApiQuery(() => api.industries.list(), []);
   const [selectedExec, setSelectedExec] = useState<WorkflowExecution | null>(null);
   const [viewMode, setViewMode] = useState<"agency" | "client">("agency");
 

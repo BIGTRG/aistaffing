@@ -1,12 +1,12 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Bot, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export function AdminAgentTemplatesPage() {
-	const templates = useQuery(api.agentTemplates.list) ?? [];
+	const templates = useApiQuery(() => api.agentTemplates.list(), []) ?? [];
 	const [search, setSearch] = useState("");
 
 	const filtered = templates.filter((t) =>
@@ -48,7 +48,7 @@ export function AdminAgentTemplatesPage() {
 						{filtered
 							.filter((t) => t.department === dept)
 							.map((template) => (
-								<Card key={template._id} className="border-gray-200">
+								<Card key={template.id} className="border-gray-200">
 									<CardContent className="py-4">
 										<div className="flex items-start justify-between">
 											<div className="flex items-start gap-3">

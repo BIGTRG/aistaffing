@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	BarChart3,
 	Bot,
@@ -20,19 +20,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 
 export function AnalyticsPage() {
-	const org = useQuery(api.organizations.getMine);
-	const stats = useQuery(
-		api.conversations.stats,
-		org ? { orgId: org._id } : "skip",
-	);
-	const deployments = useQuery(
-		api.deployments.listByOrg,
-		org ? { orgId: org._id } : "skip",
-	);
-	const activity = useQuery(
-		api.activity.listByOrg,
-		org ? { orgId: org._id, limit: 20 } : "skip",
-	);
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const stats = useApiQuery(org ? () => api.conversations.stats(org.id) : null, [org]);
+	const deployments = useApiQuery(org ? () => api.deployments.listByOrg(org.id) : null, [org]);
+	const activity = useApiQuery(org ? () => api.activity.listByOrg(org.id, 20) : null, [org]);
 
 	const activeAgents = deployments?.filter((d) => d.status === "active").length ?? 0;
 
@@ -243,7 +234,7 @@ export function AnalyticsPage() {
 						{deployments && deployments.length > 0 ? (
 							<div className="divide-y divide-gray-100">
 								{deployments.map((d) => (
-									<div key={d._id} className="flex items-center gap-3 py-3">
+									<div key={d.id} className="flex items-center gap-3 py-3">
 										<div className="size-9 rounded-lg bg-gradient-to-br from-slate-700 to-slate-900 flex items-center justify-center">
 											<span className="text-white text-xs font-bold">
 												{d.displayName.slice(0, 2).toUpperCase()}
@@ -306,7 +297,7 @@ export function AnalyticsPage() {
 									};
 									const EventIcon = eventIcons[event.eventType] ?? Activity;
 									return (
-										<div key={event._id} className="flex items-start gap-3">
+										<div key={event.id} className="flex items-start gap-3">
 											<div className="size-7 rounded-full bg-gray-100 flex items-center justify-center flex-shrink-0 mt-0.5">
 												<EventIcon className="size-3.5 text-gray-600" />
 											</div>

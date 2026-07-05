@@ -1,4 +1,4 @@
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAuth } from "@/contexts/AuthContext";
 import { FlaskConical, Loader2 } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -11,7 +11,7 @@ const TEST_USER = {
 } as const;
 
 export function TestUserLoginSection() {
-  const { signIn } = useAuthActions();
+  const { login, register } = useAuth();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 

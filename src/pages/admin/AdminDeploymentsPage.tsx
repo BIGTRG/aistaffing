@@ -1,12 +1,12 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Activity, Bot, Search } from "lucide-react";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { useState } from "react";
 
 export function AdminDeploymentsPage() {
-	const allDeployments = useQuery(api.deployments.listAll) ?? [];
+	const allDeployments = useApiQuery(() => api.deployments.listAll(), []) ?? [];
 	const [search, setSearch] = useState("");
 
 	const filtered = allDeployments.filter((d) =>
@@ -42,7 +42,7 @@ export function AdminDeploymentsPage() {
 
 			<div className="space-y-3">
 				{filtered.map((d) => (
-					<Card key={d._id} className="border-gray-200">
+					<Card key={d.id} className="border-gray-200">
 						<CardContent className="py-4">
 							<div className="flex items-center justify-between">
 								<div className="flex items-center gap-4">

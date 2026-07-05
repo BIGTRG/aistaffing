@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	Activity,
 	Bot,
@@ -16,19 +16,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { useState } from "react";
 
 export function AgentActivityPage() {
-	const org = useQuery(api.organizations.getMine);
-	const deployments = useQuery(
-		api.deployments.listByOrg,
-		org ? { orgId: org._id } : "skip",
-	);
-	const activity = useQuery(
-		api.activity.listByOrg,
-		org ? { orgId: org._id, limit: 50 } : "skip",
-	);
-	const conversations = useQuery(
-		api.conversations.listByOrg,
-		org ? { orgId: org._id } : "skip",
-	);
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const deployments = useApiQuery(org ? () => api.deployments.listByOrg(org.id) : null, [org]);
+	const activity = useApiQuery(org ? () => api.activity.listByOrg(org.id, 50) : null, [org]);
+	const conversations = useApiQuery(org ? () => api.conversations.listByOrg(org.id) : null, [org]);
 
 	const [selectedAgent, setSelectedAgent] = useState<string | null>(null);
 
@@ -70,7 +61,7 @@ export function AgentActivityPage() {
 	};
 
 	const filteredDeployments = selectedAgent
-		? deployments?.filter((d) => d._id === selectedAgent)
+		? deployments?.filter((d) => d.id === selectedAgent)
 		: deployments;
 
 	return (
@@ -106,10 +97,10 @@ export function AgentActivityPage() {
 				</button>
 				{deployments?.map((d) => (
 					<button
-						key={d._id}
-						onClick={() => setSelectedAgent(d._id)}
+						key={d.id}
+						onClick={() => setSelectedAgent(d.id)}
 						className={`px-3 py-2 rounded-lg text-xs font-semibold transition-colors flex items-center gap-1.5 ${
-							selectedAgent === d._id
+							selectedAgent === d.id
 								? "bg-slate-800 text-white"
 								: "bg-gray-100 text-gray-600 hover:bg-gray-200"
 						}`}
@@ -131,8 +122,8 @@ export function AgentActivityPage() {
 			{/* Agent Cards with Activity */}
 			<div className="space-y-4">
 				{filteredDeployments?.map((d) => {
-					const agentActivity = activityByAgent[d._id] ?? [];
-					const agentConvs = convByAgent[d._id] ?? [];
+					const agentActivity = activityByAgent[d.id] ?? [];
+					const agentConvs = convByAgent[d.id] ?? [];
 					const recentConvs = agentConvs.slice(0, 5);
 					const totalConvs = agentConvs.length;
 					const resolvedConvs = agentConvs.filter(
@@ -140,7 +131,7 @@ export function AgentActivityPage() {
 					).length;
 
 					return (
-						<Card key={d._id} className="border-gray-200">
+						<Card key={d.id} className="border-gray-200">
 							<CardHeader className="pb-3">
 								<div className="flex items-center justify-between">
 									<div className="flex items-center gap-3">
@@ -218,7 +209,7 @@ export function AgentActivityPage() {
 														};
 													return (
 														<div
-															key={conv._id}
+															key={conv.id}
 															className="flex items-center gap-3 p-2.5 rounded-lg bg-gray-50 hover:bg-gray-100 transition-colors"
 														>
 															<div className="size-8 rounded-lg bg-white flex items-center justify-center border border-gray-200">
@@ -285,7 +276,7 @@ export function AgentActivityPage() {
 														eventIcons[event.eventType] ?? Activity;
 													return (
 														<div
-															key={event._id}
+															key={event.id}
 															className="flex items-start gap-2.5 p-2.5 rounded-lg bg-gray-50"
 														>
 															<div className="size-6 rounded-full bg-white flex items-center justify-center flex-shrink-0 mt-0.5 border border-gray-200">

@@ -1,5 +1,6 @@
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useConvexAuth, useMutation } from "convex/react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useConvexAuth } from "@/contexts/AuthContext";
+import { api } from "@/lib/api";
 import { Loader2, Shield } from "lucide-react";
 import { useEffect, useState } from "react";
 import { Navigate } from "react-router-dom";
@@ -7,7 +8,6 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { api } from "../../convex/_generated/api";
 
 function isTestEmail(email: string): boolean {
 	return email.endsWith("@test.local");
@@ -15,8 +15,8 @@ function isTestEmail(email: string): boolean {
 
 export function AdminLoginPage() {
 	const { isAuthenticated, isLoading: authLoading } = useConvexAuth();
-	const { signIn } = useAuthActions();
-	const setRole = useMutation(api.platformUsers.setRole);
+	const { login, register } = useAuth();
+	const setRole = async (...args: any[]) => api.platformUsers.setRole(...args);
 	const [error, setError] = useState("");
 	const [loading, setLoading] = useState(false);
 	const [settingRole, setSettingRole] = useState(false);

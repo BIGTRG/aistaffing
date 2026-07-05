@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useState } from "react";
 import {
 	Bot,
@@ -15,11 +15,8 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function ConversationsPage() {
-	const org = useQuery(api.organizations.getMine);
-	const conversations = useQuery(
-		api.conversations.listByOrg,
-		org ? { orgId: org._id } : "skip",
-	);
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const conversations = useApiQuery(org ? () => api.conversations.listByOrg(org.id) : null, [org]);
 
 	const [search, setSearch] = useState("");
 	const [channelFilter, setChannelFilter] = useState<string>("all");
@@ -152,11 +149,11 @@ export function ConversationsPage() {
 						<div className="divide-y divide-gray-100">
 							{filtered.map((conv) => {
 								const ChannelIcon = channelIcons[conv.channel] ?? MessageSquare;
-								const isExpanded = expandedId === conv._id;
+								const isExpanded = expandedId === conv.id;
 								return (
-									<div key={conv._id} className="py-3">
+									<div key={conv.id} className="py-3">
 										<button
-											onClick={() => setExpandedId(isExpanded ? null : conv._id)}
+											onClick={() => setExpandedId(isExpanded ? null : conv.id)}
 											className="w-full flex items-center gap-3 text-left"
 										>
 											<div className={`size-9 rounded-lg flex items-center justify-center flex-shrink-0 ${channelColors[conv.channel] ?? "bg-gray-100 text-gray-600"}`}>
@@ -197,7 +194,7 @@ export function ConversationsPage() {
 										{/* Expanded transcript */}
 										{isExpanded && (
 											<div className="mt-3 ml-12 p-4 bg-gray-50 rounded-lg">
-												<ConversationTranscript conversationId={conv._id} />
+												<ConversationTranscript conversationId={conv.id} />
 											</div>
 										)}
 									</div>
@@ -224,10 +221,7 @@ export function ConversationsPage() {
 }
 
 function ConversationTranscript({ conversationId }: { conversationId: string }) {
-	const messages = useQuery(
-		api.messages.listByConversation,
-		{ conversationId: conversationId as any },
-	);
+	const messages = useApiQuery(() => api.messages.listByConversation({conversationId: conversationId as any}), []);
 
 	if (!messages || messages.length === 0) {
 		return (

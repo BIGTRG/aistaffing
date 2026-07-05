@@ -1,4 +1,4 @@
-import { useAuthActions } from "@convex-dev/auth/react";
+import { useAuth } from "@/contexts/AuthContext";
 import { ArrowLeft, Loader2, Mail } from "lucide-react";
 import { useState } from "react";
 import { Button } from "./ui/button";
@@ -13,7 +13,7 @@ function isTestEmail(email: string): boolean {
 type Step = "signUp" | { email: string };
 
 export function SignUp() {
-  const { signIn } = useAuthActions();
+  const { login, register } = useAuth();
   const [step, setStep] = useState<Step>("signUp");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);

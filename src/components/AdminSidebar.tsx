@@ -1,5 +1,6 @@
 
-import { useQuery } from "convex/react";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	LayoutDashboard,
 	LogOut,
@@ -23,7 +24,6 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
-import { api } from "../../convex/_generated/api";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
 	DropdownMenu,
@@ -172,7 +172,7 @@ function SidebarNav() {
 }
 
 function SidebarUserMenu() {
-	const user = useQuery(api.auth.currentUser);
+	const user = useApiQuery(() => api.auth.me(), []);
 	const { theme, toggleTheme, switchable } = useTheme();
 
 	return (

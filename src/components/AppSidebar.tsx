@@ -1,5 +1,6 @@
-import { useAuthActions } from "@convex-dev/auth/react";
-import { useQuery } from "convex/react";
+import { useAuth } from "@/contexts/AuthContext";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	LayoutDashboard,
 	LogOut,
@@ -15,7 +16,6 @@ import {
 } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 import { useTheme } from "@/contexts/ThemeContext";
-import { api } from "../../convex/_generated/api";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import {
 	DropdownMenu,
@@ -97,8 +97,8 @@ function SidebarNav() {
 }
 
 function SidebarUserMenu() {
-	const user = useQuery(api.auth.currentUser);
-	const { signOut } = useAuthActions();
+	const user = useApiQuery(() => api.auth.me(), []);
+	const { logout } = useAuth();
 	const { theme, toggleTheme, switchable } = useTheme();
 	const { setOpenMobile } = useSidebar();
 
@@ -153,7 +153,7 @@ function SidebarUserMenu() {
 							)}
 							<DropdownMenuSeparator />
 							<DropdownMenuItem
-								onClick={() => signOut()}
+								onClick={() => logout()}
 								className="text-destructive focus:text-destructive focus:bg-destructive/10"
 							>
 								<LogOut className="size-4" />

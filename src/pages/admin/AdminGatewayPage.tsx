@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useState } from "react";
 import {
   Activity,
@@ -129,16 +129,16 @@ function ConnectorCard({ connector }: { connector: any }) {
 }
 
 export function AdminGatewayPage() {
-  const gatewayStats = useQuery(api.gateway.getGatewayStats);
-  const connectors = useQuery(api.gateway.listServiceConnectors);
-  const voiceStats = useQuery(api.voiceAgent.getCallStats);
-  const commsStats = useQuery(api.communications.getCommsStats);
-  const users = useQuery(api.enterpriseAuth.listUsers, {});
-  const apiKeys = useQuery(api.enterpriseAuth.listApiKeys, {});
-  const auditLog = useQuery(api.enterpriseAuth.getAuditLog, { limit: 10 });
-  const roles = useQuery(api.enterpriseAuth.getRoles);
+  const gatewayStats = useApiQuery(() => api.gateway.getGatewayStats(), []);
+  const connectors = useApiQuery(() => api.gateway.listServiceConnectors(), []);
+  const voiceStats = useApiQuery(() => api.voiceAgent.getCallStats(), []);
+  const commsStats = useApiQuery(() => api.communications.getCommsStats(), []);
+  const users = useApiQuery(() => api.enterpriseAuth.listUsers(), []);
+  const apiKeys = useApiQuery(() => api.enterpriseAuth.listApiKeys(), []);
+  const auditLog = useApiQuery(() => api.enterpriseAuth.getAuditLog({ limit: 10 }), []);
+  const roles = useApiQuery(() => api.enterpriseAuth.getRoles(), []);
 
-  const seedConnectorsMut = useMutation(api.gateway.seedConnectors);
+  const seedConnectorsMut = async (...args: any[]) => api.gateway.seedConnectors(...args);
   const [seeding, setSeeding] = useState(false);
 
   const [activeTab, setActiveTab] = useState<"gateway" | "connectors" | "channels" | "auth">("gateway");
@@ -308,7 +308,7 @@ export function AdminGatewayPage() {
         <div className="space-y-6">
           <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
             {connectors?.map((c: any) => (
-              <ConnectorCard key={c._id} connector={c} />
+              <ConnectorCard key={c.id} connector={c} />
             ))}
           </div>
           {(connectors?.length ?? 0) === 0 && (
@@ -476,7 +476,7 @@ export function AdminGatewayPage() {
                 {(apiKeys?.length ?? 0) > 0 ? (
                   <div className="space-y-2">
                     {apiKeys?.map((key: any) => (
-                      <div key={key._id} className="flex items-center justify-between p-2.5 rounded-lg bg-gray-50">
+                      <div key={key.id} className="flex items-center justify-between p-2.5 rounded-lg bg-gray-50">
                         <div>
                           <p className="text-sm font-medium">{key.name}</p>
                           <p className="text-xs text-muted-foreground font-mono">{key.keyPrefix}...</p>

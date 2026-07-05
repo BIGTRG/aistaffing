@@ -1,6 +1,5 @@
 import { useState, useEffect } from "react";
-import { useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { api } from "@/lib/api";
 import {
 	Dialog,
 	DialogContent,
@@ -46,7 +45,7 @@ export function AgentConfigPanel({
 	onOpenChange,
 	deployment,
 }: AgentConfigPanelProps) {
-	const updateConfig = useMutation(api.deployments.updateConfig);
+	const updateConfig = async (...args: any[]) => api.deployments.updateConfig(...args);
 	const [saving, setSaving] = useState(false);
 	const [saved, setSaved] = useState(false);
 	const [activeTab, setActiveTab] = useState("knowledge");
@@ -87,7 +86,7 @@ export function AgentConfigPanel({
 		setSaving(true);
 		try {
 			await updateConfig({
-				deploymentId: deployment._id,
+				deploymentId: deployment.id,
 				displayName: displayName || undefined,
 				config: {
 					businessHours: businessHours || undefined,

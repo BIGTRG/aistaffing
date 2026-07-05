@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	Bot,
 	Building2,
@@ -12,10 +12,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Link } from "react-router-dom";
 
 export function AdminDashboardPage() {
-	const orgs = useQuery(api.organizations.listAll) ?? [];
-	const allDeployments = useQuery(api.deployments.listAll) ?? [];
-	const revenue = useQuery(api.billing.revenueOverview);
-	const recentActivity = useQuery(api.activity.listAll, { limit: 20 }) ?? [];
+	const orgs = useApiQuery(() => api.organizations.listAll(), []) ?? [];
+	const allDeployments = useApiQuery(() => api.deployments.listAll(), []) ?? [];
+	const revenue = useApiQuery(() => api.billing.revenueOverview(), []);
+	const recentActivity = useApiQuery(() => api.activity.listAll(20), []) ?? [];
 
 	const activeOrgs = orgs.filter((o) => o.onboardingStatus === "active");
 	const activeDeployments = allDeployments.filter((d) => d.status === "active");
@@ -119,10 +119,10 @@ export function AdminDashboardPage() {
 							<div className="divide-y divide-gray-100">
 								{orgs.slice(0, 8).map((org) => {
 									const orgDeps = allDeployments.filter(
-										(d) => d.orgId === org._id && d.status === "active"
+										(d) => d.orgId === org.id && d.status === "active"
 									);
 									return (
-										<div key={org._id} className="flex items-center justify-between py-3">
+										<div key={org.id} className="flex items-center justify-between py-3">
 											<div>
 												<p className="font-medium text-sm text-gray-900">{org.name}</p>
 												<p className="text-xs text-gray-500">
@@ -165,7 +165,7 @@ export function AdminDashboardPage() {
 						{allDeployments.length > 0 ? (
 							<div className="divide-y divide-gray-100">
 								{allDeployments.slice(0, 10).map((d) => (
-									<div key={d._id} className="flex items-center justify-between py-3">
+									<div key={d.id} className="flex items-center justify-between py-3">
 										<div>
 											<p className="font-medium text-sm text-gray-900">{d.displayName}</p>
 											<p className="text-xs text-gray-500">
@@ -205,7 +205,7 @@ export function AdminDashboardPage() {
 					{recentActivity.length > 0 ? (
 						<div className="space-y-3">
 							{recentActivity.map((item) => (
-								<div key={item._id} className="flex items-start gap-3">
+								<div key={item.id} className="flex items-start gap-3">
 									<div className="size-8 rounded-lg bg-slate-50 flex items-center justify-center flex-shrink-0 mt-0.5">
 										<Zap className="size-3.5 text-slate-600" />
 									</div>

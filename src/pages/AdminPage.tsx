@@ -1,5 +1,5 @@
-import { useQuery } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	Bot,
 	Building2,
@@ -11,10 +11,10 @@ import {
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function AdminPage() {
-	const orgs = useQuery(api.organizations.listAll) ?? [];
-	const allDeployments = useQuery(api.deployments.listAll) ?? [];
-	const revenue = useQuery(api.billing.revenueOverview);
-	const recentActivity = useQuery(api.activity.listAll, { limit: 20 }) ?? [];
+	const orgs = useApiQuery(() => api.organizations.listAll(), []) ?? [];
+	const allDeployments = useApiQuery(() => api.deployments.listAll(), []) ?? [];
+	const revenue = useApiQuery(() => api.billing.revenueOverview(), []);
+	const recentActivity = useApiQuery(() => api.activity.listAll(20), []) ?? [];
 
 	const activeOrgs = orgs.filter((o) => o.onboardingStatus === "active");
 	const activeDeployments = allDeployments.filter(
@@ -121,12 +121,12 @@ export function AdminPage() {
 								{orgs.map((org) => {
 									const orgDeps = allDeployments.filter(
 										(d) =>
-											d.orgId === org._id &&
+											d.orgId === org.id &&
 											d.status === "active"
 									);
 									return (
 										<div
-											key={org._id}
+											key={org.id}
 											className="flex items-center justify-between py-3"
 										>
 											<div>
@@ -182,7 +182,7 @@ export function AdminPage() {
 							<div className="divide-y divide-gray-100">
 								{allDeployments.slice(0, 15).map((d) => (
 									<div
-										key={d._id}
+										key={d.id}
 										className="flex items-center justify-between py-3"
 									>
 										<div>
@@ -232,7 +232,7 @@ export function AdminPage() {
 						<div className="space-y-3">
 							{recentActivity.map((item) => (
 								<div
-									key={item._id}
+									key={item.id}
 									className="flex items-start gap-3"
 								>
 									<div className="size-8 rounded-lg bg-slate-50 flex items-center justify-center flex-shrink-0 mt-0.5">

@@ -1,6 +1,7 @@
-import { useConvexAuth, useQuery } from "convex/react";
+import { useConvexAuth } from "@/contexts/AuthContext";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Navigate, Outlet } from "react-router-dom";
-import { api } from "../../convex/_generated/api";
 import {
   Sidebar,
   SidebarContent,
@@ -50,8 +51,6 @@ function EmployerSkeleton() {
           <Skeleton className="h-8 w-48" />
           <div className="grid gap-4 md:grid-cols-3">
             <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
-            <Skeleton className="h-32 rounded-lg" />
           </div>
         </main>
       </SidebarInset>
@@ -61,23 +60,16 @@ function EmployerSkeleton() {
 
 export function EmployerRoute() {
   const { isAuthenticated, isLoading } = useConvexAuth();
-  const role = useQuery(
-    api.platformUsers.getMyRole,
-    isAuthenticated ? {} : "skip"
-  );
-
+  const role = useApiQuery(
+    isAuthenticated ? () => api.auth.role().then((r: any) => r.role) : null, [isAuthenticated]);
   if (isLoading || (isAuthenticated && role === undefined)) {
     return <EmployerSkeleton />;
   }
-
   if (!isAuthenticated) {
     return <Navigate to="/login" replace />;
   }
-
-  // Admins accessing employer routes get redirected to admin
   if (role === "admin") {
     return <Navigate to="/admin/dashboard" replace />;
   }
-
   return <Outlet />;
 }

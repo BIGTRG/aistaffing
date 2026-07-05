@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
-import { useQuery, useAction } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import type { Id } from "../../convex/_generated/dataModel";
 import {
 	Dialog,
@@ -61,17 +61,17 @@ export function TestAgentChat({
 	const inputRef = useRef<HTMLInputElement>(null);
 
 	// Real-time conversation messages
-	const messages = useQuery(api.chatAgent.getConversation, {
-		deploymentId: deployment._id,
+	const messages = useApiQuery(() => api.chatAgent.getConversation({
+		deploymentId: deployment.id,
 		sessionId,
-	});
+	}), []);
 
 	// Past conversations list
-	const pastConversations = useQuery(api.chatAgent.listConversations, {
-		deploymentId: deployment._id,
-	});
+	const pastConversations = useApiQuery(() => api.chatAgent.listConversations({
+		deploymentId: deployment.id,
+	}), []);
 
-	const getAiResponse = useAction(api.chatAgent.getAiResponse);
+	const getAiResponse = async (...args: any[]) => api.chatAgent.getAiResponse(...args);
 
 	// Auto-scroll on new messages
 	useEffect(() => {
@@ -96,7 +96,7 @@ export function TestAgentChat({
 
 		try {
 			await getAiResponse({
-				deploymentId: deployment._id,
+				deploymentId: deployment.id,
 				sessionId,
 				userMessage: trimmed,
 				businessName: orgName,
@@ -222,7 +222,7 @@ export function TestAgentChat({
 							{/* Message bubbles */}
 							{messages?.map((msg) => (
 								<div
-									key={msg._id}
+									key={msg.id}
 									className={`flex items-start gap-2.5 ${
 										msg.role === "user" ? "flex-row-reverse" : ""
 									}`}

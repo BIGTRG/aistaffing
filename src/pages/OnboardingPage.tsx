@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { useMutation, useQuery } from "convex/react";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useNavigate } from "react-router-dom";
-import { api } from "../../convex/_generated/api";
 import { Button } from "@/components/ui/button";
 import {
 	ArrowRight,
@@ -65,10 +65,10 @@ export function OnboardingPage() {
 	const [selectedAgents, setSelectedAgents] = useState<string[]>([]);
 	const [isSubmitting, setIsSubmitting] = useState(false);
 
-	const templates = useQuery(api.agentTemplates.list) ?? [];
-	const createOrg = useMutation(api.organizations.create);
-	const deployAgent = useMutation(api.deployments.deploy);
-	const completeOnboarding = useMutation(api.organizations.completeOnboarding);
+	const templates = useApiQuery(() => api.agentTemplates.list(), []) ?? [];
+	const createOrg = async (...args: any[]) => api.organizations.create(...args);
+	const deployAgent = async (...args: any[]) => api.deployments.deploy(...args);
+	const completeOnboarding = async (...args: any[]) => api.organizations.completeOnboarding(...args);
 
 	// Group templates by department
 	const departments = templates.reduce(
@@ -129,7 +129,7 @@ export function OnboardingPage() {
 		const recommended = templates
 			.filter((t) => recommendedDepts.includes(t.department))
 			.slice(0, 5)
-			.map((t) => t._id);
+			.map((t) => t.id);
 		setSelectedAgents(recommended);
 	};
 
@@ -143,11 +143,11 @@ export function OnboardingPage() {
 
 			// Deploy selected agents
 			for (const templateId of selectedAgents) {
-				const template = templates.find((t) => t._id === templateId);
+				const template = templates.find((t) => t.id === templateId);
 				if (template) {
 					await deployAgent({
 						orgId,
-						templateId: template._id,
+						templateId: template.id,
 						displayName: template.name,
 					});
 				}
@@ -163,7 +163,7 @@ export function OnboardingPage() {
 	};
 
 	const baseMonthlyTotal = selectedAgents.reduce((sum, id) => {
-		const t = templates.find((tmpl) => tmpl._id === id);
+		const t = templates.find((tmpl) => tmpl.id === id);
 		return sum + (t?.basePriceCents ?? 0);
 	}, 0);
 
@@ -391,14 +391,14 @@ export function OnboardingPage() {
 										{agents.map((agent) => {
 											const isSelected =
 												selectedAgents.includes(
-													agent._id,
+													agent.id,
 												);
 											return (
 												<button
-													key={agent._id}
+													key={agent.id}
 													type="button"
 													onClick={() =>
-														toggleAgent(agent._id)
+														toggleAgent(agent.id)
 													}
 													className={`rounded-xl border p-4 text-left transition-all ${
 														isSelected

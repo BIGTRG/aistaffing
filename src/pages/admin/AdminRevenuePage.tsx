@@ -1,11 +1,11 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { DollarSign, TrendingUp } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function AdminRevenuePage() {
-	const revenue = useQuery(api.billing.revenueOverview);
-	const contracts = useQuery(api.billing.listAllContracts) ?? [];
+	const revenue = useApiQuery(() => api.billing.revenueOverview(), []);
+	const contracts = useApiQuery(() => api.billing.listAllContracts(), []) ?? [];
 
 	const activeContracts = contracts.filter((c) => c.status === "active");
 
@@ -59,7 +59,7 @@ export function AdminRevenuePage() {
 					{activeContracts.length > 0 ? (
 						<div className="divide-y divide-gray-100">
 							{activeContracts.map((c) => (
-								<div key={c._id} className="flex items-center justify-between py-3">
+								<div key={c.id} className="flex items-center justify-between py-3">
 									<div>
 										<p className="font-medium text-sm text-gray-900">
 											{c.org?.name ?? "Unknown"} — {c.deployment?.displayName ?? "Unknown Agent"}

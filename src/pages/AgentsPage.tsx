@@ -1,5 +1,5 @@
-import { useQuery, useMutation } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
 	Bot,
 	Briefcase,
@@ -46,13 +46,10 @@ export function AgentsPage() {
 	const [testChatDeployment, setTestChatDeployment] = useState<any>(null);
 	const [configDeployment, setConfigDeployment] = useState<any>(null);
 
-	const templates = useQuery(api.agentTemplates.list) ?? [];
-	const org = useQuery(api.organizations.getMine);
-	const deployments = useQuery(
-		api.deployments.listByOrg,
-		org ? { orgId: org._id } : "skip"
-	) ?? [];
-	const deploy = useMutation(api.deployments.deploy);
+	const templates = useApiQuery(() => api.agentTemplates.list(), []) ?? [];
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const deployments = useApiQuery(org ? () => api.deployments.listByOrg(org.id) : null, [org]) ?? [];
+	const deploy = async (...args: any[]) => api.deployments.deploy(...args);
 
 	// Deployed template IDs
 	const deployedTemplateIds = new Set(
@@ -91,7 +88,7 @@ export function AgentsPage() {
 		setDeploying(templateId);
 		try {
 			await deploy({
-				orgId: org._id,
+				orgId: org.id,
 				templateId: templateId as any,
 				displayName: name,
 			});
@@ -130,7 +127,7 @@ export function AgentsPage() {
 						<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
 							{deployments.map((d) => (
 								<div
-									key={d._id}
+									key={d.id}
 									className="flex items-center justify-between bg-white rounded-lg border border-gray-200 p-3"
 								>
 									<div className="flex items-center gap-2.5">
@@ -263,12 +260,12 @@ export function AgentsPage() {
 						<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
 							{agents.map((agent) => {
 								const isDeployed = deployedTemplateIds.has(
-									agent._id
+									agent.id
 								);
-								const isLoading = deploying === agent._id;
+								const isLoading = deploying === agent.id;
 								return (
 									<Card
-										key={agent._id}
+										key={agent.id}
 										className={`border-gray-200 transition-shadow hover:shadow-md ${
 											isDeployed
 												? "ring-1 ring-emerald-300 bg-emerald-50/30"
@@ -315,7 +312,7 @@ export function AgentsPage() {
 														disabled={isLoading || !org}
 														onClick={() =>
 															handleDeploy(
-																agent._id,
+																agent.id,
 																agent.name
 															)
 														}

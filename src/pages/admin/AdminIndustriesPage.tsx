@@ -1,4 +1,5 @@
-import { useMutation, useQuery } from "convex/react";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import {
   Activity,
   Globe,
@@ -12,7 +13,6 @@ import {
   TrendingUp,
 } from "lucide-react";
 import { useState } from "react";
-import { api } from "../../../convex/_generated/api";
 import type { Id } from "../../../convex/_generated/dataModel";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -35,12 +35,12 @@ const CATEGORY_META: Record<string, { label: string; icon: React.ReactNode; colo
 };
 
 export function AdminIndustriesPage() {
-  const industries = useQuery(api.industries.list) ?? [];
-  const stats = useQuery(api.industries.stats);
-  const platforms = useQuery(api.corePlatforms.list) ?? [];
-  const toggleActive = useMutation(api.industries.toggleActive);
-  const updateMultiplier = useMutation(api.industries.updateMultiplier);
-  const seedIndustries = useMutation(api.industries.seed);
+  const industries = useApiQuery(() => api.industries.list(), []) ?? [];
+  const stats = useApiQuery(() => api.industries.stats(), []);
+  const platforms = useApiQuery(() => api.corePlatforms.list(), []) ?? [];
+  const toggleActive = async (...args: any[]) => api.industries.toggleActive(...args);
+  const updateMultiplier = async (...args: any[]) => api.industries.updateMultiplier(...args);
+  const seedIndustries = async (...args: any[]) => api.industries.seed(...args);
 
   const [search, setSearch] = useState("");
   const [categoryFilter, setCategoryFilter] = useState<string>("all");
@@ -209,7 +209,7 @@ export function AdminIndustriesPage() {
           const catMeta = CATEGORY_META[industry.category];
           return (
             <Card
-              key={industry._id}
+              key={industry.id}
               className={`border transition-all ${
                 industry.isActive ? "border-gray-200 bg-white" : "border-gray-100 bg-gray-50 opacity-60"
               }`}
@@ -253,7 +253,7 @@ export function AdminIndustriesPage() {
                     <button
                       onClick={() =>
                         setEditingMultiplier({
-                          id: industry._id,
+                          id: industry.id,
                           name: industry.name,
                           multiplier: industry.multiplier,
                         })
@@ -280,7 +280,7 @@ export function AdminIndustriesPage() {
 
                     {/* Toggle */}
                     <button
-                      onClick={() => handleToggle(industry._id, industry.name, industry.isActive)}
+                      onClick={() => handleToggle(industry.id, industry.name, industry.isActive)}
                       className="p-2 rounded-lg hover:bg-gray-100 transition-colors cursor-pointer"
                     >
                       {industry.isActive ? (

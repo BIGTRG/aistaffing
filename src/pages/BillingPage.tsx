@@ -1,5 +1,5 @@
-import { useQuery, useAction } from "convex/react";
-import { api } from "../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { useState } from "react";
 import {
 	CreditCard,
@@ -19,23 +19,14 @@ import { Button } from "@/components/ui/button";
 import { toast } from "sonner";
 
 export function BillingPage() {
-	const org = useQuery(api.organizations.getMine);
-	const contracts = useQuery(
-		api.billing.contractsByOrg,
-		org ? { orgId: org._id } : "skip"
-	);
-	const invoices = useQuery(
-		api.billing.invoicesByOrg,
-		org ? { orgId: org._id } : "skip"
-	);
-	const spend = useQuery(
-		api.billing.spendSummary,
-		org ? { orgId: org._id } : "skip"
-	);
-	const stripeConfigured = useQuery(api.stripe.isConfigured);
+	const org = useApiQuery(() => api.organizations.getMine(), []);
+	const contracts = useApiQuery(org ? () => api.billing.contractsByOrg(org.id) : null, [org]);
+	const invoices = useApiQuery(org ? () => api.billing.invoicesByOrg(org.id) : null, [org]);
+	const spend = useApiQuery(org ? () => api.billing.spend(org.id) : null, [org]);
+	const stripeConfigured = useApiQuery(() => api.stripe.isConfigured(), []);
 
-	const createCheckout = useAction(api.stripe.createCheckoutSession);
-	const createPortal = useAction(api.stripe.createPortalSession);
+	const createCheckout = async (...args: any[]) => api.stripe.createCheckoutSession(...args);
+	const createPortal = async (...args: any[]) => api.stripe.createPortalSession(...args);
 
 	const [checkoutLoading, setCheckoutLoading] = useState(false);
 	const [portalLoading, setPortalLoading] = useState(false);
@@ -46,7 +37,7 @@ export function BillingPage() {
 		if (!org) return;
 		setPortalLoading(true);
 		try {
-			const result = await createPortal({ orgId: org._id });
+			const result = await createPortal({ orgId: org.id });
 			if (result.url) {
 				window.open(result.url, "_blank");
 			}
@@ -78,7 +69,7 @@ export function BillingPage() {
 			}
 
 			const result = await createCheckout({
-				orgId: org._id,
+				orgId: org.id,
 				lineItems,
 			});
 
@@ -247,7 +238,7 @@ export function BillingPage() {
 								</thead>
 								<tbody>
 									{activeContracts.map((c) => (
-										<tr key={c._id} className="border-b border-gray-100">
+										<tr key={c.id} className="border-b border-gray-100">
 											<td className="py-3 font-medium text-gray-900">
 												{c.deployment?.displayName ?? "Agent"}
 											</td>
@@ -301,7 +292,7 @@ export function BillingPage() {
 					{invoices && invoices.length > 0 ? (
 						<div className="divide-y divide-gray-100">
 							{invoices.map((inv) => (
-								<div key={inv._id} className="flex items-center justify-between py-3">
+								<div key={inv.id} className="flex items-center justify-between py-3">
 									<div>
 										<p className="text-sm font-medium text-gray-900">
 											${(inv.amountCents / 100).toLocaleString()}

@@ -1,10 +1,10 @@
-import { useQuery } from "convex/react";
-import { api } from "../../../convex/_generated/api";
+import { useApiQuery } from "@/lib/hooks";
+import { api } from "@/lib/api";
 import { Users, Shield, Building2 } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export function AdminUsersPage() {
-	const platformUsers = useQuery(api.platformUsers.listAll) ?? [];
+	const platformUsers = useApiQuery(() => api.platformUsers.listAll(), []) ?? [];
 
 	const admins = platformUsers.filter((u) => u.role === "admin");
 	const employers = platformUsers.filter((u) => u.role === "employer");
@@ -52,7 +52,7 @@ export function AdminUsersPage() {
 					{platformUsers.length > 0 ? (
 						<div className="divide-y divide-gray-100">
 							{platformUsers.map((pu) => (
-								<div key={pu._id} className="flex items-center justify-between py-3">
+								<div key={pu.id} className="flex items-center justify-between py-3">
 									<div className="flex items-center gap-3">
 										<div className={`size-9 rounded-full flex items-center justify-center text-white text-sm font-medium ${
 											pu.role === "admin" ? "bg-red-600" : "bg-amber-600"
