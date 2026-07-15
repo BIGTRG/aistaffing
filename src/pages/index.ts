@@ -30,3 +30,4 @@ export { default as AdminOnboardingAgentPage } from "./admin/AdminOnboardingAgen
 export { AdminOperationsPage } from "./admin/AdminOperationsPage";
 export { AdminClientPortalPage } from "./admin/AdminClientPortalPage";
 export { AdminGatewayPage } from "./admin/AdminGatewayPage";
+export { AdminAgentWorkforcePage } from "./admin/AdminAgentWorkforcePage";

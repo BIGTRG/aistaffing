@@ -61,6 +61,7 @@ const platformItems = [
 
 const operationsItems = [
 	{ href: "/admin/operations", label: "Command Center", icon: Gauge },
+	{ href: "/admin/workforce", label: "Agent Workforce", icon: Users },
 	{ href: "/admin/gateway", label: "AI Gateway", icon: Radio },
 	{ href: "/admin/client-portal", label: "Client Portal", icon: Eye },
 	{ href: "/admin/deployments", label: "Deployments", icon: Activity },

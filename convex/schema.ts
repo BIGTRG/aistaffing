@@ -466,6 +466,171 @@ const schema = defineSchema({
     .index("by_user", ["userId"])
     .index("by_action", ["action"])
     .index("by_timestamp", ["timestamp"]),
+
+  // ══════════════════════════════════════════════════
+  // AI AGENT WORKFORCE MANAGEMENT
+  // ══════════════════════════════════════════════════
+
+  // ── Staff Agents (individual AI employees) ──
+  staffAgents: defineTable({
+    agentId: v.string(),           // e.g. "AGT-0001"
+    name: v.string(),              // "Sarah Mitchell"
+    role: v.string(),              // "Front Desk Receptionist"
+    department: v.string(),        // front_desk | sales | admin_ops | marketing | support | finance
+    industry: v.string(),          // industry slug this agent specializes in
+    assignedOrgId: v.optional(v.string()),   // which client org they're assigned to
+    assignedOrgName: v.optional(v.string()), // client name for quick display
+    status: v.string(),            // active | paused | training | maintenance | terminated
+    avatar: v.string(),            // initials or emoji
+    hireDate: v.number(),          // when this agent was created/deployed
+    lastActiveAt: v.optional(v.number()),
+    totalTasksCompleted: v.number(),
+    totalHoursWorked: v.number(),
+    performanceScore: v.number(),  // 0-100
+    utilizationRate: v.number(),   // 0-100 percentage
+    responseTimeAvgMs: v.number(), // average response time
+    escalationRate: v.number(),    // percentage of tasks escalated to human
+    currentShiftStart: v.optional(v.number()),
+    bio: v.optional(v.string()),
+    personalityTraits: v.optional(v.array(v.string())),
+    voiceId: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+  })
+    .index("by_agentId", ["agentId"])
+    .index("by_status", ["status"])
+    .index("by_department", ["department"])
+    .index("by_industry", ["industry"])
+    .index("by_org", ["assignedOrgId"])
+    .index("by_performance", ["performanceScore"]),
+
+  // ── Skill Catalog (master list of all available skills) ──
+  skillCatalog: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    category: v.string(),          // communication | scheduling | sales | finance | admin | technical | industry_specific
+    description: v.string(),
+    industrySpecific: v.optional(v.string()), // null = universal, or industry slug
+    difficulty: v.string(),        // basic | intermediate | advanced | expert
+    trainingTimeHours: v.number(), // how long to "train" an agent on this skill
+    prerequisites: v.array(v.string()),      // skill slugs required first
+    isActive: v.boolean(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category"])
+    .index("by_industry", ["industrySpecific"]),
+
+  // ── Agent Skills (skills assigned to each agent) ──
+  agentSkills: defineTable({
+    agentId: v.string(),           // staffAgent agentId
+    skillSlug: v.string(),
+    skillName: v.string(),
+    proficiency: v.number(),       // 0-100
+    status: v.string(),            // active | training | requested | disabled
+    assignedAt: v.number(),
+    lastUsedAt: v.optional(v.number()),
+    usageCount: v.number(),
+    errorRate: v.number(),         // percentage
+  })
+    .index("by_agent", ["agentId"])
+    .index("by_skill", ["skillSlug"])
+    .index("by_agent_skill", ["agentId", "skillSlug"])
+    .index("by_status", ["status"]),
+
+  // ── Agent Activity Log (every action an agent takes) ──
+  agentActivityLog: defineTable({
+    agentId: v.string(),
+    agentName: v.string(),
+    activityType: v.string(),      // call_handled | email_sent | appointment_booked | invoice_created | lead_captured | escalation | skill_used | message_sent | report_generated | crm_update | payment_processed
+    category: v.string(),          // communication | sales | admin | support | finance
+    title: v.string(),
+    description: v.string(),
+    outcome: v.string(),           // success | partial | failed | escalated | pending
+    durationMs: v.optional(v.number()),
+    skillUsed: v.optional(v.string()),
+    clientId: v.optional(v.string()),
+    clientName: v.optional(v.string()),
+    metadata: v.optional(v.any()),
+    timestamp: v.number(),
+  })
+    .index("by_agent", ["agentId"])
+    .index("by_type", ["activityType"])
+    .index("by_agent_time", ["agentId", "timestamp"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_outcome", ["outcome"]),
+
+  // ── Agent Shifts (daily duty records) ──
+  agentShifts: defineTable({
+    agentId: v.string(),
+    agentName: v.string(),
+    date: v.string(),              // "2026-07-14"
+    shiftStart: v.number(),
+    shiftEnd: v.optional(v.number()),
+    status: v.string(),            // on_duty | off_duty | break | maintenance
+    tasksCompleted: v.number(),
+    callsHandled: v.number(),
+    emailsSent: v.number(),
+    appointmentsBooked: v.number(),
+    leadsGenerated: v.number(),
+    escalations: v.number(),
+    avgResponseTimeMs: v.number(),
+    utilization: v.number(),       // 0-100
+    notes: v.optional(v.string()),
+  })
+    .index("by_agent", ["agentId"])
+    .index("by_date", ["date"])
+    .index("by_agent_date", ["agentId", "date"]),
+
+  // ── Agent Messages (internal comms between agents and agency) ──
+  agentMessages: defineTable({
+    messageId: v.string(),         // "MSG-0001"
+    fromAgentId: v.optional(v.string()),     // null if from agency
+    fromName: v.string(),
+    toAgentId: v.optional(v.string()),       // null if to agency
+    toName: v.string(),
+    direction: v.string(),         // agent_to_agency | agency_to_agent | system
+    type: v.string(),              // skill_request | escalation | status_update | question | alert | performance_review | task_report | anomaly
+    priority: v.string(),          // low | normal | high | urgent
+    subject: v.string(),
+    body: v.string(),
+    status: v.string(),            // unread | read | replied | resolved | archived
+    relatedSkill: v.optional(v.string()),
+    relatedActivity: v.optional(v.string()),
+    replyToId: v.optional(v.string()),
+    timestamp: v.number(),
+    readAt: v.optional(v.number()),
+    resolvedAt: v.optional(v.number()),
+  })
+    .index("by_from", ["fromAgentId"])
+    .index("by_to", ["toAgentId"])
+    .index("by_type", ["type"])
+    .index("by_status", ["status"])
+    .index("by_priority", ["priority"])
+    .index("by_timestamp", ["timestamp"])
+    .index("by_direction", ["direction"]),
+
+  // ── Skill Requests (formal requests for new skills) ──
+  skillRequests: defineTable({
+    requestId: v.string(),         // "REQ-0001"
+    agentId: v.string(),
+    agentName: v.string(),
+    skillSlug: v.string(),
+    skillName: v.string(),
+    reason: v.string(),
+    clientId: v.optional(v.string()),
+    clientName: v.optional(v.string()),
+    status: v.string(),            // pending | approved | in_training | completed | denied
+    priority: v.string(),          // low | normal | high | urgent
+    estimatedTrainingHours: v.number(),
+    approvedBy: v.optional(v.string()),
+    approvedAt: v.optional(v.number()),
+    completedAt: v.optional(v.number()),
+    denialReason: v.optional(v.string()),
+    createdAt: v.number(),
+  })
+    .index("by_agent", ["agentId"])
+    .index("by_status", ["status"])
+    .index("by_skill", ["skillSlug"])
+    .index("by_created", ["createdAt"]),
 });
 
 export default schema;
