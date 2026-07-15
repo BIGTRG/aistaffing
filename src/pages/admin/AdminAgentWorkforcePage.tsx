@@ -3,12 +3,12 @@ import { api } from "../../../convex/_generated/api";
 import { useState } from "react";
 import {
 	Users, Power, PowerOff, Brain, Activity, Mail, AlertTriangle,
-	ChevronRight, Search, Clock, TrendingUp, Zap, CheckCircle2,
+	ChevronRight, Search, TrendingUp, Zap, CheckCircle2,
 	XCircle, MessageSquare, Star, BarChart3, Shield, Phone,
-	Calendar, FileText, DollarSign, ArrowUpRight, ArrowDownRight,
-	Filter, Eye, Wrench, Inbox, Send, BookOpen,
+	Calendar, FileText,
+	Eye, Wrench, Inbox, BookOpen,
 } from "lucide-react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
