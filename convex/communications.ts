@@ -162,7 +162,7 @@ Keep it concise, warm, and professional. Include the business name in the sign-o
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
+            model: "claude-opus-4-20250514",
             max_tokens: 600,
             system: emailSystemPrompt + "\nIMPORTANT: Respond with ONLY valid JSON, no other text.",
             messages: [
@@ -174,7 +174,7 @@ Keep it concise, warm, and professional. Include the business name in the sign-o
         const data = await response.json();
         const raw = data.content?.[0]?.text ?? "{}";
         const result = JSON.parse(raw);
-        return { ...result, source: "ai", engine: "claude-sonnet-4" };
+        return { ...result, source: "ai", engine: "claude-opus-4" };
       }
 
       // ── Fallback: GPT-4o-mini ──

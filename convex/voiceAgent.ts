@@ -193,7 +193,7 @@ ${args.context?.businessInfo ? `Business Info: ${JSON.stringify(args.context.bus
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            model: "claude-sonnet-4-20250514",
+            model: "claude-opus-4-20250514",
             max_tokens: 200,
             system: systemPrompt,
             messages: [
@@ -205,7 +205,7 @@ ${args.context?.businessInfo ? `Business Info: ${JSON.stringify(args.context.bus
         const data = await response.json();
         const agentResponse = data.content?.[0]?.text ?? "Let me transfer you to someone who can help.";
         const shouldEscalate = agentResponse.toLowerCase().includes("transfer") || agentResponse.toLowerCase().includes("manager");
-        return { agentResponse, agentName: persona.name, shouldEscalate, intent: "ai_response", engine: "claude-sonnet-4" };
+        return { agentResponse, agentName: persona.name, shouldEscalate, intent: "ai_response", engine: "claude-opus-4" };
       }
 
       // ── Fallback: GPT-4o-mini (if no Anthropic key) ──
