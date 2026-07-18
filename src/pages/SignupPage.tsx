@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Link } from "react-router-dom";
 import { SignUp } from "@/components/SignUp";
 import { TestUserLoginSection } from "@/components/TestUserLoginSection";

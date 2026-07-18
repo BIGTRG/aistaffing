@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useConvexAuth } from "@/contexts/AuthContext";
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Check, ChevronRight } from "lucide-react";

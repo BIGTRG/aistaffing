@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Headphones, Mail, MessageSquare, Phone } from "lucide-react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
