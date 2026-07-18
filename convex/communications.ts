@@ -120,6 +120,7 @@ export const composeEmail = action({
     context: v.optional(v.string()),
   },
   handler: async (_ctx, args) => {
+    const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? "";
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? "";
 
     // Use template if available
@@ -137,7 +138,7 @@ export const composeEmail = action({
     }
 
     // AI compose
-    if (!OPENAI_API_KEY) {
+    if (!ANTHROPIC_API_KEY && !OPENAI_API_KEY) {
       return {
         subject: `From ${args.businessName}`,
         body: `Hi ${args.customerName},\n\nThank you for reaching out to ${args.businessName}. ${args.context ?? "We look forward to serving you."}\n\nBest,\n${args.agentName}`,
@@ -145,7 +146,38 @@ export const composeEmail = action({
       };
     }
 
+    const emailSystemPrompt = `You are ${args.agentName}, an AI assistant for ${args.businessName} (${args.industry}).
+Write a professional email. Return JSON: { "subject": "...", "body": "..." }
+Keep it concise, warm, and professional. Include the business name in the sign-off.`;
+    const emailUserPrompt = `Write a ${args.purpose} email to ${args.customerName}. ${args.context ?? ""}`;
+
     try {
+      // ── Primary: Claude Sonnet 4 (superior tone, professionalism) ──
+      if (ANTHROPIC_API_KEY) {
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "x-api-key": ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 600,
+            system: emailSystemPrompt + "\nIMPORTANT: Respond with ONLY valid JSON, no other text.",
+            messages: [
+              { role: "user", content: emailUserPrompt },
+            ],
+            temperature: 0.7,
+          }),
+        });
+        const data = await response.json();
+        const raw = data.content?.[0]?.text ?? "{}";
+        const result = JSON.parse(raw);
+        return { ...result, source: "ai", engine: "claude-sonnet-4" };
+      }
+
+      // ── Fallback: GPT-4o-mini ──
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -155,16 +187,8 @@ export const composeEmail = action({
         body: JSON.stringify({
           model: "gpt-4o-mini",
           messages: [
-            {
-              role: "system",
-              content: `You are ${args.agentName}, an AI assistant for ${args.businessName} (${args.industry}).
-Write a professional email. Return JSON: { "subject": "...", "body": "..." }
-Keep it concise, warm, and professional. Include the business name in the sign-off.`,
-            },
-            {
-              role: "user",
-              content: `Write a ${args.purpose} email to ${args.customerName}. ${args.context ?? ""}`,
-            },
+            { role: "system", content: emailSystemPrompt },
+            { role: "user", content: emailUserPrompt },
           ],
           max_tokens: 500,
           temperature: 0.7,
@@ -173,7 +197,7 @@ Keep it concise, warm, and professional. Include the business name in the sign-o
       });
       const data = await response.json();
       const result = JSON.parse(data.choices?.[0]?.message?.content ?? "{}");
-      return { ...result, source: "ai" };
+      return { ...result, source: "ai", engine: "gpt-4o-mini" };
     } catch {
       return {
         subject: `From ${args.businessName}`,

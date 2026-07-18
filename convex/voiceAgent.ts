@@ -138,6 +138,7 @@ export const processVoiceInput = action({
   },
   handler: async (_ctx, args) => {
     const persona = VOICE_PERSONAS[args.agentIndustry] ?? VOICE_PERSONAS["default"];
+    const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY ?? "";
     const OPENAI_API_KEY = process.env.OPENAI_API_KEY ?? "";
 
     // Build system prompt for voice agent
@@ -164,7 +165,7 @@ ESCALATION TRIGGERS (transfer to human):
 
 ${args.context?.businessInfo ? `Business Info: ${JSON.stringify(args.context.businessInfo)}` : ""}`;
 
-    if (!OPENAI_API_KEY) {
+    if (!ANTHROPIC_API_KEY && !OPENAI_API_KEY) {
       // Fallback intelligent response
       const fallbacks: Record<string, string> = {
         "car-dealership": "I'd love to help you find the right vehicle! Can you tell me what type you're looking for — sedan, SUV, truck? And do you have a budget range in mind?",
@@ -182,6 +183,32 @@ ${args.context?.businessInfo ? `Business Info: ${JSON.stringify(args.context.bus
     }
 
     try {
+      // ── Primary: Claude Sonnet 4 (superior for customer-facing conversations) ──
+      if (ANTHROPIC_API_KEY) {
+        const response = await fetch("https://api.anthropic.com/v1/messages", {
+          method: "POST",
+          headers: {
+            "x-api-key": ANTHROPIC_API_KEY,
+            "anthropic-version": "2023-06-01",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            model: "claude-sonnet-4-20250514",
+            max_tokens: 200,
+            system: systemPrompt,
+            messages: [
+              { role: "user", content: args.userSpeech },
+            ],
+            temperature: 0.7,
+          }),
+        });
+        const data = await response.json();
+        const agentResponse = data.content?.[0]?.text ?? "Let me transfer you to someone who can help.";
+        const shouldEscalate = agentResponse.toLowerCase().includes("transfer") || agentResponse.toLowerCase().includes("manager");
+        return { agentResponse, agentName: persona.name, shouldEscalate, intent: "ai_response", engine: "claude-sonnet-4" };
+      }
+
+      // ── Fallback: GPT-4o-mini (if no Anthropic key) ──
       const response = await fetch("https://api.openai.com/v1/chat/completions", {
         method: "POST",
         headers: {
@@ -201,8 +228,7 @@ ${args.context?.businessInfo ? `Business Info: ${JSON.stringify(args.context.bus
       const data = await response.json();
       const agentResponse = data.choices?.[0]?.message?.content ?? "Let me transfer you to someone who can help.";
       const shouldEscalate = agentResponse.toLowerCase().includes("transfer") || agentResponse.toLowerCase().includes("manager");
-
-      return { agentResponse, agentName: persona.name, shouldEscalate, intent: "ai_response" };
+      return { agentResponse, agentName: persona.name, shouldEscalate, intent: "ai_response", engine: "gpt-4o-mini" };
     } catch {
       return {
         agentResponse: "I'm sorry, I'm having a moment. Let me connect you with a team member.",
