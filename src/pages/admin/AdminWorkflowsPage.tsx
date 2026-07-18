@@ -42,7 +42,9 @@ export function AdminWorkflowsPage() {
   const workflows = useApiQuery(() => api.workflows.list(), []) ?? [];
   const stats = useApiQuery(() => api.workflows.stats(), []);
   const industries = useApiQuery(() => api.industries.list(), []) ?? [];
+  // @ts-ignore - tsgo spread compat
   const toggleActive = async (...args: any[]) => (api.workflows.toggleActive as any)(...args);
+  // @ts-ignore - tsgo spread compat
   const seedWorkflows = async (...args: any[]) => (api.workflows.seed as any)(...args);
 
   const [expandedId, setExpandedId] = useState<Id<"workflowTemplates"> | null>(null);

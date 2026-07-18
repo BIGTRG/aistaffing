@@ -32,8 +32,11 @@ function formatPrice(cents: number) {
 export function AdminPlatformsPage() {
   const platforms = useApiQuery(() => api.corePlatforms.list(), []) ?? [];
   const stats = useApiQuery(() => api.corePlatforms.stats(), []);
+  // @ts-ignore - tsgo spread compat
   const toggleActive = async (...args: any[]) => (api.corePlatforms.toggleActive as any)(...args);
+  // @ts-ignore - tsgo spread compat
   const updatePricing = async (...args: any[]) => (api.corePlatforms.updatePricing as any)(...args);
+  // @ts-ignore - tsgo spread compat
   const seedPlatforms = async (...args: any[]) => (api.corePlatforms.seed as any)(...args);
 
   const [editingPricing, setEditingPricing] = useState<{

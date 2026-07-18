@@ -281,8 +281,11 @@ function ChatPanel({
   const session = useApiQuery(sessionId ? () => api.onboardingAgent.getSession(sessionId) : null, [sessionId]);
   const messages = useApiQuery(sessionId ? () => api.onboardingAgent.getSessionMessages(sessionId) : null, [sessionId]);
   const chat = async (...args: any[]) => api.onboardingAgent.chat(...args);
+  // @ts-ignore - tsgo doesn't resolve Convex action exports
   const triggerGen = async (...args: any[]) => (api.onboardingAgent.triggerGeneration as any)(...args);
+  // @ts-ignore - tsgo doesn't resolve Convex action exports
   const deployWorkflow = async (...args: any[]) => (api.onboardingAgent.deployWorkflow as any)(...args);
+  // @ts-ignore - tsgo doesn't resolve Convex action exports
   const deleteSession = async (...args: any[]) => (api.onboardingAgent.deleteSession as any)(...args);
 
   const [input, setInput] = useState("");
