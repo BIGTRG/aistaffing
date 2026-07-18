@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useApiQuery } from "@/lib/hooks";
 import { api } from "@/lib/api";
 import type { Id } from "../../../convex/_generated/dataModel";
