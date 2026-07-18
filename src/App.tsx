@@ -42,6 +42,7 @@ import {
 	SupportPage,
 	PricingPage,
 	AgentActivityPage,
+	LandingPage,
 } from "./pages";
 
 function App() {
@@ -51,7 +52,7 @@ function App() {
 				<Toaster />
 				<Routes>
 					{/* ── Public Pages ── */}
-					<Route path="/" element={<Navigate to="/admin/dashboard" replace />} />
+					<Route path="/" element={<LandingPage />} />
 					<Route path="/pricing" element={<PricingPage />} />
 					<Route path="/industries/:slug" element={<IndustryPage />} />
 
