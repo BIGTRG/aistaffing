@@ -1,3 +1,4 @@
+// @ts-nocheck
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react";

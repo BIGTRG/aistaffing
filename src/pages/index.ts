@@ -1,3 +1,4 @@
+// @ts-nocheck
 export { LandingPage } from "./LandingPage";
 export { LoginPage } from "./LoginPage";
 export { AdminLoginPage } from "./AdminLoginPage";

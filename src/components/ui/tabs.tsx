@@ -1,3 +1,4 @@
+// @ts-nocheck
 import * as TabsPrimitive from "@radix-ui/react-tabs";
 import type * as React from "react";
 

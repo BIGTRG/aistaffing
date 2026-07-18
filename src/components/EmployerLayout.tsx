@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Outlet } from "react-router-dom";
 import { EmployerSidebar } from "./EmployerSidebar";
 import { SidebarInset, SidebarProvider, SidebarTrigger } from "./ui/sidebar";

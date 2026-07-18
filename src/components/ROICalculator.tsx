@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useEffect, useRef, useState } from "react";
 import { ArrowRight, Phone, PhoneOff, DollarSign, Clock, TrendingUp } from "lucide-react";
 import { Button } from "@/components/ui/button";

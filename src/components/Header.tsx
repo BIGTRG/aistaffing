@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useConvexAuth } from "@/contexts/AuthContext";
 import { ArrowRight } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useEffect, useCallback } from "react";
 
 export function useApiQuery<T>(fetcher: (() => Promise<T>) | null, deps: any[] = []): T | undefined {

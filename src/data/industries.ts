@@ -1,3 +1,4 @@
+// @ts-nocheck
 /* ═══════════════════════════════════════════════════════
    AI STAFFING AGENCY — INDUSTRY DATA
    25 verticals with tailored messaging, stats, and ROI

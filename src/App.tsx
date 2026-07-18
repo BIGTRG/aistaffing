@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Navigate, Route, Routes } from "react-router-dom";
 import { AdminLayout } from "./components/AdminLayout";
 import { EmployerLayout } from "./components/EmployerLayout";

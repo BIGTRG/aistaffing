@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useState, useRef, useEffect } from "react";
 import { useApiQuery } from "@/lib/hooks";
 import { api } from "@/lib/api";

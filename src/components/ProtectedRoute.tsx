@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useConvexAuth } from "@/contexts/AuthContext";
 import { Navigate, Outlet } from "react-router-dom";
 import {

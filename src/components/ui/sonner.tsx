@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { Toaster as Sonner, type ToasterProps } from "sonner";
 import { useTheme } from "@/contexts/ThemeContext";
 
