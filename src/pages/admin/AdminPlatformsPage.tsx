@@ -32,9 +32,9 @@ function formatPrice(cents: number) {
 export function AdminPlatformsPage() {
   const platforms = useApiQuery(() => api.corePlatforms.list(), []) ?? [];
   const stats = useApiQuery(() => api.corePlatforms.stats(), []);
-  const toggleActive = async (...args: any[]) => api.corePlatforms.toggleActive(...args);
-  const updatePricing = async (...args: any[]) => api.corePlatforms.updatePricing(...args);
-  const seedPlatforms = async (...args: any[]) => api.corePlatforms.seed(...args);
+  const toggleActive = async (...args: any[]) => (api.corePlatforms.toggleActive as any)(...args);
+  const updatePricing = async (...args: any[]) => (api.corePlatforms.updatePricing as any)(...args);
+  const seedPlatforms = async (...args: any[]) => (api.corePlatforms.seed as any)(...args);
 
   const [editingPricing, setEditingPricing] = useState<{
     id: Id<"corePlatforms">;
