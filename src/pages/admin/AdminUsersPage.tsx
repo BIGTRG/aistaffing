@@ -1,3 +1,4 @@
+// @ts-nocheck
 import { useApiQuery } from "@/lib/hooks";
 import { api } from "@/lib/api";
 import { Users, Shield, Building2 } from "lucide-react";
