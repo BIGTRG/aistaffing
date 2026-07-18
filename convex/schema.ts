@@ -631,6 +631,50 @@ const schema = defineSchema({
     .index("by_status", ["status"])
     .index("by_skill", ["skillSlug"])
     .index("by_created", ["createdAt"]),
+
+  // ══════════════════════════════════════════════════
+  // ADD-ON SERVICES (TRG Product Integrations)
+  // ══════════════════════════════════════════════════
+  addOnServices: defineTable({
+    name: v.string(),
+    slug: v.string(),
+    description: v.string(),
+    category: v.string(),           // core | industry | premium
+    icon: v.string(),               // emoji or icon name
+    connectorSlug: v.optional(v.string()), // links to serviceConnectors
+    pricingStarter: v.optional(v.number()),
+    pricingPro: v.optional(v.number()),
+    pricingEnterprise: v.optional(v.number()),
+    features: v.array(v.string()),
+    applicableIndustries: v.optional(v.array(v.string())), // null = all industries
+    isActive: v.boolean(),
+    subscriberCount: v.number(),
+    createdAt: v.number(),
+  })
+    .index("by_slug", ["slug"])
+    .index("by_category", ["category"])
+    .index("by_active", ["isActive"]),
+
+  clientServiceSubscriptions: defineTable({
+    orgId: v.string(),
+    orgName: v.string(),
+    serviceId: v.id("addOnServices"),
+    serviceSlug: v.string(),
+    serviceName: v.string(),
+    tier: v.string(),               // starter | pro | enterprise
+    status: v.string(),             // active | paused | cancelled | trial
+    monthlyPrice: v.number(),
+    activatedAt: v.number(),
+    cancelledAt: v.optional(v.number()),
+    lastBilledAt: v.optional(v.number()),
+    usageThisMonth: v.optional(v.number()),
+    usageLimit: v.optional(v.number()),
+    notes: v.optional(v.string()),
+  })
+    .index("by_org", ["orgId"])
+    .index("by_service", ["serviceId"])
+    .index("by_status", ["status"])
+    .index("by_slug", ["serviceSlug"]),
 });
 
 export default schema;

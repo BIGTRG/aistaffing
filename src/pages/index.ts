@@ -31,3 +31,4 @@ export { AdminOperationsPage } from "./admin/AdminOperationsPage";
 export { AdminClientPortalPage } from "./admin/AdminClientPortalPage";
 export { AdminGatewayPage } from "./admin/AdminGatewayPage";
 export { AdminAgentWorkforcePage } from "./admin/AdminAgentWorkforcePage";
+export { default as AdminAddOnServicesPage } from "./admin/AdminAddOnServicesPage";
