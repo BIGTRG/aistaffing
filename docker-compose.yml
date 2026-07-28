@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: aistaffing-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB: aistaffing
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "cae0d441b34e803dfb67b53c8580c866"
+    volumes:
+      - aistaffing_pgdata:/var/lib/postgresql/data
+      - ./setup-db.sql:/docker-entrypoint-initdb.d/10-setup.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d aistaffing"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile.viktor
+      target: api
+    container_name: aistaffing-api
+    restart: unless-stopped
+    environment:
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: aistaffing
+      DB_USER: appuser
+      DB_PASS: "Genius2026AppUser!"
+      JWT_SECRET: "d9455fea2f2430d49b1f275a13ac49d3c3f423712b63e8862b6c5b91a7e0e253"
+      API_PORT: "3070"
+    depends_on:
+      postgres:
+        condition: service_healthy
+
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.viktor
+      target: web
+    container_name: aistaffing-web
+    volumes:
+      - ./legal:/usr/share/nginx/html/legal:ro
+    restart: unless-stopped
+    ports:
+      - "8091:80"
+    depends_on:
+      - api
+
+volumes:
+  aistaffing_pgdata:
