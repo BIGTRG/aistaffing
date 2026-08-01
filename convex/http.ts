@@ -1,7 +1,7 @@
 import { httpRouter } from "convex/server";
 import { httpAction } from "./_generated/server";
 import { auth } from "./auth";
-import { api } from "./_generated/api";
+import { api, internal } from "./_generated/api";
 
 const http = httpRouter();
 auth.addHttpRoutes(http);
@@ -359,7 +359,7 @@ http.route({
 		results.industries = await ctx.runMutation(api.industries.seed, {});
 		results.corePlatforms = await ctx.runMutation(api.corePlatforms.seed, {});
 		results.workflows = await ctx.runMutation(api.workflows.seed, {});
-		results.agentTemplates = await ctx.runMutation(api.agentTemplates.seed, {});
+		results.agentTemplates = await ctx.runMutation(internal.agentTemplates.seed, {});
 		results.connectors = await ctx.runMutation(api.gateway.seedConnectors, {});
 		results.workforce = await ctx.runMutation(api.agentWorkforce.seedWorkforce, {});
 		results.addOnServices = await ctx.runMutation(api.addOnServices.seedAddOnServices, {});
