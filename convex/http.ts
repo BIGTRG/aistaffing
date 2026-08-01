@@ -346,4 +346,29 @@ http.route({
 	}),
 });
 
+/* ─── One-time seed endpoint (idempotent — all seeds check for existing data) ─── */
+http.route({
+	path: "/admin/seed-all",
+	method: "POST",
+	handler: httpAction(async (ctx, request) => {
+		const body = await request.json().catch(() => ({}));
+		if (body.key !== "trg-seed-2026") {
+			return new Response(JSON.stringify({ error: "unauthorized" }), { status: 401 });
+		}
+		const results: Record<string, unknown> = {};
+		results.industries = await ctx.runMutation(api.industries.seed, {});
+		results.corePlatforms = await ctx.runMutation(api.corePlatforms.seed, {});
+		results.workflows = await ctx.runMutation(api.workflows.seed, {});
+		results.agentTemplates = await ctx.runMutation(api.agentTemplates.seed, {});
+		results.connectors = await ctx.runMutation(api.gateway.seedConnectors, {});
+		results.workforce = await ctx.runMutation(api.agentWorkforce.seedWorkforce, {});
+		results.addOnServices = await ctx.runMutation(api.addOnServices.seedAddOnServices, {});
+		results.subscriptions = await ctx.runMutation(api.addOnServices.seedDemoSubscriptions, {});
+		return new Response(JSON.stringify({ ok: true, results }), {
+			status: 200,
+			headers: { "Content-Type": "application/json" },
+		});
+	}),
+});
+
 export default http;
