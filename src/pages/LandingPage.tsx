@@ -720,8 +720,8 @@ export function LandingPage() {
 						<div>
 							<h4 className="font-mono uppercase tracking-[0.15em] text-white/30 mb-3 text-[10px]">Legal</h4>
 							<ul className="space-y-2 text-white/20">
-								<li><a href="#" className="hover:text-white/50 transition-colors">Privacy</a></li>
-								<li><a href="#" className="hover:text-white/50 transition-colors">Terms</a></li>
+								<li><a href="/privacy" className="hover:text-white/50 transition-colors">Privacy</a></li>
+								<li><a href="/terms" className="hover:text-white/50 transition-colors">Terms</a></li>
 							</ul>
 						</div>
 					</div>

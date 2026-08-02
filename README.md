@@ -214,9 +214,10 @@ npx convex deploy --cmd 'npm run build'
 
 ## Live URLs
 
-- **Frontend:** https://preview-ai-staffing-agency-58b75145.viktor.space
-- **Backend API:** https://posh-dodo-411.convex.site
-- **GitHub:** https://github.com/BIGTRG/aistaffing
+- **Domain:** https://aistaffingagency.ai
+- **Production (Spaces):** https://ai-staffing-agency-58b75145.viktor.space (backend https://formal-ibex-296.convex.site)
+- **Preview:** https://preview-ai-staffing-agency-58b75145.viktor.space (backend https://posh-dodo-411.convex.site)
+- **GitHub:** https://github.com/BIGTRG/aistaffing (`main` = fleet PostgreSQL build, `spaces-convex` = Viktor Spaces/Convex build)
 
 ---
 

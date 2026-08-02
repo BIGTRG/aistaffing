@@ -31,7 +31,7 @@ export function SupportPage() {
 						<CardTitle className="text-base">Email Support</CardTitle>
 					</CardHeader>
 					<CardContent>
-						<p className="text-sm text-gray-500">Send us an email at support@aistaffingagency.com. We reply within 4 hours.</p>
+						<p className="text-sm text-gray-500">Send us an email at support@aistaffingagency.ai. We reply within 4 hours.</p>
 					</CardContent>
 				</Card>
 

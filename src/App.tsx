@@ -44,6 +44,7 @@ import {
 	AgentActivityPage,
 	LandingPage,
 } from "./pages";
+import { TermsPage, PrivacyPage } from "./pages/LegalPages";
 
 function App() {
 	return (
@@ -55,6 +56,8 @@ function App() {
 					<Route path="/" element={<LandingPage />} />
 					<Route path="/pricing" element={<PricingPage />} />
 					<Route path="/industries/:slug" element={<IndustryPage />} />
+					<Route path="/terms" element={<TermsPage />} />
+					<Route path="/privacy" element={<PrivacyPage />} />
 
 					{/* ── Public-Only Auth Pages ── */}
 					<Route element={<PublicLayout />}>

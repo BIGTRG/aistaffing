@@ -130,7 +130,7 @@ export function AdminLoginPage() {
 									id="email"
 									name="email"
 									type="email"
-									placeholder="admin@aistaffingagency.com"
+									placeholder="admin@aistaffingagency.ai"
 									autoComplete="email"
 									className="h-11 bg-slate-800 border-slate-700 text-white placeholder:text-slate-500"
 									required
